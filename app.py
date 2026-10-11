@@ -13,7 +13,12 @@ import google.generativeai as genai
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, "templates"),
+    static_folder=os.path.join(BASE_DIR, "static"),
+)
 
 # Fallback models in priority order, supporting Gemini 3.6 Flash and newer releases
 MODELS_TO_TRY = [
