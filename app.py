@@ -2,7 +2,10 @@ import json
 import os
 import re
 from flask import Flask, jsonify, render_template, request
-from dotenv import load_dotenv
+import warnings
+# Suppress deprecation warning from legacy SDK
+warnings.filterwarnings("ignore", category=FutureWarning, module="google.generativeai")
+
 import google.generativeai as genai
 
 # Load environment variables
@@ -10,8 +13,14 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Fallback models in priority order
-MODELS_TO_TRY = ["gemini-1.5-flash", "gemini-2.5-flash", "gemini-1.5-pro"]
+# Fallback models in priority order, supporting Gemini 3.6 Flash and newer releases
+MODELS_TO_TRY = [
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
+    "gemini-2.5-flash",
+    "gemini-1.5-flash",
+    "gemini-1.5-pro",
+]
 
 
 def clean_json_response(raw_text: str) -> dict:
@@ -69,11 +78,49 @@ def generate_meta():
                 {
                     "error": (
                         "GEMINI_API_KEY is not configured. Please set the GEMINI_API_KEY "
-                        "environment variable in your .env file or enter an API key in the UI."
+                        "environment variable in your .env file or enter an API key in the UI (or enter 'demo' to test)."
                     )
                 }
             ),
             400,
+        )
+
+    # Offline / Demo Mode evaluation fallback
+    if api_key.lower() == "demo":
+        lines = [line.strip() for line in content.split("\n") if line.strip()]
+        first_line = lines[0] if lines else "AI SEO Meta Generator"
+        clean_title = re.sub(r"[^a-zA-Z0-9\s-]", "", first_line)[:42].strip()
+        demo_title = f"{clean_title} | Expert Guide 2026"[:60]
+        if len(demo_title) < 50:
+            demo_title = f"{demo_title} — Best Practice Tips"[:60]
+
+        demo_desc = (
+            f"Explore {clean_title.lower()}. Discover in-depth architectural patterns, "
+            f"real-world benchmarks, and actionable insights to elevate your workflow in 2026."
+        )[:160]
+        if len(demo_desc) < 150:
+            demo_desc = (demo_desc.rstrip(".") + ". Learn more and get started now!")[:160]
+
+        return (
+            jsonify(
+                {
+                    "meta_title": demo_title,
+                    "meta_description": demo_desc,
+                    "og_title": f"{clean_title} — Architecture & Insights",
+                    "og_description": demo_desc,
+                    "og_type": "article" if "blog" in content.lower() else "website",
+                    "keywords": [
+                        "SEO Optimization",
+                        "Gemini 3.6 Flash",
+                        "Frontend AI",
+                        "Meta Tags",
+                        "FlyRank Capstone",
+                        "Open Graph",
+                        "Performance",
+                    ],
+                }
+            ),
+            200,
         )
 
     # Configure Gemini API
