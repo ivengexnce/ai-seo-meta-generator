@@ -2,9 +2,11 @@ import json
 import os
 import re
 from flask import Flask, jsonify, render_template, request
+from dotenv import load_dotenv
 import warnings
+
 # Suppress deprecation warning from legacy SDK
-warnings.filterwarnings("ignore", category=FutureWarning, module="google.generativeai")
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 import google.generativeai as genai
 
@@ -92,7 +94,7 @@ def generate_meta():
         clean_title = re.sub(r"[^a-zA-Z0-9\s-]", "", first_line)[:42].strip()
         demo_title = f"{clean_title} | Expert Guide 2026"[:60]
         if len(demo_title) < 50:
-            demo_title = f"{demo_title} — Best Practice Tips"[:60]
+            demo_title = f"{demo_title} - Best Practice Tips"[:60]
 
         demo_desc = (
             f"Explore {clean_title.lower()}. Discover in-depth architectural patterns, "
@@ -106,7 +108,7 @@ def generate_meta():
                 {
                     "meta_title": demo_title,
                     "meta_description": demo_desc,
-                    "og_title": f"{clean_title} — Architecture & Insights",
+                    "og_title": f"{clean_title} - Architecture & Insights",
                     "og_description": demo_desc,
                     "og_type": "article" if "blog" in content.lower() else "website",
                     "keywords": [
