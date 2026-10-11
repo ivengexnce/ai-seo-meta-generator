@@ -52,6 +52,8 @@ def clean_json_response(raw_text: str) -> dict:
 
 
 @app.route("/")
+@app.route("/api")
+@app.route("/api/index")
 def index():
     """Render the main UI page."""
     has_api_key = bool(os.getenv("GEMINI_API_KEY"))
@@ -59,12 +61,14 @@ def index():
 
 
 @app.route("/health")
+@app.route("/api/health")
 def health():
     """Health check endpoint for deployment monitoring."""
     return jsonify({"status": "ok", "app": "AI SEO Meta Generator"}), 200
 
 
 @app.route("/generate", methods=["POST"])
+@app.route("/api/generate", methods=["POST"])
 def generate_meta():
     """Analyze page content and generate SEO metadata via Gemini API."""
     data = request.get_json(silent=True) or {}
