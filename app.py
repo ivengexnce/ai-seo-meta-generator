@@ -52,8 +52,6 @@ def clean_json_response(raw_text: str) -> dict:
 
 
 @app.route("/")
-@app.route("/api")
-@app.route("/api/index")
 def index():
     """Render the main UI page."""
     has_api_key = bool(os.getenv("GEMINI_API_KEY"))
