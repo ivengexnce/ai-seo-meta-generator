@@ -108,8 +108,18 @@ ai-seo-meta-generator/
 
 ## Deployment
 
-Deployed on Render.
-Set `GEMINI_API_KEY` as an environment variable in your Render service settings.
+### Vercel (Recommended)
+1. Push your repository to GitHub.
+2. Import the repository into [Vercel](https://vercel.com).
+3. In project settings, add the environment variable:
+   - `GEMINI_API_KEY`: your Google Gemini API key
+4. Deploy! The project includes `vercel.json` and `api/index.py` configured for zero-setup serverless deployment.
+
+### Render
+1. Create a new Web Service on [Render](https://render.com) connected to your repository.
+2. Build Command: `pip install -r requirements.txt`
+3. Start Command: `gunicorn app:app` (or `python app.py`)
+4. Set `GEMINI_API_KEY` in environment variables.
 
 ---
 
