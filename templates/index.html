@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI SEO Meta Generator — Production-Ready Meta Tags & Open Graph</title>
+  <meta name="description" content="Generate SEO-optimised meta tags instantly using AI. Paste your page content, get production-ready meta titles, descriptions, Open Graph tags, and keywords in seconds.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- Background Glow Accents -->
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Main Container -->
+  <div class="app-wrapper">
+    <!-- Top Navigation / Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="brand">
+          <div class="brand-logo" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <div class="brand-title-row">
+              <h1 class="brand-title">AI SEO Meta Generator</h1>
+              <span class="badge badge-capstone" title="FlyRank Internship Capstone Submission">FlyRank Capstone</span>
+              <span class="badge badge-ai">Gemini 1.5</span>
+            </div>
+            <p class="brand-tagline">
+              Generate SEO-optimised meta tags instantly using AI — paste your page content, get production-ready meta titles, descriptions, Open Graph tags, and keywords in seconds.
+            </p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button id="toggle-key-btn" class="btn btn-secondary btn-sm" type="button" title="Configure Gemini API Key">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <span id="api-status-label">{{ 'API Key Configured' if has_api_key else 'Custom API Key' }}</span>
+          </button>
+          <a href="https://github.com/ivengexnce/ai-seo-meta-generator" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm btn-icon-only" title="View Source on GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Collapsible API Key Drawer -->
+      <div id="api-key-drawer" class="api-key-drawer hidden">
+        <div class="api-key-card">
+          <div class="api-key-header">
+            <h4>Google Gemini API Key</h4>
+            <span class="text-muted text-sm">Key is stored only in your local browser session.</span>
+          </div>
+          <div class="api-key-input-row">
+            <input type="password" id="custom-api-key" placeholder="AIzaSy..." autocomplete="off">
+            <button id="save-key-btn" class="btn btn-primary btn-sm" type="button">Save Key</button>
+            <button id="clear-key-btn" class="btn btn-outline btn-sm" type="button">Clear</button>
+          </div>
+          <div class="text-xs text-muted">
+            Don't have a key? Get one for free at <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer">aistudio.google.com</a>.
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <main class="workspace-grid">
+      <!-- Left Panel: Content Input -->
+      <section class="panel input-panel" aria-label="Content Input">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <h2 class="panel-title">Page Content</h2>
+            <span class="panel-subtitle">Paste your article, blog post, or landing page copy</span>
+          </div>
+          <div class="sample-pills">
+            <span class="sample-label">Quick Samples:</span>
+            <button type="button" class="pill-btn" data-sample="blog" title="Load sample tech article">Blog Post</button>
+            <button type="button" class="pill-btn" data-sample="saas" title="Load sample SaaS landing page">SaaS App</button>
+            <button type="button" class="pill-btn" data-sample="ecommerce" title="Load sample product page">Product</button>
+          </div>
+        </div>
+
+        <form id="generator-form" class="generator-form">
+          <div class="textarea-wrapper">
+            <textarea
+              id="page-content"
+              name="content"
+              rows="15"
+              placeholder="Paste your page content, article text, product description, or raw HTML here..."
+              required
+            ></textarea>
+            <div class="textarea-footer">
+              <span id="char-count" class="counter-text">0 characters · 0 words</span>
+              <button type="button" id="clear-content-btn" class="btn-text" title="Clear input text">Clear</button>
+            </div>
+          </div>
+
+          <div class="form-submit-row">
+            <button type="submit" id="generate-btn" class="btn btn-primary btn-lg generate-btn">
+              <span class="btn-spinner hidden" id="btn-spinner"></span>
+              <svg class="btn-icon" id="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              </svg>
+              <span id="btn-text">Generate Meta Tags</span>
+              <kbd class="shortcut-badge">Ctrl + ↵</kbd>
+            </button>
+          </div>
+        </form>
+
+        <!-- Feature Highlights Info Card -->
+        <div class="info-card">
+          <h3 class="info-title">Why This Tool?</h3>
+          <ul class="info-list">
+            <li><strong>Titles (50–60 chars):</strong> Optimized to prevent Google SERP truncation.</li>
+            <li><strong>Descriptions (150–160 chars):</strong> Calibrated for maximum search CTR.</li>
+            <li><strong>Open Graph:</strong> Ready for Twitter, LinkedIn, and Facebook embeds.</li>
+            <li><strong>Keywords:</strong> 5–10 algorithm-ranked terms extracted from content context.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Right Panel: Generated Output & Previews -->
+      <section class="panel output-panel" aria-label="Generated Metadata">
+        <!-- Output Navigation Tabs -->
+        <div class="output-tabs">
+          <button type="button" class="tab-btn active" data-tab="cards">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            Meta Fields
+          </button>
+          <button type="button" class="tab-btn" data-tab="preview">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            SERP & Social Preview
+          </button>
+          <button type="button" class="tab-btn" data-tab="code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            HTML Code
+          </button>
+        </div>
+
+        <!-- Output Views Container -->
+        <div class="output-content">
+          <!-- State 1: Empty / Waiting State -->
+          <div id="state-empty" class="state-container">
+            <div class="empty-graphic">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="11" y1="8" x2="11" y2="14"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+            </div>
+            <h3 class="state-title">Ready to Generate SEO Metadata</h3>
+            <p class="state-desc">Paste your article or landing page copy on the left and click <strong>Generate Meta Tags</strong> to view titles, descriptions, OG tags, and keyword suggestions.</p>
+            <div class="quick-sample-hint">
+              <span>Or click one of the quick samples:</span>
+              <button type="button" class="btn btn-outline btn-sm" onclick="document.querySelector('[data-sample=\'saas\']').click()">Try SaaS Sample</button>
+            </div>
+          </div>
+
+          <!-- State 2: Loading / Shimmer State -->
+          <div id="state-loading" class="state-container hidden">
+            <div class="loader-pulse"></div>
+            <h3 class="state-title">Analyzing Content with Gemini...</h3>
+            <p class="state-desc" id="loading-step-text">Evaluating keyword density, search intent, and character limits...</p>
+            <div class="shimmer-group">
+              <div class="shimmer-box shimmer-box-sm"></div>
+              <div class="shimmer-box shimmer-box-md"></div>
+              <div class="shimmer-box shimmer-box-lg"></div>
+            </div>
+          </div>
+
+          <!-- State 3: Active Results State -->
+          <div id="state-results" class="results-container hidden">
+
+            <!-- TAB 1: Meta Fields Cards -->
+            <div id="tab-pane-cards" class="tab-pane active">
+              <!-- Meta Title Card -->
+              <div class="meta-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <span class="card-tag">Tag</span>
+                    <h3 class="card-title">Meta Title</h3>
+                  </div>
+                  <div class="card-header-actions">
+                    <span id="title-char-badge" class="char-badge">0 / 60 chars</span>
+                    <button type="button" class="btn btn-secondary btn-sm copy-btn" data-target="meta-title-text" title="Copy meta title">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      <span>Copy</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div id="meta-title-text" class="output-text" contenteditable="true" spellcheck="false"></div>
+                  <div class="char-progress-wrapper">
+                    <div id="title-progress-bar" class="char-progress-bar"></div>
+                  </div>
+                  <div class="recommendation-hint">Recommended length: <strong>50–60 characters</strong> for optimal Google search display.</div>
+                </div>
+              </div>
+
+              <!-- Meta Description Card -->
+              <div class="meta-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <span class="card-tag">Tag</span>
+                    <h3 class="card-title">Meta Description</h3>
+                  </div>
+                  <div class="card-header-actions">
+                    <span id="desc-char-badge" class="char-badge">0 / 160 chars</span>
+                    <button type="button" class="btn btn-secondary btn-sm copy-btn" data-target="meta-desc-text" title="Copy meta description">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      <span>Copy</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div id="meta-desc-text" class="output-text" contenteditable="true" spellcheck="false"></div>
+                  <div class="char-progress-wrapper">
+                    <div id="desc-progress-bar" class="char-progress-bar"></div>
+                  </div>
+                  <div class="recommendation-hint">Recommended length: <strong>150–160 characters</strong> to prevent snippet cutoff.</div>
+                </div>
+              </div>
+
+              <!-- Open Graph Card -->
+              <div class="meta-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <span class="card-tag og-tag">Social</span>
+                    <h3 class="card-title">Open Graph Tags</h3>
+                  </div>
+                  <div class="card-header-actions">
+                    <button type="button" class="btn btn-secondary btn-sm" id="copy-all-og-btn" title="Copy all Open Graph meta tags">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      <span>Copy All OG</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body og-grid">
+                  <div class="og-item">
+                    <div class="og-label-row">
+                      <span class="og-property">og:title</span>
+                      <button type="button" class="copy-icon-btn copy-btn" data-target="og-title-text" title="Copy og:title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                      </button>
+                    </div>
+                    <div id="og-title-text" class="output-subtext" contenteditable="true"></div>
+                  </div>
+
+                  <div class="og-item">
+                    <div class="og-label-row">
+                      <span class="og-property">og:description</span>
+                      <button type="button" class="copy-icon-btn copy-btn" data-target="og-desc-text" title="Copy og:description">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                      </button>
+                    </div>
+                    <div id="og-desc-text" class="output-subtext" contenteditable="true"></div>
+                  </div>
+
+                  <div class="og-item">
+                    <div class="og-label-row">
+                      <span class="og-property">og:type</span>
+                      <button type="button" class="copy-icon-btn copy-btn" data-target="og-type-text" title="Copy og:type">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                      </button>
+                    </div>
+                    <div id="og-type-text" class="output-subtext" contenteditable="true">website</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Keyword Suggestions Card -->
+              <div class="meta-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <span class="card-tag kw-tag">SEO</span>
+                    <h3 class="card-title">Keyword Suggestions</h3>
+                  </div>
+                  <div class="card-header-actions">
+                    <button type="button" class="btn btn-secondary btn-sm" id="copy-keywords-btn" title="Copy keywords as comma-separated list">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      <span>Copy All Keywords</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div id="keywords-chips" class="keywords-cloud"></div>
+                  <div class="recommendation-hint">Click any keyword to copy it individually to clipboard.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 2: SERP & Social Preview Pane -->
+            <div id="tab-pane-preview" class="tab-pane">
+              <!-- Google SERP Simulator -->
+              <div class="preview-section">
+                <div class="preview-header">
+                  <h4>Google Search Result Preview</h4>
+                  <span class="text-xs text-muted">Real-time simulation of search snippet</span>
+                </div>
+                <div class="serp-box">
+                  <div class="serp-url-row">
+                    <div class="serp-favicon" aria-hidden="true">🌐</div>
+                    <div class="serp-breadcrumbs">
+                      <span class="serp-domain">example.com</span>
+                      <span class="serp-slash">›</span>
+                      <span class="serp-slug">page</span>
+                    </div>
+                  </div>
+                  <div class="serp-title" id="serp-title-preview">Sample Meta Title Appears Here</div>
+                  <div class="serp-description" id="serp-desc-preview">Sample Meta Description will appear here formatted precisely as Google displays desktop search snippets...</div>
+                </div>
+              </div>
+
+              <!-- Social Share Card Simulator -->
+              <div class="preview-section">
+                <div class="preview-header">
+                  <h4>Social Share Card (Open Graph)</h4>
+                  <span class="text-xs text-muted">Preview for Twitter / LinkedIn / Facebook</span>
+                </div>
+                <div class="social-card">
+                  <div class="social-card-image">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <span>og:image (1200 × 630px preview)</span>
+                  </div>
+                  <div class="social-card-body">
+                    <span class="social-card-domain">example.com</span>
+                    <div class="social-card-title" id="social-title-preview">Open Graph Title</div>
+                    <div class="social-card-desc" id="social-desc-preview">Open Graph Description for social feeds...</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 3: Ready-to-Paste HTML Code Pane -->
+            <div id="tab-pane-code" class="tab-pane">
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-lang">HTML &lt;head&gt; Tags</span>
+                  <button type="button" class="btn btn-secondary btn-sm copy-btn" data-target="html-code-block" title="Copy raw HTML meta tags">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy &lt;head&gt; Code</span>
+                  </button>
+                </div>
+                <pre class="code-pre"><code id="html-code-block" class="code-block"></code></pre>
+              </div>
+
+              <!-- JSON Export -->
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-lang">Raw JSON Payload</span>
+                  <button type="button" class="btn btn-secondary btn-sm copy-btn" data-target="json-code-block" title="Copy JSON">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy JSON</span>
+                  </button>
+                </div>
+                <pre class="code-pre"><code id="json-code-block" class="code-block"></code></pre>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer with Author & FlyRank Capstone Attributions -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <div class="capstone-info">
+          <span>Capstone Project for</span>
+          <a href="https://internship.flyrank.ai/verify" target="_blank" rel="noopener noreferrer" class="footer-link">
+            FlyRank Front-End AI Engineering Internship Program (Jul–Oct 2026)
+          </a>
+          <span class="verification-badge" title="Verification ID">ID: FR-D11-02FDC-1F974</span>
+        </div>
+      </div>
+      <div class="footer-right">
+        <span>Created by</span>
+        <a href="https://meetmaru.netlify.app" target="_blank" rel="noopener noreferrer" class="author-link">Meet Maru</a>
+        <span class="footer-sep">·</span>
+        <a href="https://github.com/ivengexnce" target="_blank" rel="noopener noreferrer" class="github-link">@ivengexnce</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
