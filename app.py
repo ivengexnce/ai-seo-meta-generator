@@ -8,7 +8,19 @@ import warnings
 # Suppress deprecation warning from legacy SDK
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-import google.generativeai as genai
+# Try importing modern official SDK google-genai
+try:
+    from google import genai as modern_genai
+    HAS_MODERN_GENAI = True
+except ImportError:
+    HAS_MODERN_GENAI = False
+
+# Fallback legacy SDK
+try:
+    import google.generativeai as legacy_genai
+    HAS_LEGACY_GENAI = True
+except ImportError:
+    HAS_LEGACY_GENAI = False
 
 # Load environment variables
 load_dotenv()
@@ -20,10 +32,14 @@ app = Flask(
     static_folder=os.path.join(BASE_DIR, "static"),
 )
 
-# Fallback models in priority order, supporting Gemini 3.6 Flash and newer releases
-MODELS_TO_TRY = [
-    "gemini-3.6-flash",
-    "gemini-3.5-flash",
+# Models to try in priority order
+MODERN_MODELS = [
+    "gemini-3.8-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-2.5-flash",
+]
+
+LEGACY_MODELS = [
     "gemini-2.5-flash",
     "gemini-1.5-flash",
     "gemini-1.5-pro",
@@ -147,12 +163,6 @@ def generate_meta():
             200,
         )
 
-    # Configure Gemini API
-    try:
-        genai.configure(api_key=api_key)
-    except Exception as e:
-        return jsonify({"error": f"Failed to configure Gemini API: {str(e)}"}), 500
-
     prompt = f"""You are an elite SEO specialist, copywriter, and digital marketing expert.
 Analyze the following web page content and produce production-ready, highly optimized SEO metadata.
 
@@ -183,42 +193,85 @@ Optimization Guidelines:
 
     last_error = None
 
-    for model_name in MODELS_TO_TRY:
+    # 1. Try modern official google-genai SDK first
+    if HAS_MODERN_GENAI:
         try:
-            model = genai.GenerativeModel(
-                model_name=model_name,
-                generation_config={
-                    "response_mime_type": "application/json",
-                    "temperature": 0.3,
-                },
-            )
-            response = model.generate_content(prompt)
+            client = modern_genai.Client(api_key=api_key)
+            for model_name in MODERN_MODELS:
+                try:
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=prompt,
+                        config={
+                            "response_mime_type": "application/json",
+                            "temperature": 0.3,
+                        },
+                    )
+                    if response.text:
+                        result = clean_json_response(response.text)
+                        output = {
+                            "meta_title": str(result.get("meta_title", "")).strip(),
+                            "meta_description": str(result.get("meta_description", "")).strip(),
+                            "og_title": str(
+                                result.get("og_title", result.get("meta_title", ""))
+                            ).strip(),
+                            "og_description": str(
+                                result.get("og_description", result.get("meta_description", ""))
+                            ).strip(),
+                            "og_type": str(result.get("og_type", "website")).strip(),
+                            "keywords": [
+                                str(k).strip()
+                                for k in result.get("keywords", [])
+                                if str(k).strip()
+                            ],
+                        }
+                        return jsonify(output), 200
+                except Exception as m_err:
+                    last_error = str(m_err)
+                    continue
+        except Exception as c_err:
+            last_error = str(c_err)
 
-            if not response.text:
-                raise ValueError("Received empty response from Gemini API.")
+    # 2. Fallback to legacy google.generativeai if modern SDK is not available
+    if HAS_LEGACY_GENAI:
+        try:
+            legacy_genai.configure(api_key=api_key)
+            for model_name in LEGACY_MODELS:
+                try:
+                    model = legacy_genai.GenerativeModel(
+                        model_name=model_name,
+                        generation_config={
+                            "response_mime_type": "application/json",
+                            "temperature": 0.3,
+                        },
+                    )
+                    response = model.generate_content(prompt)
+                    if response.text:
+                        result = clean_json_response(response.text)
+                        output = {
+                            "meta_title": str(result.get("meta_title", "")).strip(),
+                            "meta_description": str(result.get("meta_description", "")).strip(),
+                            "og_title": str(
+                                result.get("og_title", result.get("meta_title", ""))
+                            ).strip(),
+                            "og_description": str(
+                                result.get("og_description", result.get("meta_description", ""))
+                            ).strip(),
+                            "og_type": str(result.get("og_type", "website")).strip(),
+                            "keywords": [
+                                str(k).strip()
+                                for k in result.get("keywords", [])
+                                if str(k).strip()
+                            ],
+                        }
+                        return jsonify(output), 200
+                except Exception as exc:
+                    last_error = str(exc)
+                    continue
+        except Exception as l_err:
+            last_error = str(l_err)
 
-            result = clean_json_response(response.text)
-
-            # Validate and normalize keys
-            output = {
-                "meta_title": str(result.get("meta_title", "")).strip(),
-                "meta_description": str(result.get("meta_description", "")).strip(),
-                "og_title": str(result.get("og_title", result.get("meta_title", ""))).strip(),
-                "og_description": str(
-                    result.get("og_description", result.get("meta_description", ""))
-                ).strip(),
-                "og_type": str(result.get("og_type", "website")).strip(),
-                "keywords": [str(k).strip() for k in result.get("keywords", []) if str(k).strip()],
-            }
-
-            return jsonify(output), 200
-
-        except Exception as exc:
-            last_error = str(exc)
-            # Try next model in list
-            continue
-
-    # If all models failed
+    # If all generation attempts failed
     return (
         jsonify(
             {
