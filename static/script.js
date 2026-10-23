@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const chkDescText = document.getElementById('chk-desc-text');
   const chkOgText = document.getElementById('chk-og-text');
   const chkKwText = document.getElementById('chk-kw-text');
+  const chkGscText = document.getElementById('chk-gsc-text');
 
   // Result Elements
   const metaTitleEl = document.getElementById('meta-title-text');
@@ -83,6 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const demoModeBtn = document.getElementById('demo-mode-btn');
   const apiStatusLabel = document.getElementById('api-status-label');
 
+  // Google Search Console Elements
+  const gscTokenInput = document.getElementById('gsc-token-input');
+  const gscMetaTagOutput = document.getElementById('gsc-meta-tag-output');
+
   // Sample Presets
   const samplePills = document.querySelectorAll('.sample-tag-btn');
 
@@ -93,7 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
     og_title: '',
     og_description: '',
     og_type: 'website',
-    keywords: []
+    keywords: [],
+    gsc_verification: ''
   };
 
   const SAMPLES = {
@@ -139,6 +145,46 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   if (storedApiKey) {
     customApiKeyInput.value = storedApiKey;
     apiStatusLabel.textContent = storedApiKey.toLowerCase() === 'demo' ? 'Demo Mode Active' : 'Custom Key Active';
+  }
+
+  // --- Google Search Console Token Management ---
+  const storedGscToken = localStorage.getItem('gsc_verification_token') || '';
+  if (storedGscToken && gscTokenInput) {
+    gscTokenInput.value = storedGscToken;
+    currentMetadata.gsc_verification = storedGscToken;
+  }
+  updateGscCard(currentMetadata.gsc_verification);
+
+  function updateGscCard(token) {
+    if (!gscMetaTagOutput) return;
+    const cleanToken = (token || '').trim() || 'YOUR_GOOGLE_SEARCH_CONSOLE_KEY';
+    gscMetaTagOutput.textContent = `<meta name="google-site-verification" content="${cleanToken}">`;
+  }
+
+  if (gscTokenInput) {
+    gscTokenInput.addEventListener('input', () => {
+      const val = gscTokenInput.value.trim();
+      currentMetadata.gsc_verification = val;
+      localStorage.setItem('gsc_verification_token', val);
+      updateGscCard(val);
+      updateCodeBlocks(currentMetadata);
+      calculateSeoScore(currentMetadata);
+    });
+  }
+
+  if (gscMetaTagOutput) {
+    gscMetaTagOutput.addEventListener('input', () => {
+      const rawText = gscMetaTagOutput.textContent.trim();
+      const match = rawText.match(/content=["']([^"']+)["']/i);
+      const token = match ? match[1].trim() : rawText;
+      currentMetadata.gsc_verification = token;
+      if (gscTokenInput) {
+        gscTokenInput.value = token;
+      }
+      localStorage.setItem('gsc_verification_token', token);
+      updateCodeBlocks(currentMetadata);
+      calculateSeoScore(currentMetadata);
+    });
   }
 
   function openModal() {
@@ -322,8 +368,10 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
         throw new Error(data.error || 'Failed to generate metadata.');
       }
 
-      currentMetadata = data;
-      renderMetadata(data);
+      currentMetadata = Object.assign({}, data, {
+        gsc_verification: (gscTokenInput ? gscTokenInput.value.trim() : '') || currentMetadata.gsc_verification || ''
+      });
+      renderMetadata(currentMetadata);
       setLoadingState(false, true);
       showToast('SEO Metadata calibrated successfully!', 'success');
 
@@ -380,6 +428,9 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     ogDescEl.textContent = data.og_description || data.meta_description || '';
     ogTypeEl.textContent = data.og_type || 'website';
 
+    const activeToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '');
+    updateGscCard(activeToken);
+
     renderKeywords(data.keywords || []);
     updatePreviews(data);
     updateCodeBlocks(data);
@@ -435,52 +486,64 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     const descLen = (data.meta_description || '').length;
     const kwCount = Array.isArray(data.keywords) ? data.keywords.length : 0;
     const hasOg = Boolean(data.og_title && data.og_description);
+    const gscToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '');
 
     let score = 0;
 
-    // Title score (max 25)
+    // Title score (max 20)
     if (titleLen >= 50 && titleLen <= 60) {
-      score += 25;
+      score += 20;
       chkTitleText.textContent = `Optimal (${titleLen} chars)`;
     } else if ((titleLen >= 40 && titleLen < 50) || (titleLen > 60 && titleLen <= 68)) {
-      score += 16;
+      score += 14;
       chkTitleText.textContent = `Acceptable (${titleLen} chars)`;
     } else {
-      score += 6;
+      score += 5;
       chkTitleText.textContent = `Needs work (${titleLen} chars)`;
     }
 
-    // Description score (max 25)
+    // Description score (max 20)
     if (descLen >= 150 && descLen <= 160) {
-      score += 25;
+      score += 20;
       chkDescText.textContent = `Optimal (${descLen} chars)`;
     } else if ((descLen >= 130 && descLen < 150) || (descLen > 160 && descLen <= 175)) {
-      score += 16;
+      score += 14;
       chkDescText.textContent = `Acceptable (${descLen} chars)`;
     } else {
-      score += 6;
+      score += 5;
       chkDescText.textContent = `Needs work (${descLen} chars)`;
     }
 
-    // Open Graph score (max 25)
+    // Open Graph score (max 20)
     if (hasOg) {
-      score += 25;
+      score += 20;
       chkOgText.textContent = 'Cards configured';
     } else {
       score += 8;
       chkOgText.textContent = 'Incomplete';
     }
 
-    // Keywords score (max 25)
+    // Keywords score (max 20)
     if (kwCount >= 5) {
-      score += 25;
+      score += 20;
       chkKwText.textContent = `${kwCount} terms indexed`;
     } else if (kwCount > 0) {
-      score += 14;
+      score += 12;
       chkKwText.textContent = `${kwCount} terms (suggest 5+)`;
     } else {
       score += 0;
       chkKwText.textContent = 'None identified';
+    }
+
+    // Google Search Console score (max 20)
+    if (chkGscText) {
+      if (gscToken) {
+        score += 20;
+        chkGscText.textContent = 'Token configured';
+      } else {
+        score += 20;
+        chkGscText.textContent = 'Tag template ready';
+      }
     }
 
     scoreGaugeNumber.textContent = score;
@@ -562,11 +625,15 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
   function generateHtmlHeadSnippet(data) {
     const kwString = Array.isArray(data.keywords) ? data.keywords.join(', ') : '';
+    const gscToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '') || 'YOUR_GOOGLE_SEARCH_CONSOLE_KEY';
     return `<!-- Primary SEO Meta Tags -->
 <title>${escapeHtml(data.meta_title || '')}</title>
 <meta name="title" content="${escapeHtml(data.meta_title || '')}">
 <meta name="description" content="${escapeHtml(data.meta_description || '')}">
 <meta name="keywords" content="${escapeHtml(kwString)}">
+
+<!-- Google Search Console Ownership Verification -->
+<meta name="google-site-verification" content="${escapeHtml(gscToken)}">
 
 <!-- Open Graph / Facebook / LinkedIn -->
 <meta property="og:type" content="${escapeHtml(data.og_type || 'website')}">
@@ -586,7 +653,11 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   function updateCodeBlocks(data) {
     const htmlHead = generateHtmlHeadSnippet(data);
     htmlCodeBlock.textContent = htmlHead;
-    jsonCodeBlock.textContent = JSON.stringify(data, null, 2);
+    const gscToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '') || 'YOUR_GOOGLE_SEARCH_CONSOLE_KEY';
+    const exportData = Object.assign({}, data, {
+      google_site_verification: gscToken
+    });
+    jsonCodeBlock.textContent = JSON.stringify(exportData, null, 2);
   }
 
   function escapeHtml(str) {

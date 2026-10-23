@@ -71,7 +71,18 @@ def clean_json_response(raw_text: str) -> dict:
 def index():
     """Render the main UI page."""
     has_api_key = bool(os.getenv("GEMINI_API_KEY"))
-    return render_template("index.html", has_api_key=has_api_key)
+    gsc_verification = os.getenv("GOOGLE_SITE_VERIFICATION", "").strip()
+    return render_template(
+        "index.html",
+        has_api_key=has_api_key,
+        gsc_verification=gsc_verification,
+    )
+
+
+@app.route("/google<token>.html")
+def gsc_file_verification(token):
+    """Serve Google Search Console HTML verification file."""
+    return f"google-site-verification: google{token}.html", 200, {"Content-Type": "text/html"}
 
 
 @app.route("/favicon.ico")

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI SEO Meta Generator — FlyRank Capstone</title>
-  <meta name="description" content="Generate production-ready SEO metadata calibrated to Google search guidelines and Open Graph specifications. Built with Gemini AI.">
+  <meta name="description"
+    content="Generate production-ready SEO metadata calibrated to Google search guidelines and Open Graph specifications. Built with Gemini AI.">
   <meta name="keywords" content="SEO, Meta Tags, Open Graph, Google SERP, Gemini AI, FlyRank">
   <meta name="author" content="Meet Maru">
 
@@ -12,7 +14,8 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ai-seo-meta-generator.vercel.app/">
   <meta property="og:title" content="AI SEO Meta Generator — Production Meta Tags &amp; SERP Simulator">
-  <meta property="og:description" content="Calibrated meta titles, descriptions, Open Graph cards, and keyword suggestions. Built with Google Gemini AI.">
+  <meta property="og:description"
+    content="Calibrated meta titles, descriptions, Open Graph cards, and keyword suggestions. Built with Google Gemini AI.">
   <meta property="og:image" content="{{ url_for('static', filename='og-image.jpg') }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -20,21 +23,32 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="AI SEO Meta Generator — Production Meta Tags &amp; SERP Simulator">
-  <meta name="twitter:description" content="Calibrated meta titles, descriptions, Open Graph cards, and keyword suggestions. Built with Google Gemini AI.">
+  <meta name="twitter:description"
+    content="Calibrated meta titles, descriptions, Open Graph cards, and keyword suggestions. Built with Google Gemini AI.">
   <meta name="twitter:image" content="{{ url_for('static', filename='og-image.jpg') }}">
+
+  <!-- Google Search Console Verification -->
+  {% if gsc_verification %}
+  <meta name="google-site-verification" content="{{ gsc_verification }}">
+  {% else %}
+  <meta name="google-site-verification" content="google-search-console-verification-token">
+  {% endif %}
 
   <!-- Favicon & Web Manifest -->
   <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
   <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
-  <meta name="theme-color" content="#09090b">
+  <meta name="theme-color" content="#070a12">
 
   <!-- Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=4.0">
 </head>
+
 <body>
   <!-- Toast Notification Container -->
   <div id="toast-container" class="toast-container" aria-live="polite"></div>
@@ -45,7 +59,8 @@
       <div class="nav-left">
         <a href="/" class="brand-link" aria-label="AI SEO Meta Generator Home">
           <div class="brand-mark" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
               <polyline points="16 18 22 12 16 6"></polyline>
               <polyline points="8 6 2 12 8 18"></polyline>
             </svg>
@@ -54,7 +69,7 @@
             <div class="brand-name-row">
               <span class="brand-name">AI SEO Meta Generator</span>
               <span class="nav-pill pill-capstone" title="FlyRank Internship Capstone">FlyRank Capstone</span>
-              <span class="nav-pill pill-model" title="Powered by Google Gemini 3.6 Flash">Gemini 3.6 Flash</span>
+              <span class="nav-pill pill-model" title="Powered by Google Gemini 3.8 Flash">Gemini 3.8 Flash</span>
             </div>
             <p class="brand-desc">Calibrated meta titles, descriptions, Open Graph tags, and SERP simulators.</p>
           </div>
@@ -71,9 +86,19 @@
           <span id="api-status-label">{{ 'API Key Configured' if has_api_key else 'Custom API Key' }}</span>
         </button>
 
-        <a href="https://github.com/ivengexnce/ai-seo-meta-generator" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-icon" aria-label="View on GitHub" title="View source code on GitHub">
+        <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer"
+          class="nav-btn" title="Open Google Search Console URL inspection &amp; performance">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>Search Console</span>
+        </a>
+
+        <a href="https://github.com/ivengexnce/ai-seo-meta-generator" target="_blank" rel="noopener noreferrer"
+          class="nav-btn nav-btn-icon" aria-label="View on GitHub" title="View source code on GitHub">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
           </svg>
         </a>
       </div>
@@ -99,14 +124,9 @@
 
         <form id="generator-form" class="editor-form">
           <div class="editor-wrap">
-            <textarea
-              id="page-content"
-              name="content"
-              placeholder="Paste your page content, article draft, or product copy here..."
-              rows="15"
-              required
-              aria-label="Web page content"
-            ></textarea>
+            <textarea id="page-content" name="content"
+              placeholder="Paste your page content, article draft, or product copy here..." rows="15" required
+              aria-label="Web page content"></textarea>
 
             <div class="editor-statusbar">
               <span id="char-count" class="status-counter">0 chars · 0 words</span>
@@ -119,10 +139,33 @@
             </div>
           </div>
 
+          <!-- Optional GSC Token Input Drawer -->
+          <div class="gsc-drawer">
+            <div class="gsc-drawer-bar">
+              <div class="gsc-drawer-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span>Google Search Console Token</span>
+              </div>
+              <span class="gsc-pill">Verification Ready</span>
+            </div>
+            <div class="gsc-drawer-input-row">
+              <input
+                type="text"
+                id="gsc-token-input"
+                class="gsc-input-field"
+                placeholder="Paste your GSC verification token (or leave blank to use template tag)"
+                autocomplete="off"
+              >
+            </div>
+          </div>
+
           <div class="action-row">
             <button type="submit" id="generate-btn" class="submit-btn">
               <span class="spinner hidden" id="btn-spinner"></span>
-              <svg class="btn-icon" id="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <svg class="btn-icon" id="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5">
                 <path d="m5 12 7-7 7 7"></path>
                 <path d="M12 19V5"></path>
               </svg>
@@ -146,7 +189,8 @@
             <div class="gauge-wrap">
               <svg class="gauge-svg" viewBox="0 0 100 100">
                 <circle class="gauge-track" cx="50" cy="50" r="42"></circle>
-                <circle id="score-gauge-bar" class="gauge-indicator" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
+                <circle id="score-gauge-bar" class="gauge-indicator" cx="50" cy="50" r="42" stroke-dasharray="264"
+                  stroke-dashoffset="0"></circle>
               </svg>
               <div class="gauge-center">
                 <span id="score-gauge-number" class="gauge-val">100</span>
@@ -183,6 +227,13 @@
                   <span id="chk-kw-text" class="chk-val">5+ terms indexed</span>
                 </div>
               </div>
+              <div class="chk-row" id="chk-gsc">
+                <span class="chk-bullet valid">✓</span>
+                <div class="chk-content">
+                  <span class="chk-name">Search Console:</span>
+                  <span id="chk-gsc-text" class="chk-val">GSC Index Ready</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -191,10 +242,14 @@
         <div class="specs-box">
           <div class="specs-title">SEO Calibration Specs</div>
           <ul class="specs-list">
-            <li><strong>Title (50–60 chars):</strong> Formatted strictly to avoid Google desktop &amp; mobile ellipsis cutoffs.</li>
-            <li><strong>Description (150–160 chars):</strong> Action-oriented snippet written to maximize search CTR.</li>
-            <li><strong>Open Graph &amp; Twitter Cards:</strong> Social card tags structured for LinkedIn and Twitter/X feeds.</li>
+            <li><strong>Title (50–60 chars):</strong> Formatted strictly to avoid Google desktop &amp; mobile ellipsis
+              cutoffs.</li>
+            <li><strong>Description (150–160 chars):</strong> Action-oriented snippet written to maximize search CTR.
+            </li>
+            <li><strong>Open Graph &amp; Twitter Cards:</strong> Social card tags structured for LinkedIn and Twitter/X
+              feeds.</li>
             <li><strong>Semantic Keywords:</strong> Algorithmic terms extracted for topical authority.</li>
+            <li><strong>Google Search Console:</strong> Verified ownership meta tag and crawling indexation directive compliance.</li>
           </ul>
         </div>
       </section>
@@ -216,7 +271,8 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="2" y1="12" x2="22" y2="12"></line>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                </path>
               </svg>
               <span>Live Previews</span>
             </button>
@@ -259,8 +315,10 @@
               </svg>
             </div>
             <h3 class="empty-title">No Metadata Generated Yet</h3>
-            <p class="empty-desc">Paste your copy on the left and click <strong>Generate SEO Metadata</strong> to view calibrated tags, Google search snippets, and Open Graph previews.</p>
-            <button type="button" class="quick-test-btn" onclick="document.querySelector('[data-sample=\'saas\']').click()">
+            <p class="empty-desc">Paste your copy on the left and click <strong>Generate SEO Metadata</strong> to view
+              calibrated tags, Google search snippets, and Open Graph previews.</p>
+            <button type="button" class="quick-test-btn"
+              onclick="document.querySelector('[data-sample=\'saas\']').click()">
               Load SaaS Sample &rarr;
             </button>
           </div>
@@ -287,17 +345,23 @@
                   <div class="field-actions">
                     <span id="title-char-badge" class="char-pill">0 / 60 chars</span>
                     <button type="button" class="copy-btn btn-micro" data-target="meta-title-text" title="Copy title">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
                       Copy
                     </button>
                   </div>
                 </div>
                 <div class="field-card-body">
-                  <div id="meta-title-text" class="field-editable" contenteditable="true" spellcheck="false" role="textbox"></div>
+                  <div id="meta-title-text" class="field-editable" contenteditable="true" spellcheck="false"
+                    role="textbox"></div>
                   <div class="bar-track" aria-hidden="true">
                     <div id="title-progress-bar" class="bar-fill"></div>
                   </div>
-                  <span class="field-tip">Click to edit inline. Target: <strong>50–60 characters</strong> for Google desktop &amp; mobile search.</span>
+                  <span class="field-tip">Click to edit inline. Target: <strong>50–60 characters</strong> for Google
+                    desktop &amp; mobile search.</span>
                 </div>
               </div>
 
@@ -310,18 +374,25 @@
                   </div>
                   <div class="field-actions">
                     <span id="desc-char-badge" class="char-pill">0 / 160 chars</span>
-                    <button type="button" class="copy-btn btn-micro" data-target="meta-desc-text" title="Copy description">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <button type="button" class="copy-btn btn-micro" data-target="meta-desc-text"
+                      title="Copy description">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
                       Copy
                     </button>
                   </div>
                 </div>
                 <div class="field-card-body">
-                  <div id="meta-desc-text" class="field-editable" contenteditable="true" spellcheck="false" role="textbox"></div>
+                  <div id="meta-desc-text" class="field-editable" contenteditable="true" spellcheck="false"
+                    role="textbox"></div>
                   <div class="bar-track" aria-hidden="true">
                     <div id="desc-progress-bar" class="bar-fill"></div>
                   </div>
-                  <span class="field-tip">Target: <strong>150–160 characters</strong> to prevent Google search snippet truncation.</span>
+                  <span class="field-tip">Target: <strong>150–160 characters</strong> to prevent Google search snippet
+                    truncation.</span>
                 </div>
               </div>
 
@@ -334,7 +405,11 @@
                   </div>
                   <div class="field-actions">
                     <button type="button" class="btn-micro" id="copy-all-og-btn" title="Copy all Open Graph tags">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
                       Copy All OG
                     </button>
                   </div>
@@ -363,8 +438,13 @@
                     <span class="field-title">Semantic Keywords</span>
                   </div>
                   <div class="field-actions">
-                    <button type="button" class="btn-micro" id="copy-keywords-btn" title="Copy keywords as comma-separated list">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <button type="button" class="btn-micro" id="copy-keywords-btn"
+                      title="Copy keywords as comma-separated list">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
                       Copy All
                     </button>
                   </div>
@@ -372,6 +452,41 @@
                 <div class="field-card-body">
                   <div id="keywords-chips" class="keyword-tags-container"></div>
                   <span class="field-tip">Click any chip to copy individually to your clipboard.</span>
+                </div>
+              </div>
+
+              <!-- Google Search Console Card -->
+              <div class="meta-field-card gsc-meta-card">
+                <div class="field-card-header">
+                  <div class="field-label-group">
+                    <span class="field-type-tag tag-gsc">Search Console</span>
+                    <span class="field-title">Google Verification Tag</span>
+                  </div>
+                  <div class="field-actions">
+                    <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer"
+                      class="btn-micro" title="Open Google Search Console dashboard">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                      </svg>
+                      Open GSC
+                    </a>
+                    <button type="button" class="btn-micro copy-btn" data-target="gsc-meta-tag-output"
+                      title="Copy Google Search Console meta tag">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy GSC Tag
+                    </button>
+                  </div>
+                </div>
+                <div class="field-card-body">
+                  <div id="gsc-meta-tag-output" class="field-editable" contenteditable="true" spellcheck="false">&lt;meta name="google-site-verification" content="YOUR_GOOGLE_SEARCH_CONSOLE_KEY"&gt;</div>
+                  <span class="field-tip">Deploy this tag into your page <code>&lt;head&gt;</code> to claim site ownership and unlock search analytics, keyword impressions, and index status.</span>
                 </div>
               </div>
             </div>
@@ -398,7 +513,9 @@
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2">
                           <circle cx="12" cy="12" r="10"></circle>
                           <line x1="2" y1="12" x2="22" y2="12"></line>
-                          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                          <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                          </path>
                         </svg>
                       </div>
                       <div class="google-breadcrumbs">
@@ -408,7 +525,8 @@
                       </div>
                     </div>
                     <div class="google-title" id="serp-title-preview">Sample Meta Title Appears Here</div>
-                    <div class="google-snippet" id="serp-desc-preview">Sample Meta Description will appear here formatted precisely as Google displays desktop search snippets...</div>
+                    <div class="google-snippet" id="serp-desc-preview">Sample Meta Description will appear here
+                      formatted precisely as Google displays desktop search snippets...</div>
                   </div>
                 </div>
               </div>
@@ -424,12 +542,14 @@
 
                 <div class="social-share-card">
                   <div class="social-banner">
-                    <img src="{{ url_for('static', filename='og-image.jpg') }}" alt="Open Graph Card Banner" class="social-og-img">
+                    <img src="{{ url_for('static', filename='og-image.jpg') }}" alt="Open Graph Card Banner"
+                      class="social-og-img">
                   </div>
                   <div class="social-meta">
                     <span class="social-domain">example.com</span>
                     <div class="social-headline" id="social-title-preview">Open Graph Title</div>
-                    <div class="social-summary" id="social-desc-preview">Open Graph Description for social feeds...</div>
+                    <div class="social-summary" id="social-desc-preview">Open Graph Description for social feeds...
+                    </div>
                   </div>
                 </div>
               </div>
@@ -441,12 +561,22 @@
                 <div class="code-box-header">
                   <span class="code-box-title">HTML &lt;head&gt; Meta Tags</span>
                   <div class="code-box-actions">
-                    <button type="button" class="copy-btn btn-micro" data-target="html-code-block" title="Copy HTML tags">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <button type="button" class="copy-btn btn-micro" data-target="html-code-block"
+                      title="Copy HTML tags">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
                       Copy HTML
                     </button>
                     <button type="button" class="btn-micro" id="download-snippet-btn" title="Download head-meta.html">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      </svg>
                       Save .html
                     </button>
                   </div>
@@ -459,11 +589,20 @@
                   <span class="code-box-title">JSON Payload</span>
                   <div class="code-box-actions">
                     <button type="button" class="copy-btn btn-micro" data-target="json-code-block" title="Copy JSON">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
                       Copy JSON
                     </button>
                     <button type="button" class="btn-micro" id="download-json-btn" title="Download seo-metadata.json">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      </svg>
                       Save .json
                     </button>
                   </div>
@@ -489,9 +628,11 @@
 
       <div class="footer-right">
         <span>Engineered with Gemini 3.6 Flash by</span>
-        <a href="https://meetmaru.netlify.app" target="_blank" rel="noopener noreferrer" class="author-link">Meet Maru</a>
+        <a href="https://meetmaru.netlify.app" target="_blank" rel="noopener noreferrer" class="author-link">Meet
+          Maru</a>
         <span class="footer-sep">&middot;</span>
-        <a href="https://github.com/ivengexnce" target="_blank" rel="noopener noreferrer" class="github-link">@ivengexnce</a>
+        <a href="https://github.com/ivengexnce" target="_blank" rel="noopener noreferrer"
+          class="github-link">@ivengexnce</a>
       </div>
     </footer>
   </div>
@@ -526,15 +667,11 @@
         <div class="field-group">
           <label for="custom-api-key" class="field-label">Google AI Studio API Key</label>
           <div class="input-inline-wrap">
-            <input
-              type="password"
-              id="custom-api-key"
-              class="text-input"
-              placeholder="AIzaSy... (or type demo to test)"
-              autocomplete="off"
-            >
+            <input type="password" id="custom-api-key" class="text-input" placeholder="AIzaSy... (or type demo to test)"
+              autocomplete="off">
             <button type="button" id="toggle-key-visibility" class="reveal-btn" title="Toggle visibility">
-              <svg id="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg id="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
                 <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
               </svg>
@@ -549,7 +686,8 @@
           </div>
           <div class="note-line">
             <span>&bull;</span>
-            <span>Get a free key at <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer">aistudio.google.com</a>, or click <strong>Use Demo Mode</strong> below.</span>
+            <span>Get a free key at <a href="https://aistudio.google.com" target="_blank"
+                rel="noopener noreferrer">aistudio.google.com</a>, or click <strong>Use Demo Mode</strong> below.</span>
           </div>
         </div>
       </div>
@@ -566,4 +704,5 @@
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>

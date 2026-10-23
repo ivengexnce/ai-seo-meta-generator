@@ -9,7 +9,7 @@
   --bg-card: #121215;
   --bg-card-hover: #17171c;
   --bg-input: #0c0c0e;
-  
+
   --border-subtle: #27272a;
   --border-hover: #3f3f46;
   --border-focus: #6366f1;
@@ -23,11 +23,11 @@
   --success: #10b981;
   --success-bg: rgba(16, 185, 129, 0.1);
   --success-border: rgba(16, 185, 129, 0.25);
-  
+
   --warning: #f59e0b;
   --warning-bg: rgba(245, 158, 11, 0.1);
   --warning-border: rgba(245, 158, 11, 0.25);
-  
+
   --danger: #ef4444;
   --danger-bg: rgba(239, 68, 68, 0.1);
   --danger-border: rgba(239, 68, 68, 0.25);
@@ -49,7 +49,9 @@
 }
 
 /* Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -63,7 +65,7 @@ html {
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-canvas);
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
   background-size: 40px 40px;
@@ -403,7 +405,9 @@ textarea#page-content::placeholder {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Score Card */
@@ -537,9 +541,17 @@ textarea#page-content::placeholder {
   width: 14px;
 }
 
-.chk-bullet.valid { color: var(--success); }
-.chk-bullet.warn { color: var(--warning); }
-.chk-bullet.invalid { color: var(--danger); }
+.chk-bullet.valid {
+  color: var(--success);
+}
+
+.chk-bullet.warn {
+  color: var(--warning);
+}
+
+.chk-bullet.invalid {
+  color: var(--danger);
+}
 
 .chk-name {
   color: var(--text-muted);
@@ -798,8 +810,15 @@ textarea#page-content::placeholder {
   letter-spacing: 0.04em;
 }
 
-.tag-og { color: #67e8f9; background: rgba(6, 182, 212, 0.12); }
-.tag-kw { color: #a5b4fc; background: rgba(99, 102, 241, 0.12); }
+.tag-og {
+  color: #67e8f9;
+  background: rgba(6, 182, 212, 0.12);
+}
+
+.tag-kw {
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.12);
+}
 
 .field-title {
   font-size: 0.88rem;
@@ -823,9 +842,20 @@ textarea#page-content::placeholder {
   color: var(--text-secondary);
 }
 
-.char-pill.optimal { background: var(--success-bg); color: #34d399; }
-.char-pill.warning { background: var(--warning-bg); color: #fbbf24; }
-.char-pill.danger { background: var(--danger-bg); color: #f87171; }
+.char-pill.optimal {
+  background: var(--success-bg);
+  color: #34d399;
+}
+
+.char-pill.warning {
+  background: var(--warning-bg);
+  color: #fbbf24;
+}
+
+.char-pill.danger {
+  background: var(--danger-bg);
+  color: #f87171;
+}
 
 .field-editable {
   background: #0d0d10;
@@ -861,9 +891,17 @@ textarea#page-content::placeholder {
   transition: width 0.3s ease, background-color 0.2s ease;
 }
 
-.bar-fill.optimal { background: var(--success); }
-.bar-fill.warning { background: var(--warning); }
-.bar-fill.danger { background: var(--danger); }
+.bar-fill.optimal {
+  background: var(--success);
+}
+
+.bar-fill.warning {
+  background: var(--warning);
+}
+
+.bar-fill.danger {
+  background: var(--danger);
+}
 
 .field-tip {
   display: block;
@@ -1176,12 +1214,16 @@ textarea#page-content::placeholder {
   flex-wrap: wrap;
 }
 
-.footer-link, .author-link, .github-link {
+.footer-link,
+.author-link,
+.github-link {
   color: #a5b4fc;
   text-decoration: none;
 }
 
-.footer-link:hover, .author-link:hover, .github-link:hover {
+.footer-link:hover,
+.author-link:hover,
+.github-link:hover {
   text-decoration: underline;
   color: #ffffff;
 }
@@ -1438,17 +1480,25 @@ textarea#page-content::placeholder {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
-.toast-success { border-left: 3px solid var(--success); }
-.toast-error { border-left: 3px solid var(--danger); }
+.toast-success {
+  border-left: 3px solid var(--success);
+}
+
+.toast-error {
+  border-left: 3px solid var(--danger);
+}
 
 /* Utilities */
-.hidden { display: none !important; }
+.hidden {
+  display: none !important;
+}
 
 /* Responsive Media Queries */
 @media (max-width: 860px) {
   .studio-grid {
     grid-template-columns: 1fr;
   }
+
   .app-shell {
     padding: 1rem 1rem 2rem;
   }
