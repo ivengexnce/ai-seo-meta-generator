@@ -72,7 +72,9 @@ def clean_json_response(raw_text: str) -> dict:
 def index():
     """Render the main UI page."""
     has_api_key = bool(os.getenv("GEMINI_API_KEY"))
-    gsc_verification = os.getenv("GOOGLE_SITE_VERIFICATION", "").strip()
+    gsc_verification = os.getenv(
+        "GOOGLE_SITE_VERIFICATION", "bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA"
+    ).strip() or "bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA"
     return render_template(
         "index.html",
         has_api_key=has_api_key,

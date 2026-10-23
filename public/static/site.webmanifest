@@ -4,8 +4,8 @@
   "description": "Production-ready meta tags, Open Graph cards, and SEO keyword generation powered by Google Gemini AI.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#090d16",
-  "theme_color": "#6366f1",
+  "background_color": "#0a0a0a",
+  "theme_color": "#6b0f22",
   "icons": [
     {
       "src": "/static/favicon.svg",
