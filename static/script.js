@@ -99,8 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
     og_description: '',
     og_type: 'website',
     keywords: [],
-    gsc_verification: ''
+    gsc_verification: 'bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA'
   };
+
+  const DEFAULT_GSC_TOKEN = 'bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA';
 
   const SAMPLES = {
     blog: `Modern Web Engineering: How AI-Augmented Development is Transforming Frontend Architecture in 2026
@@ -148,16 +150,16 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   }
 
   // --- Google Search Console Token Management ---
-  const storedGscToken = localStorage.getItem('gsc_verification_token') || '';
-  if (storedGscToken && gscTokenInput) {
+  const storedGscToken = localStorage.getItem('gsc_verification_token') || (gscTokenInput ? gscTokenInput.value.trim() : '') || DEFAULT_GSC_TOKEN;
+  if (gscTokenInput) {
     gscTokenInput.value = storedGscToken;
-    currentMetadata.gsc_verification = storedGscToken;
   }
+  currentMetadata.gsc_verification = storedGscToken;
   updateGscCard(currentMetadata.gsc_verification);
 
   function updateGscCard(token) {
     if (!gscMetaTagOutput) return;
-    const cleanToken = (token || '').trim() || 'YOUR_GOOGLE_SEARCH_CONSOLE_KEY';
+    const cleanToken = (token || '').trim() || DEFAULT_GSC_TOKEN;
     gscMetaTagOutput.textContent = `<meta name="google-site-verification" content="${cleanToken}">`;
   }
 
@@ -625,7 +627,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
   function generateHtmlHeadSnippet(data) {
     const kwString = Array.isArray(data.keywords) ? data.keywords.join(', ') : '';
-    const gscToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '') || 'YOUR_GOOGLE_SEARCH_CONSOLE_KEY';
+    const gscToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '') || DEFAULT_GSC_TOKEN;
     return `<!-- Primary SEO Meta Tags -->
 <title>${escapeHtml(data.meta_title || '')}</title>
 <meta name="title" content="${escapeHtml(data.meta_title || '')}">
@@ -653,7 +655,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   function updateCodeBlocks(data) {
     const htmlHead = generateHtmlHeadSnippet(data);
     htmlCodeBlock.textContent = htmlHead;
-    const gscToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '') || 'YOUR_GOOGLE_SEARCH_CONSOLE_KEY';
+    const gscToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '') || DEFAULT_GSC_TOKEN;
     const exportData = Object.assign({}, data, {
       google_site_verification: gscToken
     });

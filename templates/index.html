@@ -31,7 +31,7 @@
   {% if gsc_verification %}
   <meta name="google-site-verification" content="{{ gsc_verification }}">
   {% else %}
-  <meta name="google-site-verification" content="google-search-console-verification-token">
+  <meta name="google-site-verification" content="bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA">
   {% endif %}
 
   <!-- Favicon & Web Manifest -->
@@ -155,7 +155,8 @@
                 type="text"
                 id="gsc-token-input"
                 class="gsc-input-field"
-                placeholder="Paste your GSC verification token (or leave blank to use template tag)"
+                placeholder="bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA"
+                value="{{ gsc_verification or 'bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA' }}"
                 autocomplete="off"
               >
             </div>
@@ -485,7 +486,7 @@
                   </div>
                 </div>
                 <div class="field-card-body">
-                  <div id="gsc-meta-tag-output" class="field-editable" contenteditable="true" spellcheck="false">&lt;meta name="google-site-verification" content="YOUR_GOOGLE_SEARCH_CONSOLE_KEY"&gt;</div>
+                  <div id="gsc-meta-tag-output" class="field-editable" contenteditable="true" spellcheck="false">&lt;meta name="google-site-verification" content="{{ gsc_verification or 'bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA' }}"&gt;</div>
                   <span class="field-tip">Deploy this tag into your page <code>&lt;head&gt;</code> to claim site ownership and unlock search analytics, keyword impressions, and index status.</span>
                 </div>
               </div>
