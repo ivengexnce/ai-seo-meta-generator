@@ -31,6 +31,7 @@ app = Flask(
     template_folder=os.path.join(BASE_DIR, "templates"),
     static_folder=os.path.join(BASE_DIR, "static"),
 )
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Models to try in priority order
 MODERN_MODELS = [
