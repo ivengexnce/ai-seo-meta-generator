@@ -1,15 +1,10 @@
 /**
- * AI SEO Meta Generator — Frontend Controller
- * Modern motion design, interactive 3D particle canvas, GSAP reveals, and shadcn patterns
+ * AI SEO Meta Generator — Frontend Studio Controller
+ * Handcrafted vanilla JavaScript with zero dependencies and authentic interaction design
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize Lucide Icons
-  if (window.lucide) {
-    window.lucide.createIcons();
-  }
-
-  // --- DOM Elements ---
+  // DOM Elements
   const form = document.getElementById('generator-form');
   const contentInput = document.getElementById('page-content');
   const charCountEl = document.getElementById('char-count');
@@ -26,18 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadingStepText = document.getElementById('loading-step-text');
   const quickActionsBar = document.getElementById('quick-actions-bar');
 
-  // SEO Score Gauge Elements
+  // Score Gauge Elements
   const seoScoreCard = document.getElementById('seo-score-card');
   const scoreGaugeBar = document.getElementById('score-gauge-bar');
   const scoreGaugeNumber = document.getElementById('score-gauge-number');
   const scoreGradePill = document.getElementById('score-grade-pill');
-  const chkTitle = document.getElementById('chk-title');
   const chkTitleText = document.getElementById('chk-title-text');
-  const chkDesc = document.getElementById('chk-desc');
   const chkDescText = document.getElementById('chk-desc-text');
-  const chkOg = document.getElementById('chk-og');
   const chkOgText = document.getElementById('chk-og-text');
-  const chkKw = document.getElementById('chk-kw');
   const chkKwText = document.getElementById('chk-kw-text');
 
   // Result Elements
@@ -54,11 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const ogTypeEl = document.getElementById('og-type-text');
   const copyAllOgBtn = document.getElementById('copy-all-og-btn');
 
-  // Keywords Elements
+  // Keywords
   const keywordsChipsEl = document.getElementById('keywords-chips');
   const copyKeywordsBtn = document.getElementById('copy-keywords-btn');
 
-  // Previews Elements
+  // Previews
   const serpContainer = document.getElementById('serp-container');
   const serpTitlePreview = document.getElementById('serp-title-preview');
   const serpDescPreview = document.getElementById('serp-desc-preview');
@@ -67,10 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const socialTitlePreview = document.getElementById('social-title-preview');
   const socialDescPreview = document.getElementById('social-desc-preview');
-  const socialViewTwitter = document.getElementById('social-view-twitter');
-  const socialViewLinkedin = document.getElementById('social-view-linkedin');
 
-  // Code Export Elements
+  // Code Export
   const htmlCodeBlock = document.getElementById('html-code-block');
   const jsonCodeBlock = document.getElementById('json-code-block');
   const copyAllTagsBtn = document.getElementById('copy-all-tags-btn');
@@ -79,10 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const downloadJsonBtn = document.getElementById('download-json-btn');
 
   // Tabs
-  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabBtns = document.querySelectorAll('.tab-item');
   const tabPanes = document.querySelectorAll('.tab-pane');
 
-  // Modal Dialog Elements
+  // Modal Dialog
   const toggleKeyBtn = document.getElementById('toggle-key-btn');
   const apiKeyModal = document.getElementById('api-key-modal');
   const closeModalBtn = document.getElementById('close-modal-btn');
@@ -95,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const apiStatusLabel = document.getElementById('api-status-label');
 
   // Sample Presets
-  const samplePills = document.querySelectorAll('.pill-btn');
+  const samplePills = document.querySelectorAll('.sample-tag-btn');
 
   // Active Metadata State
   let currentMetadata = {
@@ -107,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
     keywords: []
   };
 
-  // --- Sample Content Data ---
   const SAMPLES = {
     blog: `Modern Web Engineering: How AI-Augmented Development is Transforming Frontend Architecture in 2026
 
@@ -146,143 +134,7 @@ Product Specifications:
 Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next personal best today.`
   };
 
-  // =========================================================================
-  // 1. Interactive 3D / Particle Constellation Background Canvas
-  // =========================================================================
-  const canvas = document.getElementById('bg-canvas');
-  if (canvas) {
-    const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-    let particles = [];
-    let mouse = { x: width / 2, y: height / 2, targetX: width / 2, targetY: height / 2 };
-    let animationFrameId = null;
-    let isVisible = true;
-
-    // Check prefers-reduced-motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // Responsive particle count based on screen width
-    const particleCount = Math.min(Math.floor((width * height) / 18000), 75);
-
-    class Particle {
-      constructor() {
-        this.reset();
-      }
-
-      reset() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.45;
-        this.vy = (Math.random() - 0.5) * 0.45;
-        this.radius = Math.random() * 1.8 + 0.8;
-        this.alpha = Math.random() * 0.45 + 0.2;
-        // Accent colors: indigo / cyan
-        this.color = Math.random() > 0.4 ? '99, 102, 241' : '6, 182, 212';
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        // Subtle mouse pull
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 180) {
-          const force = (180 - dist) / 180;
-          this.x += (dx / dist) * force * 0.6;
-          this.y += (dy / dist) * force * 0.6;
-        }
-
-        // Wrap around boundaries
-        if (this.x < 0) this.x = width;
-        if (this.x > width) this.x = 0;
-        if (this.y < 0) this.y = height;
-        if (this.y > height) this.y = 0;
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
-        ctx.fill();
-      }
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
-
-    function renderCanvas() {
-      if (!isVisible) return;
-
-      ctx.clearRect(0, 0, width, height);
-
-      // Smooth mouse damping
-      mouse.x += (mouse.targetX - mouse.x) * 0.05;
-      mouse.y += (mouse.targetY - mouse.y) * 0.05;
-
-      // Draw particle connections
-      for (let i = 0; i < particles.length; i++) {
-        const p1 = particles[i];
-        p1.update();
-        p1.draw();
-
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p1.x - p2.x;
-          const dy = p1.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 110) {
-            const opacity = (1 - dist / 110) * 0.16;
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-          }
-        }
-      }
-
-      if (!prefersReducedMotion) {
-        animationFrameId = requestAnimationFrame(renderCanvas);
-      }
-    }
-
-    if (!prefersReducedMotion) {
-      renderCanvas();
-    }
-
-    // Pointer move listener
-    window.addEventListener('pointermove', (e) => {
-      mouse.targetX = e.clientX;
-      mouse.targetY = e.clientY;
-    }, { passive: true });
-
-    // Resize listener
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }, { passive: true });
-
-    // Pause on tab hidden to save CPU/GPU
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        isVisible = false;
-        cancelAnimationFrame(animationFrameId);
-      } else {
-        isVisible = true;
-        if (!prefersReducedMotion) renderCanvas();
-      }
-    });
-  }
-
-  // =========================================================================
-  // 2. Modal Dialog (Shadcn-style API Key Configuration)
-  // =========================================================================
+  // --- API Key Management ---
   const storedApiKey = localStorage.getItem('gemini_api_key');
   if (storedApiKey) {
     customApiKeyInput.value = storedApiKey;
@@ -304,42 +156,36 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   toggleKeyBtn.addEventListener('click', openModal);
   closeModalBtn.addEventListener('click', closeModal);
 
-  // Close on backdrop click
   apiKeyModal.addEventListener('click', (e) => {
-    if (e.target === apiKeyModal) {
-      closeModal();
-    }
+    if (e.target === apiKeyModal) closeModal();
   });
 
-  // Close on Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !apiKeyModal.classList.contains('hidden')) {
       closeModal();
     }
   });
 
-  // Password Visibility Toggle
   toggleKeyVisibilityBtn.addEventListener('click', () => {
     const isPassword = customApiKeyInput.type === 'password';
     customApiKeyInput.type = isPassword ? 'text' : 'password';
-    eyeIcon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
-    if (window.lucide) window.lucide.createIcons();
+    eyeIcon.innerHTML = isPassword
+      ? `<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" x2="22" y1="2" y2="22"></line>`
+      : `<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle>`;
   });
 
-  // Save Key
   saveKeyBtn.addEventListener('click', () => {
     const key = customApiKeyInput.value.trim();
     if (key) {
       localStorage.setItem('gemini_api_key', key);
       apiStatusLabel.textContent = key.toLowerCase() === 'demo' ? 'Demo Mode Active' : 'Custom Key Active';
-      showToast('API Key securely saved for this browser session.', 'success');
+      showToast('API Key saved for this browser session.', 'success');
       closeModal();
     } else {
       showToast('Please enter an API key or use Demo Mode.', 'error');
     }
   });
 
-  // Clear Key
   clearKeyBtn.addEventListener('click', () => {
     localStorage.removeItem('gemini_api_key');
     customApiKeyInput.value = '';
@@ -347,23 +193,20 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     showToast('Saved API Key removed.', 'success');
   });
 
-  // Instant Demo Mode
   demoModeBtn.addEventListener('click', () => {
     customApiKeyInput.value = 'demo';
     localStorage.setItem('gemini_api_key', 'demo');
     apiStatusLabel.textContent = 'Demo Mode Active';
-    showToast('Demo Mode activated! Simulated AI responses enabled.', 'success');
+    showToast('Demo Mode activated with simulated AI responses.', 'success');
     closeModal();
   });
 
-  // =========================================================================
-  // 3. Input Counters & Quick Actions
-  // =========================================================================
+  // --- Input Counters & Clear ---
   function updateInputCounters() {
     const text = contentInput.value;
     const chars = text.length;
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-    charCountEl.textContent = `${chars.toLocaleString()} characters · ${words.toLocaleString()} words`;
+    charCountEl.textContent = `${chars.toLocaleString()} chars · ${words.toLocaleString()} words`;
   }
 
   contentInput.addEventListener('input', updateInputCounters);
@@ -373,24 +216,23 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       contentInput.value = '';
       updateInputCounters();
       contentInput.focus();
-      showToast('Input content cleared.', 'success');
+      showToast('Content cleared.', 'success');
     }
   });
 
-  // Quick Samples
   samplePills.forEach(btn => {
     btn.addEventListener('click', () => {
       const type = btn.getAttribute('data-sample');
       if (SAMPLES[type]) {
         contentInput.value = SAMPLES[type];
         updateInputCounters();
-        showToast(`Loaded ${btn.textContent.trim()} sample!`, 'success');
+        showToast(`Loaded ${btn.textContent.trim()} preset.`, 'success');
         contentInput.scrollTop = 0;
       }
     });
   });
 
-  // Keyboard Shortcut: Ctrl/Cmd + Enter to Submit
+  // Shortcut: Ctrl/Cmd + Enter
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       if (document.activeElement === contentInput || form.contains(document.activeElement)) {
@@ -400,9 +242,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   });
 
-  // =========================================================================
-  // 4. Tab Navigation (Segmented Control)
-  // =========================================================================
+  // --- Tabs Navigation ---
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetTab = btn.getAttribute('data-tab');
@@ -422,10 +262,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     });
   });
 
-  // =========================================================================
-  // 5. SERP & Social Simulator View Switchers (Origin UI)
-  // =========================================================================
-  // Google Desktop vs Mobile SERP View
+  // --- Google SERP Device Switcher ---
   serpViewDesktop.addEventListener('click', () => {
     serpViewDesktop.classList.add('active');
     serpViewMobile.classList.remove('active');
@@ -438,20 +275,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     serpContainer.classList.add('mobile-view');
   });
 
-  // Twitter vs LinkedIn Social Preview
-  socialViewTwitter.addEventListener('click', () => {
-    socialViewTwitter.classList.add('active');
-    socialViewLinkedin.classList.remove('active');
-  });
-
-  socialViewLinkedin.addEventListener('click', () => {
-    socialViewLinkedin.classList.add('active');
-    socialViewTwitter.classList.remove('active');
-  });
-
-  // =========================================================================
-  // 6. Form Submission & Generation Workflow
-  // =========================================================================
+  // --- Form Submission & Generation ---
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const content = contentInput.value.trim();
@@ -465,16 +289,16 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     setLoadingState(true);
 
     const statusSteps = [
-      'Reading content and evaluating semantic structure...',
-      'Optimizing meta title for Google character limits (50–60 chars)...',
-      'Crafting high-CTR meta description (150–160 chars)...',
-      'Synthesizing Open Graph social cards & keyword clusters...'
+      'Evaluating keyword density and semantic structure...',
+      'Calibrating title to 50–60 characters for SERP display...',
+      'Synthesizing 150–160 character high-CTR meta description...',
+      'Structuring Open Graph cards and ranking topical keywords...'
     ];
     let stepIndex = 0;
     const stepInterval = setInterval(() => {
       stepIndex = (stepIndex + 1) % statusSteps.length;
       loadingStepText.textContent = statusSteps[stepIndex];
-    }, 1200);
+    }, 1100);
 
     const apiKey = localStorage.getItem('gemini_api_key') || customApiKeyInput.value.trim();
 
@@ -501,26 +325,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       currentMetadata = data;
       renderMetadata(data);
       setLoadingState(false, true);
-
-      // Micro-confetti burst on success!
-      if (window.confetti) {
-        window.confetti({
-          particleCount: 45,
-          spread: 60,
-          origin: { y: 0.75 },
-          colors: ['#6366f1', '#06b6d4', '#10b981', '#38bdf8']
-        });
-      }
-
-      showToast('SEO Metadata generated successfully!', 'success');
-
-      // GSAP Staggered reveal if loaded
-      if (window.gsap) {
-        window.gsap.fromTo('.meta-card', 
-          { opacity: 0, y: 16 }, 
-          { opacity: 1, y: 0, duration: 0.45, stagger: 0.1, ease: 'power2.out' }
-        );
-      }
+      showToast('SEO Metadata calibrated successfully!', 'success');
 
     } catch (err) {
       clearInterval(stepInterval);
@@ -530,13 +335,12 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   });
 
-  // State Switching
   function setLoadingState(isLoading, hasSuccess = false) {
     if (isLoading) {
       generateBtn.disabled = true;
       btnSpinner.classList.remove('hidden');
       btnIcon.classList.add('hidden');
-      btnText.textContent = 'Generating...';
+      btnText.textContent = 'Calibrating...';
 
       stateEmpty.classList.add('hidden');
       stateResults.classList.add('hidden');
@@ -547,7 +351,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       generateBtn.disabled = false;
       btnSpinner.classList.add('hidden');
       btnIcon.classList.remove('hidden');
-      btnText.textContent = 'Generate Meta Tags';
+      btnText.textContent = 'Generate SEO Metadata';
 
       stateLoading.classList.add('hidden');
       if (hasSuccess) {
@@ -564,42 +368,24 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   }
 
-  // =========================================================================
-  // 7. Render Metadata & Live Auditing
-  // =========================================================================
+  // --- Render Results ---
   function renderMetadata(data) {
-    // 1. Meta Title
     metaTitleEl.textContent = data.meta_title || '';
     updateTitleIndicators(data.meta_title || '');
 
-    // 2. Meta Description
     metaDescEl.textContent = data.meta_description || '';
     updateDescIndicators(data.meta_description || '');
 
-    // 3. Open Graph
     ogTitleEl.textContent = data.og_title || data.meta_title || '';
     ogDescEl.textContent = data.og_description || data.meta_description || '';
     ogTypeEl.textContent = data.og_type || 'website';
 
-    // 4. Keywords
     renderKeywords(data.keywords || []);
-
-    // 5. Previews
     updatePreviews(data);
-
-    // 6. Code Exports
     updateCodeBlocks(data);
-
-    // 7. SEO Health Score Audit
     calculateSeoScore(data);
-
-    // Refresh Lucide Icons in newly rendered nodes
-    if (window.lucide) {
-      window.lucide.createIcons();
-    }
   }
 
-  // Title Indicators
   function updateTitleIndicators(title) {
     const len = title.length;
     titleCharBadge.textContent = `${len} / 60 chars`;
@@ -607,8 +393,8 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     const pct = Math.min(Math.round((len / 60) * 100), 100);
     titleProgressBar.style.width = `${pct}%`;
 
-    titleCharBadge.className = 'char-badge';
-    titleProgressBar.className = 'char-progress-bar';
+    titleCharBadge.className = 'char-pill';
+    titleProgressBar.className = 'bar-fill';
 
     if (len >= 50 && len <= 60) {
       titleCharBadge.classList.add('optimal');
@@ -622,7 +408,6 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   }
 
-  // Description Indicators
   function updateDescIndicators(desc) {
     const len = desc.length;
     descCharBadge.textContent = `${len} / 160 chars`;
@@ -630,8 +415,8 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     const pct = Math.min(Math.round((len / 160) * 100), 100);
     descProgressBar.style.width = `${pct}%`;
 
-    descCharBadge.className = 'char-badge';
-    descProgressBar.className = 'char-progress-bar';
+    descCharBadge.className = 'char-pill';
+    descProgressBar.className = 'bar-fill';
 
     if (len >= 150 && len <= 160) {
       descCharBadge.classList.add('optimal');
@@ -645,7 +430,6 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   }
 
-  // SEO Health Score Calculator & Gauge Animation
   function calculateSeoScore(data) {
     const titleLen = (data.meta_title || '').length;
     const descLen = (data.meta_description || '').length;
@@ -658,93 +442,67 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     if (titleLen >= 50 && titleLen <= 60) {
       score += 25;
       chkTitleText.textContent = `Optimal (${titleLen} chars)`;
-      updateCheckItem(chkTitle, 'success');
     } else if ((titleLen >= 40 && titleLen < 50) || (titleLen > 60 && titleLen <= 68)) {
       score += 16;
       chkTitleText.textContent = `Acceptable (${titleLen} chars)`;
-      updateCheckItem(chkTitle, 'warning');
     } else {
       score += 6;
       chkTitleText.textContent = `Needs work (${titleLen} chars)`;
-      updateCheckItem(chkTitle, 'danger');
     }
 
     // Description score (max 25)
     if (descLen >= 150 && descLen <= 160) {
       score += 25;
       chkDescText.textContent = `Optimal (${descLen} chars)`;
-      updateCheckItem(chkDesc, 'success');
     } else if ((descLen >= 130 && descLen < 150) || (descLen > 160 && descLen <= 175)) {
       score += 16;
       chkDescText.textContent = `Acceptable (${descLen} chars)`;
-      updateCheckItem(chkDesc, 'warning');
     } else {
       score += 6;
       chkDescText.textContent = `Needs work (${descLen} chars)`;
-      updateCheckItem(chkDesc, 'danger');
     }
 
     // Open Graph score (max 25)
     if (hasOg) {
       score += 25;
-      chkOgText.textContent = 'Social cards configured';
-      updateCheckItem(chkOg, 'success');
+      chkOgText.textContent = 'Cards configured';
     } else {
       score += 8;
-      chkOgText.textContent = 'Incomplete OG tags';
-      updateCheckItem(chkOg, 'warning');
+      chkOgText.textContent = 'Incomplete';
     }
 
     // Keywords score (max 25)
     if (kwCount >= 5) {
       score += 25;
-      chkKwText.textContent = `${kwCount} high-intent terms`;
-      updateCheckItem(chkKw, 'success');
+      chkKwText.textContent = `${kwCount} terms indexed`;
     } else if (kwCount > 0) {
       score += 14;
       chkKwText.textContent = `${kwCount} terms (suggest 5+)`;
-      updateCheckItem(chkKw, 'warning');
     } else {
       score += 0;
-      chkKwText.textContent = 'No keywords identified';
-      updateCheckItem(chkKw, 'danger');
+      chkKwText.textContent = 'None identified';
     }
 
-    // Update Score Number & Grade Pill
     scoreGaugeNumber.textContent = score;
 
-    scoreGradePill.className = 'grade-pill';
+    scoreGradePill.className = 'grade-tag';
     if (score >= 90) {
-      scoreGradePill.classList.add('grade-excellent');
-      scoreGradePill.textContent = `Optimal (${score}%)`;
+      scoreGradePill.classList.add('grade-optimal');
+      scoreGradePill.textContent = `Optimal · ${score}%`;
       scoreGaugeBar.style.stroke = 'var(--success)';
     } else if (score >= 70) {
-      scoreGradePill.classList.add('grade-good');
-      scoreGradePill.textContent = `Good (${score}%)`;
+      scoreGradePill.classList.add('grade-warning');
+      scoreGradePill.textContent = `Good · ${score}%`;
       scoreGaugeBar.style.stroke = 'var(--warning)';
     } else {
-      scoreGradePill.classList.add('grade-needs-work');
-      scoreGradePill.textContent = `Needs Tuning (${score}%)`;
+      scoreGradePill.classList.add('grade-danger');
+      scoreGradePill.textContent = `Needs Tuning · ${score}%`;
       scoreGaugeBar.style.stroke = 'var(--danger)';
     }
 
-    // Circumference = 2 * PI * 42 ≈ 263.89
     const circumference = 2 * Math.PI * 42;
     const offset = circumference - (score / 100) * circumference;
     scoreGaugeBar.style.strokeDashoffset = offset;
-  }
-
-  function updateCheckItem(el, status) {
-    const icon = el.querySelector('.chk-icon');
-    if (!icon) return;
-    icon.className = `chk-icon ${status}`;
-    if (status === 'success') {
-      icon.setAttribute('data-lucide', 'check-circle-2');
-    } else if (status === 'warning') {
-      icon.setAttribute('data-lucide', 'alert-triangle');
-    } else {
-      icon.setAttribute('data-lucide', 'alert-circle');
-    }
   }
 
   // Live editing listeners
@@ -785,25 +543,23 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       const chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'keyword-chip';
-      chip.innerHTML = `<span>${escapeHtml(kw)}</span>`;
+      chip.textContent = kw;
       chip.title = `Click to copy "${kw}"`;
       chip.addEventListener('click', () => {
-        copyTextToClipboard(kw, `Copied keyword "${kw}"!`);
+        copyTextToClipboard(kw, `Copied "${kw}"!`);
       });
       keywordsChipsEl.appendChild(chip);
     });
   }
 
-  // Previews
   function updatePreviews(data) {
-    serpTitlePreview.textContent = data.meta_title || 'Example Title';
-    serpDescPreview.textContent = data.meta_description || 'Example meta description for search preview...';
+    serpTitlePreview.textContent = data.meta_title || 'Example Page Title';
+    serpDescPreview.textContent = data.meta_description || 'Example meta description for search snippet preview...';
 
     socialTitlePreview.textContent = data.og_title || data.meta_title || 'Example Title';
-    socialDescPreview.textContent = data.og_description || data.meta_description || 'Example open graph description...';
+    socialDescPreview.textContent = data.og_description || data.meta_description || 'Example open graph description for social feeds...';
   }
 
-  // Code Blocks (HTML & JSON)
   function generateHtmlHeadSnippet(data) {
     const kwString = Array.isArray(data.keywords) ? data.keywords.join(', ') : '';
     return `<!-- Primary SEO Meta Tags -->
@@ -842,9 +598,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       .replace(/>/g, '&gt;');
   }
 
-  // =========================================================================
-  // 8. Clipboard Copy & File Download Utilities
-  // =========================================================================
+  // --- Copy Handlers ---
   document.addEventListener('click', (e) => {
     const copyBtn = e.target.closest('.copy-btn');
     if (!copyBtn) return;
@@ -858,7 +612,6 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   });
 
-  // Copy All OG Tags
   copyAllOgBtn.addEventListener('click', () => {
     const ogHtml = `<meta property="og:type" content="${escapeHtml(currentMetadata.og_type || 'website')}">
 <meta property="og:title" content="${escapeHtml(currentMetadata.og_title || currentMetadata.meta_title || '')}">
@@ -867,7 +620,6 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     copyTextToClipboard(ogHtml, 'All Open Graph tags copied!', copyAllOgBtn);
   });
 
-  // Copy All Keywords
   copyKeywordsBtn.addEventListener('click', () => {
     if (currentMetadata.keywords && currentMetadata.keywords.length > 0) {
       const kwList = currentMetadata.keywords.join(', ');
@@ -877,13 +629,12 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   });
 
-  // Copy All Tags (Header Action)
   copyAllTagsBtn.addEventListener('click', () => {
     const snippet = generateHtmlHeadSnippet(currentMetadata);
     copyTextToClipboard(snippet, 'All HTML <head> tags copied!', copyAllTagsBtn);
   });
 
-  // File Download Helpers
+  // --- File Download Helpers ---
   function downloadFile(content, filename, mimeType) {
     const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
@@ -894,7 +645,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast(`Downloaded ${filename}!`, 'success');
+    showToast(`Saved ${filename}.`, 'success');
   }
 
   downloadHtmlBtn.addEventListener('click', () => {
@@ -909,7 +660,6 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     downloadFile(JSON.stringify(currentMetadata, null, 2), 'seo-metadata.json', 'application/json');
   });
 
-  // Generic Clipboard Copy
   async function copyTextToClipboard(text, successMsg = 'Copied!', btnEl = null) {
     try {
       if (navigator.clipboard && window.isSecureContext) {
@@ -929,16 +679,11 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       showToast(successMsg, 'success');
 
       if (btnEl) {
-        const originalContent = btnEl.innerHTML;
-        btnEl.innerHTML = `
-          <i data-lucide="check" style="color: #10b981; width: 14px; height: 14px;"></i>
-          <span style="color: #10b981;">Copied!</span>
-        `;
-        if (window.lucide) window.lucide.createIcons();
+        const originalHtml = btnEl.innerHTML;
+        btnEl.innerHTML = `<span style="color: #10b981;">✓ Copied</span>`;
         setTimeout(() => {
-          btnEl.innerHTML = originalContent;
-          if (window.lucide) window.lucide.createIcons();
-        }, 1800);
+          btnEl.innerHTML = originalHtml;
+        }, 1600);
       }
     } catch (err) {
       console.error('Failed to copy text: ', err);
@@ -946,29 +691,22 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   }
 
-  // Toast Notifications
   function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-
-    const iconHtml = type === 'success'
-      ? `<i data-lucide="check-circle" style="color: #10b981; width: 18px; height: 18px; flex-shrink: 0;"></i>`
-      : `<i data-lucide="alert-circle" style="color: #ef4444; width: 18px; height: 18px; flex-shrink: 0;"></i>`;
-
-    toast.innerHTML = `${iconHtml}<span>${escapeHtml(message)}</span>`;
+    toast.textContent = message;
     container.appendChild(toast);
-    if (window.lucide) window.lucide.createIcons();
 
     setTimeout(() => {
       toast.style.opacity = '0';
-      toast.style.transform = 'translateY(8px)';
-      toast.style.transition = 'all 0.25s ease';
+      toast.style.transform = 'translateY(6px)';
+      toast.style.transition = 'all 0.2s ease';
       setTimeout(() => {
         if (toast.parentNode) {
           container.removeChild(toast);
         }
-      }, 250);
-    }, 3200);
+      }, 200);
+    }, 2800);
   }
 });
