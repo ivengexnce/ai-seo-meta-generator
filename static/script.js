@@ -1,95 +1,79 @@
 /**
- * AI SEO Meta Generator — Frontend Studio Controller
- * Handcrafted vanilla JavaScript with zero dependencies and authentic interaction design
+ * Rankora — AI SEO Intelligence Frontend Studio Controller
+ * Handcrafted vanilla JavaScript with robust null-safety, live SERP simulator,
+ * GSC verification sync, and seamless copy/export functionality.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM Elements
+  // --- DOM Element References ---
   const form = document.getElementById('generator-form');
   const contentInput = document.getElementById('page-content');
+  const focusKeywordsInput = document.getElementById('focus-keywords');
+  const searchEngineSelect = document.getElementById('search-engine-select');
   const charCountEl = document.getElementById('char-count');
   const clearContentBtn = document.getElementById('clear-content-btn');
+
   const generateBtn = document.getElementById('generate-btn');
   const btnSpinner = document.getElementById('btn-spinner');
   const btnIcon = document.getElementById('btn-icon');
   const btnText = document.getElementById('btn-text');
 
-  // State Containers
-  const stateEmpty = document.getElementById('state-empty');
-  const stateLoading = document.getElementById('state-loading');
-  const stateResults = document.getElementById('state-results');
-  const loadingStepText = document.getElementById('loading-step-text');
-  const quickActionsBar = document.getElementById('quick-actions-bar');
-
-  // Score Gauge Elements
-  const seoScoreCard = document.getElementById('seo-score-card');
-  const scoreGaugeBar = document.getElementById('score-gauge-bar');
-  const scoreGaugeNumber = document.getElementById('score-gauge-number');
-  const scoreGradePill = document.getElementById('score-grade-pill');
-  const chkTitleText = document.getElementById('chk-title-text');
-  const chkDescText = document.getElementById('chk-desc-text');
-  const chkOgText = document.getElementById('chk-og-text');
-  const chkKwText = document.getElementById('chk-kw-text');
-  const chkGscText = document.getElementById('chk-gsc-text');
-
-  // Result Elements
-  const metaTitleEl = document.getElementById('meta-title-text');
-  const metaDescEl = document.getElementById('meta-desc-text');
-  const titleCharBadge = document.getElementById('title-char-badge');
-  const descCharBadge = document.getElementById('desc-char-badge');
-  const titleProgressBar = document.getElementById('title-progress-bar');
-  const descProgressBar = document.getElementById('desc-progress-bar');
-
-  // Open Graph Elements
-  const ogTitleEl = document.getElementById('og-title-text');
-  const ogDescEl = document.getElementById('og-desc-text');
-  const ogTypeEl = document.getElementById('og-type-text');
-  const copyAllOgBtn = document.getElementById('copy-all-og-btn');
-
-  // Keywords
-  const keywordsChipsEl = document.getElementById('keywords-chips');
+  // Output Editable Elements
+  const metaTitleEl = document.getElementById('meta-title-output') || document.getElementById('meta-title-text');
+  const metaDescEl = document.getElementById('meta-desc-output') || document.getElementById('meta-desc-text');
+  const titleCounter = document.getElementById('title-counter') || document.getElementById('title-char-badge');
+  const descCounter = document.getElementById('desc-counter') || document.getElementById('desc-char-badge');
+  const keywordsListEl = document.getElementById('keywords-list') || document.getElementById('keywords-chips');
   const copyKeywordsBtn = document.getElementById('copy-keywords-btn');
 
   // Previews
-  const serpContainer = document.getElementById('serp-container');
   const serpTitlePreview = document.getElementById('serp-title-preview');
   const serpDescPreview = document.getElementById('serp-desc-preview');
-  const serpViewDesktop = document.getElementById('serp-view-desktop');
-  const serpViewMobile = document.getElementById('serp-view-mobile');
-
+  const serpSlugPreview = document.getElementById('serp-slug-preview');
   const socialTitlePreview = document.getElementById('social-title-preview');
   const socialDescPreview = document.getElementById('social-desc-preview');
+
+  // Readiness Gauge & Audit Elements
+  const scoreNumEl = document.getElementById('seo-score-num');
+  const scoreProgressEl = document.getElementById('score-progress');
+  const scoreStatusText = document.getElementById('score-status-text');
+  const chkTitleItem = document.getElementById('chk-title');
+  const chkDescItem = document.getElementById('chk-desc');
+  const chkGscItem = document.getElementById('chk-gsc');
+  const chkGscText = document.getElementById('chk-gsc-text');
+  const chkOgItem = document.getElementById('chk-og');
 
   // Code Export
   const htmlCodeBlock = document.getElementById('html-code-block');
   const jsonCodeBlock = document.getElementById('json-code-block');
-  const copyAllTagsBtn = document.getElementById('copy-all-tags-btn');
-  const downloadHtmlBtn = document.getElementById('download-html-btn');
-  const downloadSnippetBtn = document.getElementById('download-snippet-btn');
-  const downloadJsonBtn = document.getElementById('download-json-btn');
+  const copyHtmlBtn = document.getElementById('copy-html-btn');
+  const copyJsonBtn = document.getElementById('copy-json-btn');
 
   // Tabs
-  const tabBtns = document.querySelectorAll('.tab-item');
+  const tabBtns = document.querySelectorAll('.tab-btn');
   const tabPanes = document.querySelectorAll('.tab-pane');
 
-  // Modal Dialog
+  // Hero Quick Actions
+  const heroSerpBtn = document.getElementById('hero-serp-btn');
+  const footerSerpLink = document.getElementById('footer-serp-link');
+
+  // Google Search Console Elements
+  const DEFAULT_GSC_TOKEN = 'bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA';
+  const gscTokenInput = document.getElementById('gsc-token-input');
+  const gscMetaTagOutput = document.getElementById('gsc-meta-tag-output');
+
+  // API Key Modal Dialog
   const toggleKeyBtn = document.getElementById('toggle-key-btn');
-  const apiKeyModal = document.getElementById('api-key-modal');
+  const apiKeyModal = document.getElementById('api-modal') || document.getElementById('api-key-modal');
   const closeModalBtn = document.getElementById('close-modal-btn');
   const customApiKeyInput = document.getElementById('custom-api-key');
-  const toggleKeyVisibilityBtn = document.getElementById('toggle-key-visibility');
-  const eyeIcon = document.getElementById('eye-icon');
   const saveKeyBtn = document.getElementById('save-key-btn');
   const clearKeyBtn = document.getElementById('clear-key-btn');
   const demoModeBtn = document.getElementById('demo-mode-btn');
   const apiStatusLabel = document.getElementById('api-status-label');
 
-  // Google Search Console Elements
-  const gscTokenInput = document.getElementById('gsc-token-input');
-  const gscMetaTagOutput = document.getElementById('gsc-meta-tag-output');
-
   // Sample Presets
-  const samplePills = document.querySelectorAll('.sample-tag-btn');
+  const sampleBtns = document.querySelectorAll('.sample-tag-btn');
 
   // Active Metadata State
   let currentMetadata = {
@@ -99,10 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
     og_description: '',
     og_type: 'website',
     keywords: [],
-    gsc_verification: 'bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA'
+    gsc_verification: DEFAULT_GSC_TOKEN
   };
-
-  const DEFAULT_GSC_TOKEN = 'bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA';
 
   const SAMPLES = {
     blog: `Modern Web Engineering: How AI-Augmented Development is Transforming Frontend Architecture in 2026
@@ -142,20 +124,22 @@ Product Specifications:
 Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next personal best today.`
   };
 
-  // --- API Key Management ---
+  // --- API Key & Status Initialization ---
   const storedApiKey = localStorage.getItem('gemini_api_key');
-  if (storedApiKey) {
+  if (storedApiKey && customApiKeyInput) {
     customApiKeyInput.value = storedApiKey;
-    apiStatusLabel.textContent = storedApiKey.toLowerCase() === 'demo' ? 'Demo Mode Active' : 'Custom Key Active';
+    if (apiStatusLabel) {
+      apiStatusLabel.textContent = storedApiKey.toLowerCase() === 'demo' ? 'Demo Mode Active' : 'Custom Key Active';
+    }
   }
 
-  // --- Google Search Console Token Management ---
+  // --- GSC Verification Management ---
   const storedGscToken = localStorage.getItem('gsc_verification_token') || (gscTokenInput ? gscTokenInput.value.trim() : '') || DEFAULT_GSC_TOKEN;
   if (gscTokenInput) {
     gscTokenInput.value = storedGscToken;
   }
   currentMetadata.gsc_verification = storedGscToken;
-  updateGscCard(currentMetadata.gsc_verification);
+  updateGscCard(storedGscToken);
 
   function updateGscCard(token) {
     if (!gscMetaTagOutput) return;
@@ -166,7 +150,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   if (gscTokenInput) {
     gscTokenInput.addEventListener('input', () => {
       const val = gscTokenInput.value.trim();
-      currentMetadata.gsc_verification = val;
+      currentMetadata.gsc_verification = val || DEFAULT_GSC_TOKEN;
       localStorage.setItem('gsc_verification_token', val);
       updateGscCard(val);
       updateCodeBlocks(currentMetadata);
@@ -189,92 +173,104 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     });
   }
 
+  // --- Modal Helpers ---
   function openModal() {
-    apiKeyModal.classList.remove('hidden');
-    toggleKeyBtn.setAttribute('aria-expanded', 'true');
-    customApiKeyInput.focus();
+    if (!apiKeyModal) return;
+    apiKeyModal.classList.add('open');
+    if (toggleKeyBtn) toggleKeyBtn.setAttribute('aria-expanded', 'true');
+    if (customApiKeyInput) customApiKeyInput.focus();
   }
 
   function closeModal() {
-    apiKeyModal.classList.add('hidden');
-    toggleKeyBtn.setAttribute('aria-expanded', 'false');
-    toggleKeyBtn.focus();
+    if (!apiKeyModal) return;
+    apiKeyModal.classList.remove('open');
+    if (toggleKeyBtn) {
+      toggleKeyBtn.setAttribute('aria-expanded', 'false');
+      toggleKeyBtn.focus();
+    }
   }
 
-  toggleKeyBtn.addEventListener('click', openModal);
-  closeModalBtn.addEventListener('click', closeModal);
+  if (toggleKeyBtn) toggleKeyBtn.addEventListener('click', openModal);
+  if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
 
-  apiKeyModal.addEventListener('click', (e) => {
-    if (e.target === apiKeyModal) closeModal();
-  });
+  if (apiKeyModal) {
+    apiKeyModal.addEventListener('click', (e) => {
+      if (e.target === apiKeyModal) closeModal();
+    });
+  }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !apiKeyModal.classList.contains('hidden')) {
+    if (e.key === 'Escape' && apiKeyModal && apiKeyModal.classList.contains('open')) {
       closeModal();
     }
   });
 
-  toggleKeyVisibilityBtn.addEventListener('click', () => {
-    const isPassword = customApiKeyInput.type === 'password';
-    customApiKeyInput.type = isPassword ? 'text' : 'password';
-    eyeIcon.innerHTML = isPassword
-      ? `<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" x2="22" y1="2" y2="22"></line>`
-      : `<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle>`;
-  });
+  if (saveKeyBtn) {
+    saveKeyBtn.addEventListener('click', () => {
+      const key = customApiKeyInput ? customApiKeyInput.value.trim() : '';
+      if (key) {
+        localStorage.setItem('gemini_api_key', key);
+        if (apiStatusLabel) {
+          apiStatusLabel.textContent = key.toLowerCase() === 'demo' ? 'Demo Mode Active' : 'Custom Key Active';
+        }
+        showToast('API Key saved for this browser session.', 'success');
+        closeModal();
+      } else {
+        showToast('Please enter an API key or use Demo Mode.', 'error');
+      }
+    });
+  }
 
-  saveKeyBtn.addEventListener('click', () => {
-    const key = customApiKeyInput.value.trim();
-    if (key) {
-      localStorage.setItem('gemini_api_key', key);
-      apiStatusLabel.textContent = key.toLowerCase() === 'demo' ? 'Demo Mode Active' : 'Custom Key Active';
-      showToast('API Key saved for this browser session.', 'success');
+  if (clearKeyBtn) {
+    clearKeyBtn.addEventListener('click', () => {
+      localStorage.removeItem('gemini_api_key');
+      if (customApiKeyInput) customApiKeyInput.value = '';
+      if (apiStatusLabel) apiStatusLabel.textContent = 'Custom API Key';
+      showToast('Saved API Key removed.', 'info');
+    });
+  }
+
+  if (demoModeBtn) {
+    demoModeBtn.addEventListener('click', () => {
+      if (customApiKeyInput) customApiKeyInput.value = 'demo';
+      localStorage.setItem('gemini_api_key', 'demo');
+      if (apiStatusLabel) apiStatusLabel.textContent = 'Demo Mode Active';
+      showToast('Demo Mode activated with simulated AI intelligence.', 'info');
       closeModal();
-    } else {
-      showToast('Please enter an API key or use Demo Mode.', 'error');
-    }
-  });
-
-  clearKeyBtn.addEventListener('click', () => {
-    localStorage.removeItem('gemini_api_key');
-    customApiKeyInput.value = '';
-    apiStatusLabel.textContent = 'Custom API Key';
-    showToast('Saved API Key removed.', 'success');
-  });
-
-  demoModeBtn.addEventListener('click', () => {
-    customApiKeyInput.value = 'demo';
-    localStorage.setItem('gemini_api_key', 'demo');
-    apiStatusLabel.textContent = 'Demo Mode Active';
-    showToast('Demo Mode activated with simulated AI responses.', 'success');
-    closeModal();
-  });
+    });
+  }
 
   // --- Input Counters & Clear ---
   function updateInputCounters() {
+    if (!contentInput || !charCountEl) return;
     const text = contentInput.value;
     const chars = text.length;
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     charCountEl.textContent = `${chars.toLocaleString()} chars · ${words.toLocaleString()} words`;
   }
 
-  contentInput.addEventListener('input', updateInputCounters);
+  if (contentInput) {
+    contentInput.addEventListener('input', updateInputCounters);
+  }
 
-  clearContentBtn.addEventListener('click', () => {
-    if (contentInput.value) {
-      contentInput.value = '';
-      updateInputCounters();
-      contentInput.focus();
-      showToast('Content cleared.', 'success');
-    }
-  });
+  if (clearContentBtn) {
+    clearContentBtn.addEventListener('click', () => {
+      if (contentInput && contentInput.value) {
+        contentInput.value = '';
+        updateInputCounters();
+        contentInput.focus();
+        showToast('Content brief cleared.', 'info');
+      }
+    });
+  }
 
-  samplePills.forEach(btn => {
+  sampleBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const type = btn.getAttribute('data-sample');
-      if (SAMPLES[type]) {
+      if (SAMPLES[type] && contentInput) {
         contentInput.value = SAMPLES[type];
         updateInputCounters();
-        showToast(`Loaded ${btn.textContent.trim()} preset.`, 'success');
+        showToast(`Loaded ${btn.textContent.trim()} sample.`, 'success');
         contentInput.scrollTop = 0;
       }
     });
@@ -283,7 +279,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   // Shortcut: Ctrl/Cmd + Enter
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      if (document.activeElement === contentInput || form.contains(document.activeElement)) {
+      if (form && (document.activeElement === contentInput || form.contains(document.activeElement))) {
         e.preventDefault();
         form.requestSubmit();
       }
@@ -291,147 +287,132 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   });
 
   // --- Tabs Navigation ---
+  function switchTab(targetName) {
+    tabBtns.forEach(b => {
+      const isTarget = b.id.includes(targetName) || b.getAttribute('aria-controls')?.includes(targetName);
+      b.classList.toggle('active', isTarget);
+      b.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+    });
+
+    tabPanes.forEach(p => {
+      const isTarget = p.id.includes(targetName);
+      p.classList.toggle('active', isTarget);
+    });
+  }
+
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      const targetTab = btn.getAttribute('data-tab');
-      tabBtns.forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-selected', 'false');
-      });
-      tabPanes.forEach(p => p.classList.remove('active'));
-
-      btn.classList.add('active');
-      btn.setAttribute('aria-selected', 'true');
-
-      const activePane = document.getElementById(`tab-pane-${targetTab}`);
-      if (activePane) {
-        activePane.classList.add('active');
-      }
+      const target = btn.id.replace('tab-btn-', '') || btn.getAttribute('aria-controls')?.replace('tab-pane-', '') || 'generator';
+      switchTab(target);
     });
   });
 
-  // --- Google SERP Device Switcher ---
-  serpViewDesktop.addEventListener('click', () => {
-    serpViewDesktop.classList.add('active');
-    serpViewMobile.classList.remove('active');
-    serpContainer.classList.remove('mobile-view');
+  function switchToSerpTab() {
+    switchTab('preview');
+    const pane = document.getElementById('tab-pane-preview');
+    if (pane) pane.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  if (heroSerpBtn) heroSerpBtn.addEventListener('click', switchToSerpTab);
+  if (footerSerpLink) footerSerpLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    switchToSerpTab();
   });
 
-  serpViewMobile.addEventListener('click', () => {
-    serpViewMobile.classList.add('active');
-    serpViewDesktop.classList.remove('active');
-    serpContainer.classList.add('mobile-view');
+  // --- FAQ Accordion ---
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      if (item) item.classList.toggle('open');
+    });
   });
 
   // --- Form Submission & Generation ---
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const content = contentInput.value.trim();
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const content = contentInput ? contentInput.value.trim() : '';
 
-    if (!content) {
-      showToast('Please paste page content before generating.', 'error');
-      contentInput.focus();
-      return;
-    }
-
-    setLoadingState(true);
-
-    const statusSteps = [
-      'Evaluating keyword density and semantic structure...',
-      'Calibrating title to 50–60 characters for SERP display...',
-      'Synthesizing 150–160 character high-CTR meta description...',
-      'Structuring Open Graph cards and ranking topical keywords...'
-    ];
-    let stepIndex = 0;
-    const stepInterval = setInterval(() => {
-      stepIndex = (stepIndex + 1) % statusSteps.length;
-      loadingStepText.textContent = statusSteps[stepIndex];
-    }, 1100);
-
-    const apiKey = localStorage.getItem('gemini_api_key') || customApiKeyInput.value.trim();
-
-    try {
-      const response = await fetch('/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          content: content,
-          api_key: apiKey || undefined
-        })
-      });
-
-      clearInterval(stepInterval);
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate metadata.');
+      if (!content) {
+        showToast('Please paste page content before generating.', 'error');
+        if (contentInput) contentInput.focus();
+        return;
       }
 
-      currentMetadata = Object.assign({}, data, {
-        gsc_verification: (gscTokenInput ? gscTokenInput.value.trim() : '') || currentMetadata.gsc_verification || ''
-      });
-      renderMetadata(currentMetadata);
-      setLoadingState(false, true);
-      showToast('SEO Metadata calibrated successfully!', 'success');
+      setLoadingState(true);
 
-    } catch (err) {
-      clearInterval(stepInterval);
-      setLoadingState(false, false);
-      showToast(err.message, 'error');
-      console.error('Generation Error:', err);
-    }
-  });
+      const apiKey = localStorage.getItem('gemini_api_key') || (customApiKeyInput ? customApiKeyInput.value.trim() : '');
+
+      try {
+        const response = await fetch('/generate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            content: content,
+            focus_keywords: focusKeywordsInput ? focusKeywordsInput.value.trim() : '',
+            search_engine: searchEngineSelect ? searchEngineSelect.value : 'google-us',
+            api_key: apiKey
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to generate metadata.');
+        }
+
+        // Apply generated metadata
+        currentMetadata = {
+          meta_title: data.meta_title || '',
+          meta_description: data.meta_description || '',
+          og_title: data.og_title || data.meta_title || '',
+          og_description: data.og_description || data.meta_description || '',
+          og_type: data.og_type || 'website',
+          keywords: Array.isArray(data.keywords) ? data.keywords : [],
+          gsc_verification: (gscTokenInput ? gscTokenInput.value.trim() : '') || DEFAULT_GSC_TOKEN
+        };
+
+        renderMetadata(currentMetadata);
+        setLoadingState(false, true);
+        showToast('Metadata synthesized and calibrated successfully.', 'success');
+
+      } catch (err) {
+        setLoadingState(false, false);
+        showToast(err.message, 'error');
+        console.error('Generation Error:', err);
+      }
+    });
+  }
 
   function setLoadingState(isLoading, hasSuccess = false) {
+    if (!generateBtn) return;
     if (isLoading) {
       generateBtn.disabled = true;
-      btnSpinner.classList.remove('hidden');
-      btnIcon.classList.add('hidden');
-      btnText.textContent = 'Calibrating...';
-
-      stateEmpty.classList.add('hidden');
-      stateResults.classList.add('hidden');
-      stateLoading.classList.remove('hidden');
-      seoScoreCard.classList.add('hidden');
-      quickActionsBar.classList.add('hidden');
+      if (btnSpinner) btnSpinner.classList.remove('hidden');
+      if (btnIcon) btnIcon.classList.add('hidden');
+      if (btnText) btnText.textContent = 'Calibrating metadata...';
     } else {
       generateBtn.disabled = false;
-      btnSpinner.classList.add('hidden');
-      btnIcon.classList.remove('hidden');
-      btnText.textContent = 'Generate SEO Metadata';
-
-      stateLoading.classList.add('hidden');
-      if (hasSuccess) {
-        stateEmpty.classList.add('hidden');
-        stateResults.classList.remove('hidden');
-        seoScoreCard.classList.remove('hidden');
-        quickActionsBar.classList.remove('hidden');
-      } else if (!currentMetadata.meta_title) {
-        stateEmpty.classList.remove('hidden');
-        stateResults.classList.add('hidden');
-        seoScoreCard.classList.add('hidden');
-        quickActionsBar.classList.add('hidden');
-      }
+      if (btnSpinner) btnSpinner.classList.add('hidden');
+      if (btnIcon) btnIcon.classList.remove('hidden');
+      if (btnText) btnText.textContent = 'Generate metadata';
     }
   }
 
   // --- Render Results ---
   function renderMetadata(data) {
-    metaTitleEl.textContent = data.meta_title || '';
+    if (metaTitleEl) {
+      metaTitleEl.textContent = data.meta_title || '';
+    }
     updateTitleIndicators(data.meta_title || '');
 
-    metaDescEl.textContent = data.meta_description || '';
+    if (metaDescEl) {
+      metaDescEl.textContent = data.meta_description || '';
+    }
     updateDescIndicators(data.meta_description || '');
-
-    ogTitleEl.textContent = data.og_title || data.meta_title || '';
-    ogDescEl.textContent = data.og_description || data.meta_description || '';
-    ogTypeEl.textContent = data.og_type || 'website';
-
-    const activeToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '');
-    updateGscCard(activeToken);
 
     renderKeywords(data.keywords || []);
     updatePreviews(data);
@@ -440,46 +421,32 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   }
 
   function updateTitleIndicators(title) {
-    const len = title.length;
-    titleCharBadge.textContent = `${len} / 60 chars`;
-
-    const pct = Math.min(Math.round((len / 60) * 100), 100);
-    titleProgressBar.style.width = `${pct}%`;
-
-    titleCharBadge.className = 'char-pill';
-    titleProgressBar.className = 'bar-fill';
-
-    if (len >= 50 && len <= 60) {
-      titleCharBadge.classList.add('optimal');
-      titleProgressBar.classList.add('optimal');
-    } else if ((len >= 40 && len < 50) || (len > 60 && len <= 68)) {
-      titleCharBadge.classList.add('warning');
-      titleProgressBar.classList.add('warning');
-    } else {
-      titleCharBadge.classList.add('danger');
-      titleProgressBar.classList.add('danger');
+    const len = (title || '').length;
+    if (titleCounter) {
+      titleCounter.textContent = `${len} / 60`;
+      titleCounter.className = 'badge-counter';
+      if (len >= 50 && len <= 60) {
+        titleCounter.classList.add('good');
+      } else if ((len >= 40 && len < 50) || (len > 60 && len <= 68)) {
+        titleCounter.classList.add('warn');
+      } else if (len > 0) {
+        titleCounter.classList.add('bad');
+      }
     }
   }
 
   function updateDescIndicators(desc) {
-    const len = desc.length;
-    descCharBadge.textContent = `${len} / 160 chars`;
-
-    const pct = Math.min(Math.round((len / 160) * 100), 100);
-    descProgressBar.style.width = `${pct}%`;
-
-    descCharBadge.className = 'char-pill';
-    descProgressBar.className = 'bar-fill';
-
-    if (len >= 150 && len <= 160) {
-      descCharBadge.classList.add('optimal');
-      descProgressBar.classList.add('optimal');
-    } else if ((len >= 130 && len < 150) || (len > 160 && len <= 175)) {
-      descCharBadge.classList.add('warning');
-      descProgressBar.classList.add('warning');
-    } else {
-      descCharBadge.classList.add('danger');
-      descProgressBar.classList.add('danger');
+    const len = (desc || '').length;
+    if (descCounter) {
+      descCounter.textContent = `${len} / 160`;
+      descCounter.className = 'badge-counter';
+      if (len >= 150 && len <= 160) {
+        descCounter.classList.add('good');
+      } else if ((len >= 130 && len < 150) || (len > 160 && len <= 175)) {
+        descCounter.classList.add('warn');
+      } else if (len > 0) {
+        descCounter.classList.add('bad');
+      }
     }
   }
 
@@ -488,146 +455,130 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     const descLen = (data.meta_description || '').length;
     const kwCount = Array.isArray(data.keywords) ? data.keywords.length : 0;
     const hasOg = Boolean(data.og_title && data.og_description);
-    const gscToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '');
 
     let score = 0;
 
-    // Title score (max 20)
+    // Title score (max 25)
     if (titleLen >= 50 && titleLen <= 60) {
-      score += 20;
-      chkTitleText.textContent = `Optimal (${titleLen} chars)`;
-    } else if ((titleLen >= 40 && titleLen < 50) || (titleLen > 60 && titleLen <= 68)) {
-      score += 14;
-      chkTitleText.textContent = `Acceptable (${titleLen} chars)`;
+      score += 25;
+      if (chkTitleItem) chkTitleItem.className = 'checklist-item pass';
+    } else if (titleLen >= 40 && titleLen <= 68) {
+      score += 18;
+      if (chkTitleItem) chkTitleItem.className = 'checklist-item warn';
     } else {
-      score += 5;
-      chkTitleText.textContent = `Needs work (${titleLen} chars)`;
+      score += titleLen > 0 ? 8 : 0;
+      if (chkTitleItem) chkTitleItem.className = 'checklist-item';
     }
 
-    // Description score (max 20)
+    // Description score (max 25)
     if (descLen >= 150 && descLen <= 160) {
-      score += 20;
-      chkDescText.textContent = `Optimal (${descLen} chars)`;
-    } else if ((descLen >= 130 && descLen < 150) || (descLen > 160 && descLen <= 175)) {
-      score += 14;
-      chkDescText.textContent = `Acceptable (${descLen} chars)`;
+      score += 25;
+      if (chkDescItem) chkDescItem.className = 'checklist-item pass';
+    } else if (descLen >= 130 && descLen <= 175) {
+      score += 18;
+      if (chkDescItem) chkDescItem.className = 'checklist-item warn';
     } else {
-      score += 5;
-      chkDescText.textContent = `Needs work (${descLen} chars)`;
+      score += descLen > 0 ? 8 : 0;
+      if (chkDescItem) chkDescItem.className = 'checklist-item';
     }
 
-    // Open Graph score (max 20)
+    // Open Graph score (max 25)
     if (hasOg) {
-      score += 20;
-      chkOgText.textContent = 'Cards configured';
+      score += 25;
+      if (chkOgItem) chkOgItem.className = 'checklist-item pass';
     } else {
-      score += 8;
-      chkOgText.textContent = 'Incomplete';
+      if (chkOgItem) chkOgItem.className = 'checklist-item';
     }
 
-    // Keywords score (max 20)
-    if (kwCount >= 5) {
-      score += 20;
-      chkKwText.textContent = `${kwCount} terms indexed`;
-    } else if (kwCount > 0) {
-      score += 12;
-      chkKwText.textContent = `${kwCount} terms (suggest 5+)`;
-    } else {
-      score += 0;
-      chkKwText.textContent = 'None identified';
+    // Search Console verification score (max 25)
+    const token = data.gsc_verification || DEFAULT_GSC_TOKEN;
+    if (token) {
+      score += 25;
+      if (chkGscItem) chkGscItem.className = 'checklist-item pass';
     }
 
-    // Google Search Console score (max 20)
-    if (chkGscText) {
-      if (gscToken) {
-        score += 20;
-        chkGscText.textContent = 'Token configured';
+    if (scoreNumEl) scoreNumEl.textContent = score;
+
+    if (scoreStatusText) {
+      if (score >= 90) {
+        scoreStatusText.textContent = 'Excellent · Production Ready';
+      } else if (score >= 70) {
+        scoreStatusText.textContent = 'Good · Minor Tuning Suggested';
+      } else if (score > 25) {
+        scoreStatusText.textContent = 'In Progress';
       } else {
-        score += 20;
-        chkGscText.textContent = 'Tag template ready';
+        scoreStatusText.textContent = 'Awaiting page content';
       }
     }
 
-    scoreGaugeNumber.textContent = score;
-
-    scoreGradePill.className = 'grade-tag';
-    if (score >= 90) {
-      scoreGradePill.classList.add('grade-optimal');
-      scoreGradePill.textContent = `Optimal · ${score}%`;
-      scoreGaugeBar.style.stroke = 'var(--success)';
-    } else if (score >= 70) {
-      scoreGradePill.classList.add('grade-warning');
-      scoreGradePill.textContent = `Good · ${score}%`;
-      scoreGaugeBar.style.stroke = 'var(--warning)';
-    } else {
-      scoreGradePill.classList.add('grade-danger');
-      scoreGradePill.textContent = `Needs Tuning · ${score}%`;
-      scoreGaugeBar.style.stroke = 'var(--danger)';
+    if (scoreProgressEl) {
+      const radius = 30;
+      const circumference = 2 * Math.PI * radius; // ~188.5
+      const offset = circumference - (score / 100) * circumference;
+      scoreProgressEl.style.strokeDashoffset = offset;
+      if (score >= 80) {
+        scoreProgressEl.style.stroke = '#14b8a6';
+      } else if (score >= 50) {
+        scoreProgressEl.style.stroke = '#f59e0b';
+      } else {
+        scoreProgressEl.style.stroke = '#64748b';
+      }
     }
-
-    const circumference = 2 * Math.PI * 42;
-    const offset = circumference - (score / 100) * circumference;
-    scoreGaugeBar.style.strokeDashoffset = offset;
   }
 
-  // Live editing listeners
-  metaTitleEl.addEventListener('input', () => {
-    const val = metaTitleEl.textContent;
-    currentMetadata.meta_title = val;
-    updateTitleIndicators(val);
-    updatePreviews(currentMetadata);
-    updateCodeBlocks(currentMetadata);
-    calculateSeoScore(currentMetadata);
-  });
+  // Live Inline Editing Listeners
+  if (metaTitleEl) {
+    metaTitleEl.addEventListener('input', () => {
+      const val = metaTitleEl.textContent.trim();
+      currentMetadata.meta_title = val;
+      updateTitleIndicators(val);
+      updatePreviews(currentMetadata);
+      updateCodeBlocks(currentMetadata);
+      calculateSeoScore(currentMetadata);
+    });
+  }
 
-  metaDescEl.addEventListener('input', () => {
-    const val = metaDescEl.textContent;
-    currentMetadata.meta_description = val;
-    updateDescIndicators(val);
-    updatePreviews(currentMetadata);
-    updateCodeBlocks(currentMetadata);
-    calculateSeoScore(currentMetadata);
-  });
-
-  ogTitleEl.addEventListener('input', () => {
-    currentMetadata.og_title = ogTitleEl.textContent;
-    updatePreviews(currentMetadata);
-    updateCodeBlocks(currentMetadata);
-  });
-
-  ogDescEl.addEventListener('input', () => {
-    currentMetadata.og_description = ogDescEl.textContent;
-    updatePreviews(currentMetadata);
-    updateCodeBlocks(currentMetadata);
-  });
+  if (metaDescEl) {
+    metaDescEl.addEventListener('input', () => {
+      const val = metaDescEl.textContent.trim();
+      currentMetadata.meta_description = val;
+      updateDescIndicators(val);
+      updatePreviews(currentMetadata);
+      updateCodeBlocks(currentMetadata);
+      calculateSeoScore(currentMetadata);
+    });
+  }
 
   // Keywords Rendering
   function renderKeywords(keywords) {
-    keywordsChipsEl.innerHTML = '';
+    if (!keywordsListEl) return;
+    keywordsListEl.innerHTML = '';
+    if (!keywords || keywords.length === 0) {
+      keywordsListEl.innerHTML = '<span class="field-tip">Keywords identified from content will appear as interactive chips here.</span>';
+      return;
+    }
+
     keywords.forEach(kw => {
-      const chip = document.createElement('button');
-      chip.type = 'button';
-      chip.className = 'keyword-chip';
+      const chip = document.createElement('div');
+      chip.className = 'kw-chip';
       chip.textContent = kw;
-      chip.title = `Click to copy "${kw}"`;
-      chip.addEventListener('click', () => {
-        copyTextToClipboard(kw, `Copied "${kw}"!`);
-      });
-      keywordsChipsEl.appendChild(chip);
+      keywordsListEl.appendChild(chip);
     });
   }
 
   function updatePreviews(data) {
-    serpTitlePreview.textContent = data.meta_title || 'Example Page Title';
-    serpDescPreview.textContent = data.meta_description || 'Example meta description for search snippet preview...';
+    const titleText = data.meta_title || 'Sample Meta Title Appears Here';
+    const descText = data.meta_description || 'Sample Meta Description will appear here formatted precisely as Google displays desktop search snippets...';
 
-    socialTitlePreview.textContent = data.og_title || data.meta_title || 'Example Title';
-    socialDescPreview.textContent = data.og_description || data.meta_description || 'Example open graph description for social feeds...';
+    if (serpTitlePreview) serpTitlePreview.textContent = titleText;
+    if (serpDescPreview) serpDescPreview.textContent = descText;
+    if (socialTitlePreview) socialTitlePreview.textContent = data.og_title || titleText;
+    if (socialDescPreview) socialDescPreview.textContent = data.og_description || descText;
   }
 
   function generateHtmlHeadSnippet(data) {
     const kwString = Array.isArray(data.keywords) ? data.keywords.join(', ') : '';
-    const gscToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '') || DEFAULT_GSC_TOKEN;
+    const gscToken = data.gsc_verification || DEFAULT_GSC_TOKEN;
     return `<!-- Primary SEO Meta Tags -->
 <title>${escapeHtml(data.meta_title || '')}</title>
 <meta name="title" content="${escapeHtml(data.meta_title || '')}">
@@ -653,20 +604,21 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   }
 
   function updateCodeBlocks(data) {
-    const htmlHead = generateHtmlHeadSnippet(data);
-    htmlCodeBlock.textContent = htmlHead;
-    const gscToken = data.gsc_verification || (gscTokenInput ? gscTokenInput.value.trim() : '') || DEFAULT_GSC_TOKEN;
-    const exportData = Object.assign({}, data, {
-      google_site_verification: gscToken
-    });
-    jsonCodeBlock.textContent = JSON.stringify(exportData, null, 2);
+    if (htmlCodeBlock) {
+      htmlCodeBlock.textContent = generateHtmlHeadSnippet(data);
+    }
+    if (jsonCodeBlock) {
+      const gscToken = data.gsc_verification || DEFAULT_GSC_TOKEN;
+      const exportData = Object.assign({}, data, {
+        google_site_verification: gscToken
+      });
+      jsonCodeBlock.textContent = JSON.stringify(exportData, null, 2);
+    }
   }
 
   function escapeHtml(str) {
     return String(str || '')
       .replace(/&/g, '&amp;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
   }
@@ -685,53 +637,30 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   });
 
-  copyAllOgBtn.addEventListener('click', () => {
-    const ogHtml = `<meta property="og:type" content="${escapeHtml(currentMetadata.og_type || 'website')}">
-<meta property="og:title" content="${escapeHtml(currentMetadata.og_title || currentMetadata.meta_title || '')}">
-<meta property="og:description" content="${escapeHtml(currentMetadata.og_description || currentMetadata.meta_description || '')}">
-<meta property="og:image" content="https://example.com/static/og-image.jpg">`;
-    copyTextToClipboard(ogHtml, 'All Open Graph tags copied!', copyAllOgBtn);
-  });
-
-  copyKeywordsBtn.addEventListener('click', () => {
-    if (currentMetadata.keywords && currentMetadata.keywords.length > 0) {
-      const kwList = currentMetadata.keywords.join(', ');
-      copyTextToClipboard(kwList, 'All keywords copied!', copyKeywordsBtn);
-    } else {
-      showToast('No keywords available to copy.', 'error');
-    }
-  });
-
-  copyAllTagsBtn.addEventListener('click', () => {
-    const snippet = generateHtmlHeadSnippet(currentMetadata);
-    copyTextToClipboard(snippet, 'All HTML <head> tags copied!', copyAllTagsBtn);
-  });
-
-  // --- File Download Helpers ---
-  function downloadFile(content, filename, mimeType) {
-    const blob = new Blob([content], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast(`Saved ${filename}.`, 'success');
+  if (copyKeywordsBtn) {
+    copyKeywordsBtn.addEventListener('click', () => {
+      if (currentMetadata.keywords && currentMetadata.keywords.length > 0) {
+        copyTextToClipboard(currentMetadata.keywords.join(', '), 'All keywords copied!', copyKeywordsBtn);
+      } else {
+        showToast('No keywords available to copy.', 'error');
+      }
+    });
   }
 
-  downloadHtmlBtn.addEventListener('click', () => {
-    downloadFile(generateHtmlHeadSnippet(currentMetadata), 'head-meta.html', 'text/html');
-  });
+  if (copyHtmlBtn) {
+    copyHtmlBtn.addEventListener('click', () => {
+      const snippet = generateHtmlHeadSnippet(currentMetadata);
+      copyTextToClipboard(snippet, 'HTML <head> snippet copied!', copyHtmlBtn);
+    });
+  }
 
-  downloadSnippetBtn.addEventListener('click', () => {
-    downloadFile(generateHtmlHeadSnippet(currentMetadata), 'head-meta.html', 'text/html');
-  });
-
-  downloadJsonBtn.addEventListener('click', () => {
-    downloadFile(JSON.stringify(currentMetadata, null, 2), 'seo-metadata.json', 'application/json');
-  });
+  if (copyJsonBtn) {
+    copyJsonBtn.addEventListener('click', () => {
+      const gscToken = currentMetadata.gsc_verification || DEFAULT_GSC_TOKEN;
+      const exportData = Object.assign({}, currentMetadata, { google_site_verification: gscToken });
+      copyTextToClipboard(JSON.stringify(exportData, null, 2), 'JSON schema copied!', copyJsonBtn);
+    });
+  }
 
   async function copyTextToClipboard(text, successMsg = 'Copied!', btnEl = null) {
     try {
@@ -753,7 +682,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
       if (btnEl) {
         const originalHtml = btnEl.innerHTML;
-        btnEl.innerHTML = `<span style="color: #10b981;">✓ Copied</span>`;
+        btnEl.innerHTML = `<span style="color: var(--accent-teal);">✓ Copied</span>`;
         setTimeout(() => {
           btnEl.innerHTML = originalHtml;
         }, 1600);
@@ -766,20 +695,23 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
   function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
+    if (!container) return;
     const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
+    toast.className = `toast ${type}`;
     toast.textContent = message;
     container.appendChild(toast);
 
     setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(6px)';
-      toast.style.transition = 'all 0.2s ease';
+      toast.classList.add('show');
+    }, 10);
+
+    setTimeout(() => {
+      toast.classList.remove('show');
       setTimeout(() => {
         if (toast.parentNode) {
           container.removeChild(toast);
         }
-      }, 200);
+      }, 250);
     }, 2800);
   }
 });

@@ -103,11 +103,17 @@ def site_webmanifest():
     )
 
 
+@app.route("/robots.txt")
+def robots_txt():
+    """Serve search crawler indexation policy."""
+    return send_from_directory(BASE_DIR, "robots.txt", mimetype="text/plain")
+
+
 @app.route("/health")
 @app.route("/api/health")
 def health():
     """Health check endpoint for deployment monitoring."""
-    return jsonify({"status": "ok", "app": "AI SEO Meta Generator"}), 200
+    return jsonify({"status": "ok", "app": "Rankora — AI SEO Intelligence"}), 200
 
 
 @app.route("/generate", methods=["POST"])

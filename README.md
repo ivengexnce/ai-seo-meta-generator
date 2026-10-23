@@ -1,124 +1,77 @@
-# AI SEO Meta Generator
+# Rankora — AI SEO Intelligence
 
-An AI-powered web tool that analyses page content and generates production-ready SEO metadata — meta titles, descriptions, Open Graph cards, keyword suggestions, and real-time Google SERP simulators — powered by Google Gemini AI.
+**Your content. Better discovered.**
 
-Built as the capstone project for the **FlyRank Front-End AI Engineering Internship Program (Jul–Oct 2026)**.
+Generate search-ready metadata, preview your search appearance, and optimize content with AI.
 
----
-
-## Key Features & Visual Enhancements
-
-- **Calibrated Meta Generation**:
-  - **Meta Titles**: Strictly optimized for 50–60 characters to prevent Google SERP truncation.
-  - **Meta Descriptions**: Formatted for 150–160 characters with high-CTR search intent.
-  - **Open Graph & Twitter Cards**: `og:title`, `og:description`, `og:type`, and `twitter:card` tags.
-  - **Semantic Keywords**: 5–10 algorithm-ranked terms extracted from content context.
-- **Interactive 3D Particle Constellation**:
-  - High-performance, GPU-accelerated canvas particle mesh that floats organically and reacts to mouse movement.
-  - Automatically pauses when the tab is inactive or hidden to conserve 100% CPU/GPU resources.
-  - Full support for `prefers-reduced-motion: reduce`.
-- **Live SEO Health Score & Audit Gauge**:
-  - Dynamic circular SVG gauge (0–100%) calculating on-page SEO readiness in real time.
-  - Itemized checklist tracking title length, description length, social card readiness, and keyword density.
-- **Google SERP & Social Feed Simulators**:
-  - **SERP Simulator**: Preview search snippets in real time with desktop and mobile viewport toggles.
-  - **Social Share Simulator**: Live previews for X / Twitter large summary cards and LinkedIn feed shares.
-- **Modern UI & Design System**:
-  - **Shadcn/ui & Magic UI Inspired**: Obsidian/slate tokens, glassmorphism, glowing accents, and smooth transitions.
-  - **Accessible API Key Modal Dialog**: Keyboard-accessible dialog (ESC to close, backdrop click, focus trap) with one-click Demo Mode.
-  - **Origin UI Input Patterns**: Quick preset pills (Tech Blog, SaaS Platform, Product Page), live character/word count, and one-click clear.
-- **Export & Download Hub**:
-  - Instant one-click copy for individual fields, all Open Graph tags, or all keywords.
-  - Download ready-to-paste `head-meta.html` snippets and structured `seo-metadata.json`.
-- **Brand Assets & SEO Metadata**:
-  - Custom scalable SVG favicon (`favicon.svg`) with SEO lens and Gemini sparkle.
-  - High-resolution Open Graph social preview card (`og-image.jpg`, 1200 × 630).
-  - PWA Web Manifest (`site.webmanifest`).
-  - Lucide icon system embedded across all interactive elements.
+Rankora is a modern, focused SEO metadata workspace that helps developers, marketers, creators, and businesses generate optimized meta titles and descriptions, create social-sharing metadata, discover relevant keywords, preview how pages appear in Google SERP results, and verify site ownership via Google Search Console.
 
 ---
 
-## Tech Stack
+## Brand & Design Architecture
 
-- **Backend**: Python 3.9+ · Flask · Google Generative AI SDK
-- **AI Models**: Google Gemini 3.6 Flash / 2.5 Flash
-- **Frontend Architecture**:
-  - Semantic HTML5 & Modern CSS3 Design Tokens
-  - Interactive Canvas 3D Particle Engine
-  - GSAP (GreenSock) Motion & Staggered Reveal Animation
-  - Canvas-Confetti Micro-Celebration Trigger
-  - Lucide Icons (Universal SVG Iconography)
-- **Deployment**: Vercel Serverless (`api/index.py`, `vercel.json`) / Render (`gunicorn app:app`)
+- **Tagline**: *Your content. Better discovered.*
+- **Brand Personality**: Intelligent, confident, minimal, data-driven, approachable.
+- **Color Palette (Restrained 70 / 20 / 8 / 2 System)**:
+  - **Deep Navy** (`#101827`): Main background, navigation, and footer surfaces (70%).
+  - **Electric Teal** (`#14B8A6`): Primary buttons, active states, and focus highlights (20%).
+  - **Cloud White** (`#F8FAFC`): Primary text and light surfaces.
+  - **Slate** (`#64748B`): Secondary text, labels, and technical descriptions (8%).
+  - **Signal Violet** (`#8B5CF6`): AI-generated labels and Gemini badges.
+  - **Status Accents**: Green (`#22C55E`), Amber (`#F59E0B`), Red (`#EF4444`) (2%).
+- **Typography**:
+  - **Display / Headings**: Space Grotesk (600–700)
+  - **Body / Interface**: Inter (400–600)
+  - **Technical Values**: JetBrains Mono (character counters, URLs, code snippets)
 
 ---
 
-## Getting Started
+## Core Features & Workflow
 
-### Prerequisites
-- Python 3.9+
-- Google Gemini API key ([aistudio.google.com](https://aistudio.google.com)) or use the built-in **Demo Mode**.
+### 1. Workflow: Enter content → Generate → Review → Preview → Copy or export
+1. **Enter Content Brief**: Paste article text, landing page drafts, or product specifications.
+2. **AI Intelligence**: Google Gemini 3.8 Flash extracts core search intent, primary entities, and high-CTR phrasing.
+3. **Calibrated SERP Preview**: Live authentic Google desktop search snippet with breadcrumb path and title truncation checks.
+4. **Copy & Deploy**: One-click copy for HTML `<head>` tags, JSON schema, or individual fields.
 
-### Installation
+### 2. Search Console Verification
+- Live site verification meta tag:
+  `<meta name="google-site-verification" content="bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA">`
+- HTML verification file served dynamically:
+  `/google7e9d5e6a885f213a.html` &rarr; `google-site-verification: google7e9d5e6a885f213a.html`
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/ivengexnce/ai-seo-meta-generator.git
-cd ai-seo-meta-generator
+### 3. Technical SEO Calibration Standards
+- **Meta Titles**: Strictly targeted to 50–60 characters to avoid Google desktop truncation.
+- **Meta Descriptions**: Strictly targeted to 150–160 characters to maximize search snippet CTR.
+- **Open Graph & Twitter Cards**: `og:title`, `og:description`, `og:type`, `og:image`, and `twitter:card` tags.
+- **Semantic Keyword Extraction**: 5–10 algorithmically ranked keywords and topical phrases.
 
-# 2. Set up virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .\.venv\Scripts\activate
+---
 
-# 3. Install dependencies
-pip install -r requirements.txt
+## Brand Assets
 
-# 4. Configure environment (optional, can also be configured directly in UI)
-cp .env.example .env
-# Edit .env and set GEMINI_API_KEY=your_key_here
-
-# 5. Run the application
-python app.py
-
-# 6. Open in browser
-http://localhost:5000
 ```
-
----
-
-## Project Structure
-
-```text
-ai-seo-meta-generator/
-├── app.py                      # Flask backend + Gemini API fallback engine
-├── api/
-│   └── index.py                # Vercel serverless entry point
-├── requirements.txt            # Python dependencies (flask, google-generativeai, gunicorn)
-├── vercel.json                 # Vercel routing configuration
-├── templates/
-│   └── index.html              # Modern, accessible semantic UI template
-├── static/
-│   ├── style.css               # Production design system & component styles
-│   ├── script.js               # Frontend controller, 3D particle canvas & live audit
-│   ├── favicon.svg             # Scalable vector favicon
-│   ├── site.webmanifest        # PWA web manifest
-│   └── og-image.jpg            # High-resolution (1200x630) social share card
-├── public/static/              # Vercel static asset mirror
-├── .env.example                # Sample environment configuration
-├── .gitignore
-└── README.md
+static/
+├── assets/
+│   └── brand/
+│       ├── icon.svg        # Standalone vector brand mark
+│       ├── logo.svg        # Primary dark logo (teal symbol + white wordmark)
+│       ├── logo-dark.svg   # Dark surface vector logo
+│       └── logo-light.svg  # Light surface vector logo (deep teal symbol + navy wordmark)
+├── favicon.svg             # Scalable browser favicon
+└── site.webmanifest        # PWA application manifest
 ```
 
 ---
 
 ## API Endpoints
 
-### 1. `POST /generate`
-Generates optimized SEO metadata from page content.
-
-**Request Body:**
+### 1. `POST /generate` (or `/api/generate`)
+Analyzes page content and returns strict calibrated metadata:
 ```json
 {
-  "content": "Page content, article text, or HTML...",
+  "content": "Page content brief, article draft, or product copy...",
+  "focus_keywords": "seo, metadata",
   "api_key": "optional_override_or_demo"
 }
 ```
@@ -126,58 +79,52 @@ Generates optimized SEO metadata from page content.
 **Response:**
 ```json
 {
-  "meta_title": "SEO-optimized title between 50 and 60 characters",
-  "meta_description": "Compelling meta description between 150 and 160 characters",
-  "og_title": "Engaging Open Graph title for social feeds",
-  "og_description": "Clear and attractive Open Graph description",
+  "meta_title": "Page Title Between 50 and 60 Characters",
+  "meta_description": "Search snippet description calibrated strictly between 150 and 160 characters with high-CTR action phrasing.",
+  "og_title": "Engaging Open Graph Title for Social Previews",
+  "og_description": "Open Graph description calibrated for social media feeds",
   "og_type": "website",
-  "keywords": ["SEO Optimization", "Gemini AI", "Frontend", "Meta Tags"]
+  "keywords": ["keyword 1", "keyword 2", "keyword 3", "keyword 4", "keyword 5"]
 }
 ```
 
-### 2. `GET /health`
-Deployment monitoring health check endpoint.
+### 2. `GET /health` (or `/api/health`)
 ```json
 {
-  "app": "AI SEO Meta Generator",
+  "app": "Rankora — AI SEO Intelligence",
   "status": "ok"
 }
 ```
 
-### 3. Static & Asset Routes
-- `GET /favicon.ico`, `GET /favicon.svg`: Dynamic SVG favicon
-- `GET /site.webmanifest`: Web manifest
-- `GET /static/og-image.jpg`: 1200 × 630 Open Graph preview image
+### 3. `GET /robots.txt`
+Serves crawl directives allowing search indexation and declaring sitemap path.
 
 ---
 
-## Deployment
+## Local Development
 
-### Vercel (Recommended)
-1. Push repository to GitHub.
-2. Import project into [Vercel](https://vercel.com).
-3. Set environment variable `GEMINI_API_KEY` (or users can provide their own key / demo mode in the UI).
-4. Deploy! The project includes `vercel.json` and `api/index.py` for instant zero-configuration deployment.
+```bash
+# Clone the repository
+git clone https://github.com/ivengexnce/ai-seo-meta-generator.git
+cd ai-seo-meta-generator
 
-### Render
-1. Create a new Web Service on [Render](https://render.com) connected to your repository.
-2. Build Command: `pip install -r requirements.txt`
-3. Start Command: `gunicorn app:app`
-4. Set `GEMINI_API_KEY` in environment variables.
+# Setup virtual environment
+python -m venv .venv
+source .venv/bin/activate  # Or on Windows: .venv\Scripts\activate
 
----
+# Install dependencies
+pip install -r requirements.txt
 
-## Capstone Context
+# Run development server
+python app.py
+```
 
-This project was built and accepted as the capstone submission for the:
-**FlyRank Front-End AI Engineering Internship Program (July–October 2026)**
-- Verification Portal: [internship.flyrank.ai/verify](https://internship.flyrank.ai/verify)
-- Verification ID: `FR-D11-02FDC-1F974`
+Open `http://127.0.0.1:5000` in your browser.
 
 ---
 
-## Author
+## Author & Project Info
 
 **Meet Maru**
 - GitHub: [@ivengexnce](https://github.com/ivengexnce)
-- Portfolio: [meetmaru.netlify.app](https://meetmaru.netlify.app)
+- Project Capstone: **FlyRank Front-End AI Engineering Internship Program**

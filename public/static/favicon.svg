@@ -1,10 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <!-- Onyx Noir canvas with Graphite Veil precision border -->
-  <rect width="64" height="64" rx="14" fill="#0a0a0a"/>
-  <rect x="1" y="1" width="62" height="62" rx="13" stroke="#2e2e2e" stroke-width="1.5"/>
+  <defs>
+    <linearGradient id="fav-teal" x1="12" y1="52" x2="52" y2="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0D9488"/>
+      <stop offset="50%" stop-color="#14B8A6"/>
+      <stop offset="100%" stop-color="#2DD4BF"/>
+    </linearGradient>
+    <linearGradient id="fav-violet" x1="16" y1="16" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#6366F1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Navy Rounded Container -->
+  <rect width="64" height="64" rx="16" fill="#101827"/>
+  <rect x="1" y="1" width="62" height="62" rx="15" stroke="#1E293B" stroke-width="1.5"/>
+
+  <!-- Ascending Rank Chevron -->
+  <path d="M18 43L32 23L46 43" stroke="url(#fav-teal)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
   
-  <!-- Tag brackets < / > in Oxblood Maison and Pearl Ivory -->
-  <path d="M21 21L13 32L21 43" stroke="#b82343" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M43 21L51 32L43 43" stroke="#b82343" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M35 18L29 46" stroke="#f4f2ef" stroke-width="3" stroke-linecap="round"/>
+  <!-- Search visibility focal circle -->
+  <circle cx="32" cy="23" r="5" fill="#101827" stroke="#14B8A6" stroke-width="3"/>
+  <circle cx="32" cy="23" r="2" fill="#2DD4BF"/>
+
+  <!-- Secondary ascending beam -->
+  <path d="M26 43L32 34L38 43" stroke="url(#fav-violet)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Base connection line & nodes -->
+  <line x1="17" y1="48" x2="47" y2="48" stroke="#334155" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="20" cy="48" r="2" fill="#14B8A6"/>
+  <circle cx="32" cy="48" r="2.5" fill="#8B5CF6"/>
+  <circle cx="44" cy="48" r="2" fill="#14B8A6"/>
 </svg>
