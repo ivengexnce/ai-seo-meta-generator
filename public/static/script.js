@@ -1,9 +1,14 @@
 /**
  * AI SEO Meta Generator — Frontend Controller
- * Plain Vanilla JavaScript with zero dependencies
+ * Modern motion design, interactive 3D particle canvas, GSAP reveals, and shadcn patterns
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Lucide Icons
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+
   // --- DOM Elements ---
   const form = document.getElementById('generator-form');
   const contentInput = document.getElementById('page-content');
@@ -19,6 +24,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const stateLoading = document.getElementById('state-loading');
   const stateResults = document.getElementById('state-results');
   const loadingStepText = document.getElementById('loading-step-text');
+  const quickActionsBar = document.getElementById('quick-actions-bar');
+
+  // SEO Score Gauge Elements
+  const seoScoreCard = document.getElementById('seo-score-card');
+  const scoreGaugeBar = document.getElementById('score-gauge-bar');
+  const scoreGaugeNumber = document.getElementById('score-gauge-number');
+  const scoreGradePill = document.getElementById('score-grade-pill');
+  const chkTitle = document.getElementById('chk-title');
+  const chkTitleText = document.getElementById('chk-title-text');
+  const chkDesc = document.getElementById('chk-desc');
+  const chkDescText = document.getElementById('chk-desc-text');
+  const chkOg = document.getElementById('chk-og');
+  const chkOgText = document.getElementById('chk-og-text');
+  const chkKw = document.getElementById('chk-kw');
+  const chkKwText = document.getElementById('chk-kw-text');
 
   // Result Elements
   const metaTitleEl = document.getElementById('meta-title-text');
@@ -34,30 +54,44 @@ document.addEventListener('DOMContentLoaded', () => {
   const ogTypeEl = document.getElementById('og-type-text');
   const copyAllOgBtn = document.getElementById('copy-all-og-btn');
 
-  // Keywords
+  // Keywords Elements
   const keywordsChipsEl = document.getElementById('keywords-chips');
   const copyKeywordsBtn = document.getElementById('copy-keywords-btn');
 
-  // Previews
+  // Previews Elements
+  const serpContainer = document.getElementById('serp-container');
   const serpTitlePreview = document.getElementById('serp-title-preview');
   const serpDescPreview = document.getElementById('serp-desc-preview');
+  const serpViewDesktop = document.getElementById('serp-view-desktop');
+  const serpViewMobile = document.getElementById('serp-view-mobile');
+
   const socialTitlePreview = document.getElementById('social-title-preview');
   const socialDescPreview = document.getElementById('social-desc-preview');
+  const socialViewTwitter = document.getElementById('social-view-twitter');
+  const socialViewLinkedin = document.getElementById('social-view-linkedin');
 
-  // Code Export
+  // Code Export Elements
   const htmlCodeBlock = document.getElementById('html-code-block');
   const jsonCodeBlock = document.getElementById('json-code-block');
+  const copyAllTagsBtn = document.getElementById('copy-all-tags-btn');
+  const downloadHtmlBtn = document.getElementById('download-html-btn');
+  const downloadSnippetBtn = document.getElementById('download-snippet-btn');
+  const downloadJsonBtn = document.getElementById('download-json-btn');
 
   // Tabs
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabPanes = document.querySelectorAll('.tab-pane');
 
-  // API Key Drawer & Storage
+  // Modal Dialog Elements
   const toggleKeyBtn = document.getElementById('toggle-key-btn');
-  const apiKeyDrawer = document.getElementById('api-key-drawer');
+  const apiKeyModal = document.getElementById('api-key-modal');
+  const closeModalBtn = document.getElementById('close-modal-btn');
   const customApiKeyInput = document.getElementById('custom-api-key');
+  const toggleKeyVisibilityBtn = document.getElementById('toggle-key-visibility');
+  const eyeIcon = document.getElementById('eye-icon');
   const saveKeyBtn = document.getElementById('save-key-btn');
   const clearKeyBtn = document.getElementById('clear-key-btn');
+  const demoModeBtn = document.getElementById('demo-mode-btn');
   const apiStatusLabel = document.getElementById('api-status-label');
 
   // Sample Presets
@@ -112,29 +146,200 @@ Product Specifications:
 Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next personal best today.`
   };
 
-  // --- API Key Management ---
+  // =========================================================================
+  // 1. Interactive 3D / Particle Constellation Background Canvas
+  // =========================================================================
+  const canvas = document.getElementById('bg-canvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    let particles = [];
+    let mouse = { x: width / 2, y: height / 2, targetX: width / 2, targetY: height / 2 };
+    let animationFrameId = null;
+    let isVisible = true;
+
+    // Check prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Responsive particle count based on screen width
+    const particleCount = Math.min(Math.floor((width * height) / 18000), 75);
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.45;
+        this.vy = (Math.random() - 0.5) * 0.45;
+        this.radius = Math.random() * 1.8 + 0.8;
+        this.alpha = Math.random() * 0.45 + 0.2;
+        // Accent colors: indigo / cyan
+        this.color = Math.random() > 0.4 ? '99, 102, 241' : '6, 182, 212';
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Subtle mouse pull
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 180) {
+          const force = (180 - dist) / 180;
+          this.x += (dx / dist) * force * 0.6;
+          this.y += (dy / dist) * force * 0.6;
+        }
+
+        // Wrap around boundaries
+        if (this.x < 0) this.x = width;
+        if (this.x > width) this.x = 0;
+        if (this.y < 0) this.y = height;
+        if (this.y > height) this.y = 0;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function renderCanvas() {
+      if (!isVisible) return;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Smooth mouse damping
+      mouse.x += (mouse.targetX - mouse.x) * 0.05;
+      mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+      // Draw particle connections
+      for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        p1.update();
+        p1.draw();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 110) {
+            const opacity = (1 - dist / 110) * 0.16;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      if (!prefersReducedMotion) {
+        animationFrameId = requestAnimationFrame(renderCanvas);
+      }
+    }
+
+    if (!prefersReducedMotion) {
+      renderCanvas();
+    }
+
+    // Pointer move listener
+    window.addEventListener('pointermove', (e) => {
+      mouse.targetX = e.clientX;
+      mouse.targetY = e.clientY;
+    }, { passive: true });
+
+    // Resize listener
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }, { passive: true });
+
+    // Pause on tab hidden to save CPU/GPU
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        isVisible = false;
+        cancelAnimationFrame(animationFrameId);
+      } else {
+        isVisible = true;
+        if (!prefersReducedMotion) renderCanvas();
+      }
+    });
+  }
+
+  // =========================================================================
+  // 2. Modal Dialog (Shadcn-style API Key Configuration)
+  // =========================================================================
   const storedApiKey = localStorage.getItem('gemini_api_key');
   if (storedApiKey) {
     customApiKeyInput.value = storedApiKey;
-    apiStatusLabel.textContent = 'Custom Key Active';
+    apiStatusLabel.textContent = storedApiKey.toLowerCase() === 'demo' ? 'Demo Mode Active' : 'Custom Key Active';
   }
 
-  toggleKeyBtn.addEventListener('click', () => {
-    apiKeyDrawer.classList.toggle('hidden');
+  function openModal() {
+    apiKeyModal.classList.remove('hidden');
+    toggleKeyBtn.setAttribute('aria-expanded', 'true');
+    customApiKeyInput.focus();
+  }
+
+  function closeModal() {
+    apiKeyModal.classList.add('hidden');
+    toggleKeyBtn.setAttribute('aria-expanded', 'false');
+    toggleKeyBtn.focus();
+  }
+
+  toggleKeyBtn.addEventListener('click', openModal);
+  closeModalBtn.addEventListener('click', closeModal);
+
+  // Close on backdrop click
+  apiKeyModal.addEventListener('click', (e) => {
+    if (e.target === apiKeyModal) {
+      closeModal();
+    }
   });
 
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !apiKeyModal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+
+  // Password Visibility Toggle
+  toggleKeyVisibilityBtn.addEventListener('click', () => {
+    const isPassword = customApiKeyInput.type === 'password';
+    customApiKeyInput.type = isPassword ? 'text' : 'password';
+    eyeIcon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+    if (window.lucide) window.lucide.createIcons();
+  });
+
+  // Save Key
   saveKeyBtn.addEventListener('click', () => {
     const key = customApiKeyInput.value.trim();
     if (key) {
       localStorage.setItem('gemini_api_key', key);
-      apiStatusLabel.textContent = 'Custom Key Active';
-      showToast('API Key saved locally in browser!', 'success');
-      apiKeyDrawer.classList.add('hidden');
+      apiStatusLabel.textContent = key.toLowerCase() === 'demo' ? 'Demo Mode Active' : 'Custom Key Active';
+      showToast('API Key securely saved for this browser session.', 'success');
+      closeModal();
     } else {
-      showToast('Please enter a valid API key.', 'error');
+      showToast('Please enter an API key or use Demo Mode.', 'error');
     }
   });
 
+  // Clear Key
   clearKeyBtn.addEventListener('click', () => {
     localStorage.removeItem('gemini_api_key');
     customApiKeyInput.value = '';
@@ -142,7 +347,18 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     showToast('Saved API Key removed.', 'success');
   });
 
-  // --- Input Counters & Clear ---
+  // Instant Demo Mode
+  demoModeBtn.addEventListener('click', () => {
+    customApiKeyInput.value = 'demo';
+    localStorage.setItem('gemini_api_key', 'demo');
+    apiStatusLabel.textContent = 'Demo Mode Active';
+    showToast('Demo Mode activated! Simulated AI responses enabled.', 'success');
+    closeModal();
+  });
+
+  // =========================================================================
+  // 3. Input Counters & Quick Actions
+  // =========================================================================
   function updateInputCounters() {
     const text = contentInput.value;
     const chars = text.length;
@@ -153,25 +369,28 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   contentInput.addEventListener('input', updateInputCounters);
 
   clearContentBtn.addEventListener('click', () => {
-    contentInput.value = '';
-    updateInputCounters();
-    contentInput.focus();
+    if (contentInput.value) {
+      contentInput.value = '';
+      updateInputCounters();
+      contentInput.focus();
+      showToast('Input content cleared.', 'success');
+    }
   });
 
-  // --- Sample Pill Selectors ---
+  // Quick Samples
   samplePills.forEach(btn => {
     btn.addEventListener('click', () => {
       const type = btn.getAttribute('data-sample');
       if (SAMPLES[type]) {
         contentInput.value = SAMPLES[type];
         updateInputCounters();
-        showToast(`Loaded ${btn.textContent} sample!`, 'success');
+        showToast(`Loaded ${btn.textContent.trim()} sample!`, 'success');
         contentInput.scrollTop = 0;
       }
     });
   });
 
-  // --- Keyboard Shortcut: Ctrl/Cmd + Enter ---
+  // Keyboard Shortcut: Ctrl/Cmd + Enter to Submit
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       if (document.activeElement === contentInput || form.contains(document.activeElement)) {
@@ -181,14 +400,21 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   });
 
-  // --- Tab Switching ---
+  // =========================================================================
+  // 4. Tab Navigation (Segmented Control)
+  // =========================================================================
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetTab = btn.getAttribute('data-tab');
-      tabBtns.forEach(b => b.classList.remove('active'));
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
       tabPanes.forEach(p => p.classList.remove('active'));
 
       btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
       const activePane = document.getElementById(`tab-pane-${targetTab}`);
       if (activePane) {
         activePane.classList.add('active');
@@ -196,7 +422,36 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     });
   });
 
-  // --- Form Submission / API Call ---
+  // =========================================================================
+  // 5. SERP & Social Simulator View Switchers (Origin UI)
+  // =========================================================================
+  // Google Desktop vs Mobile SERP View
+  serpViewDesktop.addEventListener('click', () => {
+    serpViewDesktop.classList.add('active');
+    serpViewMobile.classList.remove('active');
+    serpContainer.classList.remove('mobile-view');
+  });
+
+  serpViewMobile.addEventListener('click', () => {
+    serpViewMobile.classList.add('active');
+    serpViewDesktop.classList.remove('active');
+    serpContainer.classList.add('mobile-view');
+  });
+
+  // Twitter vs LinkedIn Social Preview
+  socialViewTwitter.addEventListener('click', () => {
+    socialViewTwitter.classList.add('active');
+    socialViewLinkedin.classList.remove('active');
+  });
+
+  socialViewLinkedin.addEventListener('click', () => {
+    socialViewLinkedin.classList.add('active');
+    socialViewTwitter.classList.remove('active');
+  });
+
+  // =========================================================================
+  // 6. Form Submission & Generation Workflow
+  // =========================================================================
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const content = contentInput.value.trim();
@@ -207,10 +462,8 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       return;
     }
 
-    // Set Loading UI
     setLoadingState(true);
 
-    // Dynamic Loading Status Text Steps
     const statusSteps = [
       'Reading content and evaluating semantic structure...',
       'Optimizing meta title for Google character limits (50–60 chars)...',
@@ -248,7 +501,26 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       currentMetadata = data;
       renderMetadata(data);
       setLoadingState(false, true);
+
+      // Micro-confetti burst on success!
+      if (window.confetti) {
+        window.confetti({
+          particleCount: 45,
+          spread: 60,
+          origin: { y: 0.75 },
+          colors: ['#6366f1', '#06b6d4', '#10b981', '#38bdf8']
+        });
+      }
+
       showToast('SEO Metadata generated successfully!', 'success');
+
+      // GSAP Staggered reveal if loaded
+      if (window.gsap) {
+        window.gsap.fromTo('.meta-card', 
+          { opacity: 0, y: 16 }, 
+          { opacity: 1, y: 0, duration: 0.45, stagger: 0.1, ease: 'power2.out' }
+        );
+      }
 
     } catch (err) {
       clearInterval(stepInterval);
@@ -258,7 +530,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   });
 
-  // --- State Switching ---
+  // State Switching
   function setLoadingState(isLoading, hasSuccess = false) {
     if (isLoading) {
       generateBtn.disabled = true;
@@ -269,6 +541,8 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       stateEmpty.classList.add('hidden');
       stateResults.classList.add('hidden');
       stateLoading.classList.remove('hidden');
+      seoScoreCard.classList.add('hidden');
+      quickActionsBar.classList.add('hidden');
     } else {
       generateBtn.disabled = false;
       btnSpinner.classList.add('hidden');
@@ -279,14 +553,20 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       if (hasSuccess) {
         stateEmpty.classList.add('hidden');
         stateResults.classList.remove('hidden');
+        seoScoreCard.classList.remove('hidden');
+        quickActionsBar.classList.remove('hidden');
       } else if (!currentMetadata.meta_title) {
         stateEmpty.classList.remove('hidden');
         stateResults.classList.add('hidden');
+        seoScoreCard.classList.add('hidden');
+        quickActionsBar.classList.add('hidden');
       }
     }
   }
 
-  // --- Render Metadata Results ---
+  // =========================================================================
+  // 7. Render Metadata & Live Auditing
+  // =========================================================================
   function renderMetadata(data) {
     // 1. Meta Title
     metaTitleEl.textContent = data.meta_title || '';
@@ -309,14 +589,21 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
     // 6. Code Exports
     updateCodeBlocks(data);
+
+    // 7. SEO Health Score Audit
+    calculateSeoScore(data);
+
+    // Refresh Lucide Icons in newly rendered nodes
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
   }
 
-  // --- Title & Description Real-Time Character Indicators ---
+  // Title Indicators
   function updateTitleIndicators(title) {
     const len = title.length;
     titleCharBadge.textContent = `${len} / 60 chars`;
 
-    // Percentage of 60 chars
     const pct = Math.min(Math.round((len / 60) * 100), 100);
     titleProgressBar.style.width = `${pct}%`;
 
@@ -335,11 +622,11 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   }
 
+  // Description Indicators
   function updateDescIndicators(desc) {
     const len = desc.length;
     descCharBadge.textContent = `${len} / 160 chars`;
 
-    // Percentage of 160 chars
     const pct = Math.min(Math.round((len / 160) * 100), 100);
     descProgressBar.style.width = `${pct}%`;
 
@@ -358,13 +645,116 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   }
 
-  // Allow live editing of title & description
+  // SEO Health Score Calculator & Gauge Animation
+  function calculateSeoScore(data) {
+    const titleLen = (data.meta_title || '').length;
+    const descLen = (data.meta_description || '').length;
+    const kwCount = Array.isArray(data.keywords) ? data.keywords.length : 0;
+    const hasOg = Boolean(data.og_title && data.og_description);
+
+    let score = 0;
+
+    // Title score (max 25)
+    if (titleLen >= 50 && titleLen <= 60) {
+      score += 25;
+      chkTitleText.textContent = `Optimal (${titleLen} chars)`;
+      updateCheckItem(chkTitle, 'success');
+    } else if ((titleLen >= 40 && titleLen < 50) || (titleLen > 60 && titleLen <= 68)) {
+      score += 16;
+      chkTitleText.textContent = `Acceptable (${titleLen} chars)`;
+      updateCheckItem(chkTitle, 'warning');
+    } else {
+      score += 6;
+      chkTitleText.textContent = `Needs work (${titleLen} chars)`;
+      updateCheckItem(chkTitle, 'danger');
+    }
+
+    // Description score (max 25)
+    if (descLen >= 150 && descLen <= 160) {
+      score += 25;
+      chkDescText.textContent = `Optimal (${descLen} chars)`;
+      updateCheckItem(chkDesc, 'success');
+    } else if ((descLen >= 130 && descLen < 150) || (descLen > 160 && descLen <= 175)) {
+      score += 16;
+      chkDescText.textContent = `Acceptable (${descLen} chars)`;
+      updateCheckItem(chkDesc, 'warning');
+    } else {
+      score += 6;
+      chkDescText.textContent = `Needs work (${descLen} chars)`;
+      updateCheckItem(chkDesc, 'danger');
+    }
+
+    // Open Graph score (max 25)
+    if (hasOg) {
+      score += 25;
+      chkOgText.textContent = 'Social cards configured';
+      updateCheckItem(chkOg, 'success');
+    } else {
+      score += 8;
+      chkOgText.textContent = 'Incomplete OG tags';
+      updateCheckItem(chkOg, 'warning');
+    }
+
+    // Keywords score (max 25)
+    if (kwCount >= 5) {
+      score += 25;
+      chkKwText.textContent = `${kwCount} high-intent terms`;
+      updateCheckItem(chkKw, 'success');
+    } else if (kwCount > 0) {
+      score += 14;
+      chkKwText.textContent = `${kwCount} terms (suggest 5+)`;
+      updateCheckItem(chkKw, 'warning');
+    } else {
+      score += 0;
+      chkKwText.textContent = 'No keywords identified';
+      updateCheckItem(chkKw, 'danger');
+    }
+
+    // Update Score Number & Grade Pill
+    scoreGaugeNumber.textContent = score;
+
+    scoreGradePill.className = 'grade-pill';
+    if (score >= 90) {
+      scoreGradePill.classList.add('grade-excellent');
+      scoreGradePill.textContent = `Optimal (${score}%)`;
+      scoreGaugeBar.style.stroke = 'var(--success)';
+    } else if (score >= 70) {
+      scoreGradePill.classList.add('grade-good');
+      scoreGradePill.textContent = `Good (${score}%)`;
+      scoreGaugeBar.style.stroke = 'var(--warning)';
+    } else {
+      scoreGradePill.classList.add('grade-needs-work');
+      scoreGradePill.textContent = `Needs Tuning (${score}%)`;
+      scoreGaugeBar.style.stroke = 'var(--danger)';
+    }
+
+    // Circumference = 2 * PI * 42 ≈ 263.89
+    const circumference = 2 * Math.PI * 42;
+    const offset = circumference - (score / 100) * circumference;
+    scoreGaugeBar.style.strokeDashoffset = offset;
+  }
+
+  function updateCheckItem(el, status) {
+    const icon = el.querySelector('.chk-icon');
+    if (!icon) return;
+    icon.className = `chk-icon ${status}`;
+    if (status === 'success') {
+      icon.setAttribute('data-lucide', 'check-circle-2');
+    } else if (status === 'warning') {
+      icon.setAttribute('data-lucide', 'alert-triangle');
+    } else {
+      icon.setAttribute('data-lucide', 'alert-circle');
+    }
+  }
+
+  // Live editing listeners
   metaTitleEl.addEventListener('input', () => {
     const val = metaTitleEl.textContent;
     currentMetadata.meta_title = val;
     updateTitleIndicators(val);
     updatePreviews(currentMetadata);
     updateCodeBlocks(currentMetadata);
+    calculateSeoScore(currentMetadata);
   });
 
   metaDescEl.addEventListener('input', () => {
@@ -373,6 +763,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     updateDescIndicators(val);
     updatePreviews(currentMetadata);
     updateCodeBlocks(currentMetadata);
+    calculateSeoScore(currentMetadata);
   });
 
   ogTitleEl.addEventListener('input', () => {
@@ -387,14 +778,14 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     updateCodeBlocks(currentMetadata);
   });
 
-  // --- Keywords Rendering ---
+  // Keywords Rendering
   function renderKeywords(keywords) {
     keywordsChipsEl.innerHTML = '';
     keywords.forEach(kw => {
       const chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'keyword-chip';
-      chip.textContent = kw;
+      chip.innerHTML = `<span>${escapeHtml(kw)}</span>`;
       chip.title = `Click to copy "${kw}"`;
       chip.addEventListener('click', () => {
         copyTextToClipboard(kw, `Copied keyword "${kw}"!`);
@@ -403,20 +794,19 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     });
   }
 
-  // --- SERP & Social Previews ---
+  // Previews
   function updatePreviews(data) {
     serpTitlePreview.textContent = data.meta_title || 'Example Title';
     serpDescPreview.textContent = data.meta_description || 'Example meta description for search preview...';
 
     socialTitlePreview.textContent = data.og_title || data.meta_title || 'Example Title';
-    socialDescDesc = data.og_description || data.meta_description || 'Example open graph description...';
-    socialDescPreview.textContent = socialDescDesc;
+    socialDescPreview.textContent = data.og_description || data.meta_description || 'Example open graph description...';
   }
 
-  // --- Code Blocks (HTML & JSON) ---
-  function updateCodeBlocks(data) {
+  // Code Blocks (HTML & JSON)
+  function generateHtmlHeadSnippet(data) {
     const kwString = Array.isArray(data.keywords) ? data.keywords.join(', ') : '';
-    const htmlHead = `<!-- Primary Meta Tags -->
+    return `<!-- Primary SEO Meta Tags -->
 <title>${escapeHtml(data.meta_title || '')}</title>
 <meta name="title" content="${escapeHtml(data.meta_title || '')}">
 <meta name="description" content="${escapeHtml(data.meta_description || '')}">
@@ -427,21 +817,24 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 <meta property="og:url" content="https://example.com/">
 <meta property="og:title" content="${escapeHtml(data.og_title || data.meta_title || '')}">
 <meta property="og:description" content="${escapeHtml(data.og_description || data.meta_description || '')}">
-<meta property="og:image" content="https://example.com/og-image.jpg">
+<meta property="og:image" content="https://example.com/static/og-image.jpg">
 
 <!-- Twitter Cards -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://example.com/">
-<meta property="twitter:title" content="${escapeHtml(data.og_title || data.meta_title || '')}">
-<meta property="twitter:description" content="${escapeHtml(data.og_description || data.meta_description || '')}">
-<meta property="twitter:image" content="https://example.com/og-image.jpg">`;
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://example.com/">
+<meta name="twitter:title" content="${escapeHtml(data.og_title || data.meta_title || '')}">
+<meta name="twitter:description" content="${escapeHtml(data.og_description || data.meta_description || '')}">
+<meta name="twitter:image" content="https://example.com/static/og-image.jpg">`;
+  }
 
+  function updateCodeBlocks(data) {
+    const htmlHead = generateHtmlHeadSnippet(data);
     htmlCodeBlock.textContent = htmlHead;
     jsonCodeBlock.textContent = JSON.stringify(data, null, 2);
   }
 
   function escapeHtml(str) {
-    return str
+    return String(str || '')
       .replace(/&/g, '&amp;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;')
@@ -449,7 +842,9 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       .replace(/>/g, '&gt;');
   }
 
-  // --- Copy Handlers ---
+  // =========================================================================
+  // 8. Clipboard Copy & File Download Utilities
+  // =========================================================================
   document.addEventListener('click', (e) => {
     const copyBtn = e.target.closest('.copy-btn');
     if (!copyBtn) return;
@@ -467,7 +862,8 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   copyAllOgBtn.addEventListener('click', () => {
     const ogHtml = `<meta property="og:type" content="${escapeHtml(currentMetadata.og_type || 'website')}">
 <meta property="og:title" content="${escapeHtml(currentMetadata.og_title || currentMetadata.meta_title || '')}">
-<meta property="og:description" content="${escapeHtml(currentMetadata.og_description || currentMetadata.meta_description || '')}">`;
+<meta property="og:description" content="${escapeHtml(currentMetadata.og_description || currentMetadata.meta_description || '')}">
+<meta property="og:image" content="https://example.com/static/og-image.jpg">`;
     copyTextToClipboard(ogHtml, 'All Open Graph tags copied!', copyAllOgBtn);
   });
 
@@ -481,13 +877,44 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   });
 
-  // --- Generic Clipboard Copy ---
+  // Copy All Tags (Header Action)
+  copyAllTagsBtn.addEventListener('click', () => {
+    const snippet = generateHtmlHeadSnippet(currentMetadata);
+    copyTextToClipboard(snippet, 'All HTML <head> tags copied!', copyAllTagsBtn);
+  });
+
+  // File Download Helpers
+  function downloadFile(content, filename, mimeType) {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast(`Downloaded ${filename}!`, 'success');
+  }
+
+  downloadHtmlBtn.addEventListener('click', () => {
+    downloadFile(generateHtmlHeadSnippet(currentMetadata), 'head-meta.html', 'text/html');
+  });
+
+  downloadSnippetBtn.addEventListener('click', () => {
+    downloadFile(generateHtmlHeadSnippet(currentMetadata), 'head-meta.html', 'text/html');
+  });
+
+  downloadJsonBtn.addEventListener('click', () => {
+    downloadFile(JSON.stringify(currentMetadata, null, 2), 'seo-metadata.json', 'application/json');
+  });
+
+  // Generic Clipboard Copy
   async function copyTextToClipboard(text, successMsg = 'Copied!', btnEl = null) {
     try {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(text);
       } else {
-        // Fallback for non-https or older browsers
         const tempTextarea = document.createElement('textarea');
         tempTextarea.value = text;
         tempTextarea.style.position = 'fixed';
@@ -501,17 +928,16 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
       showToast(successMsg, 'success');
 
-      // Visual feedback on button if provided
       if (btnEl) {
-        const originalHtml = btnEl.innerHTML;
+        const originalContent = btnEl.innerHTML;
         btnEl.innerHTML = `
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
+          <i data-lucide="check" style="color: #10b981; width: 14px; height: 14px;"></i>
           <span style="color: #10b981;">Copied!</span>
         `;
+        if (window.lucide) window.lucide.createIcons();
         setTimeout(() => {
-          btnEl.innerHTML = originalHtml;
+          btnEl.innerHTML = originalContent;
+          if (window.lucide) window.lucide.createIcons();
         }, 1800);
       }
     } catch (err) {
@@ -520,18 +946,19 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     }
   }
 
-  // --- Toast Notifications ---
+  // Toast Notifications
   function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
 
-    const icon = type === 'success'
-      ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>`
-      : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
+    const iconHtml = type === 'success'
+      ? `<i data-lucide="check-circle" style="color: #10b981; width: 18px; height: 18px; flex-shrink: 0;"></i>`
+      : `<i data-lucide="alert-circle" style="color: #ef4444; width: 18px; height: 18px; flex-shrink: 0;"></i>`;
 
-    toast.innerHTML = `${icon}<span>${message}</span>`;
+    toast.innerHTML = `${iconHtml}<span>${escapeHtml(message)}</span>`;
     container.appendChild(toast);
+    if (window.lucide) window.lucide.createIcons();
 
     setTimeout(() => {
       toast.style.opacity = '0';
@@ -542,6 +969,6 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
           container.removeChild(toast);
         }
       }, 250);
-    }, 3000);
+    }, 3200);
   }
 });

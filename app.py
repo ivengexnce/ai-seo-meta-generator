@@ -1,7 +1,7 @@
 import json
 import os
 import re
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
 from dotenv import load_dotenv
 import warnings
 
@@ -56,6 +56,21 @@ def index():
     """Render the main UI page."""
     has_api_key = bool(os.getenv("GEMINI_API_KEY"))
     return render_template("index.html", has_api_key=has_api_key)
+
+
+@app.route("/favicon.ico")
+@app.route("/favicon.svg")
+def favicon():
+    """Serve scalable SVG favicon directly."""
+    return send_from_directory(app.static_folder, "favicon.svg", mimetype="image/svg+xml")
+
+
+@app.route("/site.webmanifest")
+def site_webmanifest():
+    """Serve web application manifest."""
+    return send_from_directory(
+        app.static_folder, "site.webmanifest", mimetype="application/manifest+json"
+    )
 
 
 @app.route("/health")
