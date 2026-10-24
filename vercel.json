@@ -1,6 +1,14 @@
 {
   "routes": [
     {
+      "src": "/google7e9d5e6a885f213a.html",
+      "dest": "/google7e9d5e6a885f213a.html"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/robots.txt"
+    },
+    {
       "src": "/static/(.*)",
       "dest": "/static/$1"
     },

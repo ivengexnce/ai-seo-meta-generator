@@ -1,7 +1,7 @@
 import json
 import os
 import re
-from flask import Flask, jsonify, render_template, request, send_from_directory
+from flask import Flask, abort, jsonify, render_template, request, send_from_directory
 from dotenv import load_dotenv
 import warnings
 
@@ -86,8 +86,13 @@ def index():
 
 @app.route("/google<token>.html")
 def gsc_file_verification(token):
-    """Serve Google Search Console HTML verification file."""
-    return f"google-site-verification: google{token}.html", 200, {"Content-Type": "text/html"}
+    """Serve Google Search Console HTML verification file ONLY if it exists on disk."""
+    filename = f"google{token}.html"
+    for folder in [BASE_DIR, os.path.join(BASE_DIR, "public")]:
+        file_path = os.path.join(folder, filename)
+        if os.path.isfile(file_path):
+            return send_from_directory(folder, filename, mimetype="text/html")
+    abort(404)
 
 
 @app.route("/favicon.ico")
