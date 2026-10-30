@@ -323,7 +323,10 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   document.querySelectorAll('.faq-question').forEach(btn => {
     btn.addEventListener('click', () => {
       const item = btn.closest('.faq-item');
-      if (item) item.classList.toggle('open');
+      if (item) {
+        const isOpen = item.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      }
     });
   });
 
