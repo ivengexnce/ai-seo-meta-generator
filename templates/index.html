@@ -42,6 +42,80 @@
     rel="stylesheet">
 
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=6.0">
+
+  <!-- SEO Structured Data: FAQPage Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why are 50 to 60 characters recommended for meta titles?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Google desktop search results typically truncate title tags exceeding approximately 600 pixels (roughly 50 to 60 characters). Keeping your title within this threshold ensures that your primary keyword, value proposition, and brand name remain completely visible in Search Engine Result Pages (SERPs) without trailing ellipsis truncation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the ideal length for an SEO meta description?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The recommended meta description length is between 150 and 160 characters (approximately 960 pixels on desktop and 680 pixels on mobile devices). A well-calibrated description provides an informative, compelling summary that invites searchers to click while avoiding automatic snippet truncation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does Rankora use Gemini AI to generate search metadata?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rankora uses Google Gemini 3.8 Flash via the official Google GenAI SDK to perform deep contextual text analysis. The AI identifies key search entities, understands topical nuance, and crafts high-CTR titles, descriptions, and semantic keyword clusters that strictly follow Google Search Central helpful content guidelines."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are Open Graph (OG) and Twitter Card tags?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Open Graph tags (og:title, og:description, og:image, og:type) and Twitter Cards (twitter:card, twitter:title, twitter:description) are metadata protocols that govern how your URLs render when shared across social networks like LinkedIn, X (Twitter), Facebook, Slack, and Discord. Well-formatted social tags boost link click-through rates and prevent broken preview cards."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the real-time Google SERP simulator help?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rankora's real-time SERP simulator provides a pixel-accurate visual preview of your webpage snippet across Google desktop and mobile search views. Testing your metadata before deployment lets you catch truncated text, awkward line wraps, and favicon alignment issues before your page is indexed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can optimized meta tags guarantee a #1 ranking on Google?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No tool can guarantee a #1 ranking on Google. Organic search positions depend on many ranking factors, including content quality, technical site speed, backlink authority, and user engagement. However, high-quality metadata directly improves organic Click-Through Rates (CTR) and assists search crawlers in accurately categorizing your page."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does Google Search Console site verification work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Google Search Console (GSC) verifies site ownership via two main methods: an HTML meta tag in the head of your website, or an HTML verification file placed in the root directory. Rankora includes your verification token directly in your exported HTML code blocks and provides automated verification routing."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Rankora store or sell my submitted page content or API keys?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Rankora is strictly privacy-first. Any custom Google AI Studio API key you enter is stored exclusively in your local browser localStorage and never transmitted to external servers. Submitted text is used solely for on-demand inference and is never stored, logged, or used for model training."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -556,41 +630,133 @@
         </div>
       </div>
 
-      <!-- FAQ Accordion -->
-      <div class="faq-wrap">
-        <div class="faq-item">
-          <button type="button" class="faq-question">
-            <span>Why are 50–60 characters ideal for meta titles?</span>
-            <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div class="faq-answer">
-            Google desktop search results typically truncate titles exceeding approximately 600 pixels (roughly 50 to 60 characters). Titles within this range maintain complete brand and keyword visibility without trailing ellipsis.
-          </div>
+      <!-- SEO-Friendly FAQ Accordion with Schema.org Microdata -->
+      <div class="faq-container" id="faq">
+        <div class="faq-subhead">
+          <span class="faq-tag">SEO &amp; METADATA KNOWLEDGE BASE</span>
+          <h3 class="faq-title">Frequently Asked Questions</h3>
+          <p class="faq-desc">Essential guidelines for search engine snippet optimization, social tags, and crawl performance.</p>
         </div>
 
-        <div class="faq-item">
-          <button type="button" class="faq-question">
-            <span>How does Rankora generate metadata with Gemini AI?</span>
-            <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div class="faq-answer">
-            Rankora leverages Google Gemini 3.8 Flash via the official Google GenAI SDK to perform semantic intent analysis, extract high-value entities, and format strict JSON responses tuned for search click-through performance.
+        <div class="faq-wrap" itemscope itemtype="https://schema.org/FAQPage">
+          <!-- Item 1 -->
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-1">
+              <span itemprop="name">Why are 50–60 characters recommended for meta titles?</span>
+              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="faq-answer" id="faq-ans-1" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div itemprop="text">
+                Google desktop search results typically truncate title tags exceeding approximately <strong>600 pixels</strong> (roughly 50 to 60 characters). Keeping your title within this threshold ensures that your primary keyword, value proposition, and brand name remain completely visible in Search Engine Result Pages (SERPs) without trailing ellipsis truncation (<code>...</code>).
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="faq-item">
-          <button type="button" class="faq-question">
-            <span>How does Google Search Console verification work?</span>
-            <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div class="faq-answer">
-            Google Search Console allows site owners to verify ownership via an HTML meta tag or an HTML verification file. Rankora natively includes your verification token in both the live DOM and the exported code blocks.
+          <!-- Item 2 -->
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-2">
+              <span itemprop="name">What is the ideal length for an SEO meta description?</span>
+              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="faq-answer" id="faq-ans-2" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div itemprop="text">
+                The recommended meta description length is between <strong>150 and 160 characters</strong> (approx. 960 pixels on desktop and 680 pixels on mobile devices). A well-calibrated description provides an informative, compelling summary that invites searchers to click while avoiding automatic snippet truncation.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-3">
+              <span itemprop="name">How does Rankora use Gemini AI to generate search metadata?</span>
+              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="faq-answer" id="faq-ans-3" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div itemprop="text">
+                Rankora uses <strong>Google Gemini 3.8 Flash</strong> via the official Google GenAI SDK to perform deep contextual text analysis. The AI identifies key search entities, understands topical nuance, and crafts high-CTR titles, descriptions, and semantic keyword clusters that strictly follow Google Search Central helpful content guidelines.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-4">
+              <span itemprop="name">What are Open Graph (OG) and Twitter Card tags?</span>
+              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="faq-answer" id="faq-ans-4" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div itemprop="text">
+                Open Graph tags (<code>og:title</code>, <code>og:description</code>, <code>og:image</code>, <code>og:type</code>) and Twitter Cards (<code>twitter:card</code>, <code>twitter:title</code>, <code>twitter:description</code>) are metadata protocols that govern how your URLs render when shared across social networks like LinkedIn, X (Twitter), Facebook, Slack, and Discord. Well-formatted social tags boost link click-through rates and prevent broken preview cards.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 5 -->
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-5">
+              <span itemprop="name">How does the real-time Google SERP simulator help?</span>
+              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="faq-answer" id="faq-ans-5" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div itemprop="text">
+                Rankora’s real-time SERP simulator provides a pixel-accurate visual preview of your webpage snippet across Google desktop and mobile search views. Testing your metadata before deployment lets you catch truncated text, awkward line wraps, and favicon alignment issues before your page is indexed.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 6 -->
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-6">
+              <span itemprop="name">Can optimized meta tags guarantee a #1 ranking on Google?</span>
+              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="faq-answer" id="faq-ans-6" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div itemprop="text">
+                No single tool can guarantee a #1 ranking. Organic search positions depend on many ranking factors, including content quality, technical site speed, backlink authority, and user engagement. However, high-quality metadata directly improves organic Click-Through Rates (CTR) and assists search crawlers in accurately categorizing your page.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 7 -->
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-7">
+              <span itemprop="name">How does Google Search Console site verification work?</span>
+              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="faq-answer" id="faq-ans-7" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div itemprop="text">
+                Google Search Console (GSC) verifies site ownership via two main methods: an HTML <code>&lt;meta name="google-site-verification"&gt;</code> tag in the <code>&lt;head&gt;</code> of your website, or an HTML verification file placed in the root directory. Rankora includes your verification token directly in your exported HTML code blocks and provides automated verification routing.
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 8 -->
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-8">
+              <span itemprop="name">Does Rankora store or sell my submitted page content or API keys?</span>
+              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="faq-answer" id="faq-ans-8" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div itemprop="text">
+                No. Rankora is strictly privacy-first. Any custom Google AI Studio API key you enter is stored exclusively in your local browser's <code>localStorage</code> and never transmitted to external servers. Submitted text is used solely for on-demand inference and is never stored, logged, or used for model training.
+              </div>
+            </div>
           </div>
         </div>
       </div>
