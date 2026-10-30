@@ -714,4 +714,61 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       }, 250);
     }, 2800);
   }
+
+  // --- Back to Top ---
+  const backToTopBtn = document.getElementById('back-to-top-btn');
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // --- Legal & Privacy Modals ---
+  const privacyModal = document.getElementById('privacy-modal');
+  const openPrivacyBtn = document.getElementById('open-privacy-btn');
+  const closePrivacyBtn = document.getElementById('close-privacy-btn');
+  const closePrivacyFootBtn = document.getElementById('close-privacy-foot-btn');
+
+  function openPrivacy() {
+    if (privacyModal) privacyModal.classList.add('open');
+  }
+  function closePrivacy() {
+    if (privacyModal) privacyModal.classList.remove('open');
+  }
+  if (openPrivacyBtn) openPrivacyBtn.addEventListener('click', openPrivacy);
+  if (closePrivacyBtn) closePrivacyBtn.addEventListener('click', closePrivacy);
+  if (closePrivacyFootBtn) closePrivacyFootBtn.addEventListener('click', closePrivacy);
+  if (privacyModal) {
+    privacyModal.addEventListener('click', (e) => {
+      if (e.target === privacyModal) closePrivacy();
+    });
+  }
+
+  const termsModal = document.getElementById('terms-modal');
+  const openTermsBtn = document.getElementById('open-terms-btn');
+  const closeTermsBtn = document.getElementById('close-terms-btn');
+  const closeTermsFootBtn = document.getElementById('close-terms-foot-btn');
+
+  function openTerms() {
+    if (termsModal) termsModal.classList.add('open');
+  }
+  function closeTerms() {
+    if (termsModal) termsModal.classList.remove('open');
+  }
+  if (openTermsBtn) openTermsBtn.addEventListener('click', openTerms);
+  if (closeTermsBtn) closeTermsBtn.addEventListener('click', closeTerms);
+  if (closeTermsFootBtn) closeTermsFootBtn.addEventListener('click', closeTerms);
+  if (termsModal) {
+    termsModal.addEventListener('click', (e) => {
+      if (e.target === termsModal) closeTerms();
+    });
+  }
+
+  // Escape key closes open legal modals
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (privacyModal && privacyModal.classList.contains('open')) closePrivacy();
+      if (termsModal && termsModal.classList.contains('open')) closeTerms();
+    }
+  });
 });
