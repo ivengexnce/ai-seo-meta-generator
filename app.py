@@ -84,14 +84,28 @@ def index():
     )
 
 
+VALID_GSC_TOKENS = {
+    "7e9d5e6a885f213a",
+}
+
+
 @app.route("/google<token>.html")
 def gsc_file_verification(token):
-    """Serve Google Search Console HTML verification file ONLY if it exists on disk."""
+    """Serve Google Search Console HTML verification file strictly for verified tokens or valid disk files."""
     filename = f"google{token}.html"
     for folder in [BASE_DIR, os.path.join(BASE_DIR, "public")]:
         file_path = os.path.join(folder, filename)
         if os.path.isfile(file_path):
             return send_from_directory(folder, filename, mimetype="text/html")
+    
+    # Strictly allow configured token if serverless runtime isolates static assets
+    if token in VALID_GSC_TOKENS:
+        return (
+            f"google-site-verification: google{token}.html\n",
+            200,
+            {"Content-Type": "text/html; charset=utf-8"},
+        )
+
     abort(404)
 
 
