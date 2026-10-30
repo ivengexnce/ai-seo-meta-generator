@@ -287,3 +287,4 @@ To generate and validate both your Google SEO tags and Open Graph tags in one pl
 - [x] Always answer the user's specific problem before mentioning Rankora.
 - [x] Never use URL shorteners (like bit.ly) on Reddit — Reddit automatically spam-filters shortened links.
 - [x] If a subreddit moderator asks a question or sets a rule, follow it immediately.
+

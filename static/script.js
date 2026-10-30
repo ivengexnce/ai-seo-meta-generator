@@ -772,6 +772,161 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     if (e.key === 'Escape') {
       if (privacyModal && privacyModal.classList.contains('open')) closePrivacy();
       if (termsModal && termsModal.classList.contains('open')) closeTerms();
+      if (shareModal && shareModal.classList.contains('open')) closeShare();
+      if (feedbackModal && feedbackModal.classList.contains('open')) closeFeedback();
     }
   });
+
+  // --- Share Modal & Web Share API ---
+  const shareModal = document.getElementById('share-modal');
+  const shareNavBtn = document.getElementById('share-nav-btn');
+  const footerShareBtn = document.getElementById('footer-share-btn');
+  const closeShareBtn = document.getElementById('close-share-btn');
+  const closeShareFootBtn = document.getElementById('close-share-foot-btn');
+  const copyShareUrlBtn = document.getElementById('copy-share-url-btn');
+  const shareUrlInput = document.getElementById('share-url-input');
+  const nativeShareBtn = document.getElementById('native-share-btn');
+
+  function openShare() {
+    if (navigator.share && window.innerWidth <= 768) {
+      navigator.share({
+        title: 'Rankora — AI SEO Intelligence & SERP Simulator',
+        text: 'Generate search-ready SEO metadata and preview Google search snippets with AI.',
+        url: window.location.origin || 'https://ai-seo-meta-generator.vercel.app/'
+      }).catch(() => {
+        if (shareModal) shareModal.classList.add('open');
+      });
+      return;
+    }
+    if (shareModal) shareModal.classList.add('open');
+  }
+
+  function closeShare() {
+    if (shareModal) shareModal.classList.remove('open');
+  }
+
+  if (shareNavBtn) shareNavBtn.addEventListener('click', openShare);
+  if (footerShareBtn) footerShareBtn.addEventListener('click', openShare);
+  if (closeShareBtn) closeShareBtn.addEventListener('click', closeShare);
+  if (closeShareFootBtn) closeShareFootBtn.addEventListener('click', closeShare);
+  if (shareModal) {
+    shareModal.addEventListener('click', (e) => {
+      if (e.target === shareModal) closeShare();
+    });
+  }
+
+  if (copyShareUrlBtn) {
+    copyShareUrlBtn.addEventListener('click', () => {
+      const url = shareUrlInput ? shareUrlInput.value : window.location.href;
+      copyToClipboard(url, copyShareUrlBtn, 'Link copied to clipboard!');
+    });
+  }
+
+  if (nativeShareBtn) {
+    nativeShareBtn.addEventListener('click', () => {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Rankora — AI SEO Intelligence & SERP Simulator',
+          text: 'Generate search-ready SEO metadata and preview Google search snippets with AI.',
+          url: window.location.origin || 'https://ai-seo-meta-generator.vercel.app/'
+        }).catch(() => {});
+      } else {
+        const url = shareUrlInput ? shareUrlInput.value : window.location.href;
+        copyToClipboard(url, nativeShareBtn, 'Link copied to clipboard!');
+      }
+    });
+  }
+
+  // --- Feedback Modal & Submission ---
+  const feedbackModal = document.getElementById('feedback-modal');
+  const openFeedbackBtn = document.getElementById('open-feedback-btn');
+  const footerFeedbackBtn = document.getElementById('footer-feedback-btn');
+  const floatingFeedbackBtn = document.getElementById('floating-feedback-btn');
+  const closeFeedbackBtn = document.getElementById('close-feedback-btn');
+  const closeFeedbackFootBtn = document.getElementById('close-feedback-foot-btn');
+  const feedbackForm = document.getElementById('feedback-form');
+  const feedbackMessageInput = document.getElementById('feedback-message');
+  const feedbackEmailInput = document.getElementById('feedback-email');
+  const categoryChips = document.querySelectorAll('#feedback-category-chips .sentiment-btn');
+
+  let selectedCategory = 'idea';
+
+  categoryChips.forEach(btn => {
+    btn.addEventListener('click', () => {
+      categoryChips.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedCategory = btn.getAttribute('data-category') || 'general';
+    });
+  });
+
+  function openFeedback() {
+    if (feedbackModal) feedbackModal.classList.add('open');
+    if (feedbackMessageInput) setTimeout(() => feedbackMessageInput.focus(), 100);
+  }
+
+  function closeFeedback() {
+    if (feedbackModal) feedbackModal.classList.remove('open');
+  }
+
+  if (openFeedbackBtn) openFeedbackBtn.addEventListener('click', openFeedback);
+  if (footerFeedbackBtn) footerFeedbackBtn.addEventListener('click', openFeedback);
+  if (floatingFeedbackBtn) floatingFeedbackBtn.addEventListener('click', openFeedback);
+  if (closeFeedbackBtn) closeFeedbackBtn.addEventListener('click', closeFeedback);
+  if (closeFeedbackFootBtn) closeFeedbackFootBtn.addEventListener('click', closeFeedback);
+  if (feedbackModal) {
+    feedbackModal.addEventListener('click', (e) => {
+      if (e.target === feedbackModal) closeFeedback();
+    });
+  }
+
+  if (feedbackForm) {
+    feedbackForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const message = feedbackMessageInput ? feedbackMessageInput.value.trim() : '';
+      const email = feedbackEmailInput ? feedbackEmailInput.value.trim() : '';
+
+      if (!message) {
+        showToast('Please enter a feedback message.', 'error');
+        return;
+      }
+
+      const submitBtn = document.getElementById('submit-feedback-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+      }
+
+      try {
+        const payload = {
+          message: message,
+          category: selectedCategory,
+          email: email,
+          timestamp: new Date().toISOString()
+        };
+
+        const response = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const stored = JSON.parse(localStorage.getItem('rankora_user_feedback') || '[]');
+        stored.push(payload);
+        localStorage.setItem('rankora_user_feedback', JSON.stringify(stored));
+
+        showToast('Thank you! Your feedback helps us build a better workspace.', 'success');
+        feedbackForm.reset();
+        closeFeedback();
+      } catch (err) {
+        console.error('Feedback submit error:', err);
+        showToast('Feedback noted! Thank you.', 'success');
+        closeFeedback();
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Feedback';
+        }
+      }
+    });
+  }
 });

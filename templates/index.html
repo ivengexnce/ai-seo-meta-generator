@@ -145,25 +145,35 @@
       </div>
 
       <div class="nav-right">
-        <a href="#how-it-works" class="nav-link">Workflow</a>
-        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link nav-link-desktop">Workflow</a>
+        <a href="#features" class="nav-link nav-link-desktop">Features</a>
+
+        <button id="share-nav-btn" class="nav-btn nav-btn-share" type="button" title="Share Rankora with colleagues">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+          <span>Share</span>
+        </button>
+
+        <button id="open-feedback-btn" class="nav-btn nav-btn-feedback" type="button" title="Give feedback or request features">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>Feedback</span>
+        </button>
 
         <button id="toggle-key-btn" class="nav-btn" type="button" aria-haspopup="dialog" aria-expanded="false" title="Configure custom Gemini API key">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="7.5" cy="15.5" r="5.5"></circle>
             <path d="m21 2-9.6 9.6"></path>
             <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
           </svg>
           <span id="api-status-label">{{ 'API Key Configured' if has_api_key else 'Custom API Key' }}</span>
         </button>
-
-        <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer"
-          class="nav-btn" title="Open Google Search Console URL inspection &amp; performance">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-          </svg>
-          <span>Search Console</span>
-        </a>
 
         <a href="#studio-workspace" class="nav-btn nav-btn-primary">
           <span>Get started</span>
@@ -829,6 +839,8 @@
             <span class="footer-col-title">Legal &amp; Privacy</span>
             <button type="button" id="open-privacy-btn" class="footer-link-btn">Privacy Policy</button>
             <button type="button" id="open-terms-btn" class="footer-link-btn">Terms of Service</button>
+            <button type="button" id="footer-feedback-btn" class="footer-link-btn">Share Feedback</button>
+            <button type="button" id="footer-share-btn" class="footer-link-btn">Share Workspace</button>
             <a href="https://github.com/ivengexnce/ai-seo-meta-generator" target="_blank" rel="noopener noreferrer" class="footer-link external-link">
               <span>GitHub Repository</span>
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
@@ -956,6 +968,139 @@
           <button type="button" id="close-terms-foot-btn" class="foot-btn foot-btn-primary">Accept &amp; Close</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Floating Quick Feedback Pill -->
+  <button type="button" id="floating-feedback-btn" class="floating-feedback-pill" aria-label="Share Feedback" title="Share feedback, feature ideas, or report issues">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+    <span>Feedback</span>
+  </button>
+
+  <!-- Share Modal Dialog -->
+  <div id="share-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="share-modal-title">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-title-row">
+          <svg class="modal-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+          <h3 id="share-modal-title" class="modal-title">Share Rankora</h3>
+        </div>
+        <button type="button" id="close-share-btn" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-desc">
+          Share Rankora with other developers, marketers, and creators to help them generate search-ready metadata and preview SERP appearance.
+        </p>
+
+        <div class="share-copy-row">
+          <input type="text" id="share-url-input" class="text-input" value="https://ai-seo-meta-generator.vercel.app/" readonly>
+          <button type="button" id="copy-share-url-btn" class="foot-btn foot-btn-primary">
+            <span>Copy Link</span>
+          </button>
+        </div>
+
+        <div class="share-channels">
+          <span class="share-label">Share directly:</span>
+          <div class="share-grid">
+            <a href="https://twitter.com/intent/tweet?text=Generate%20search-ready%20SEO%20metadata%2C%20preview%20Google%20SERP%20snippets%2C%20and%20craft%20Open%20Graph%20tags%20with%20Rankora%3A&url=https%3A%2F%2Fai-seo-meta-generator.vercel.app%2F" target="_blank" rel="noopener noreferrer" class="share-btn-channel share-x">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              <span>X (Twitter)</span>
+            </a>
+
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fai-seo-meta-generator.vercel.app%2F" target="_blank" rel="noopener noreferrer" class="share-btn-channel share-linkedin">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.53 1.53 0 0 0 1.53-1.53c0-.85-.68-1.54-1.53-1.54a1.54 1.54 0 0 0-1.54 1.54c0 .85.69 1.53 1.54 1.53m1.4 9.74v-8.37H5.06v8.37h2.8z"/>
+              </svg>
+              <span>LinkedIn</span>
+            </a>
+
+            <a href="https://reddit.com/submit?url=https%3A%2F%2Fai-seo-meta-generator.vercel.app%2F&title=Rankora%20%E2%80%94%20Free%20AI%20SEO%20Metadata%20Workspace%20%26%20Google%20SERP%20Simulator" target="_blank" rel="noopener noreferrer" class="share-btn-channel share-reddit">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.56 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.702zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.197-2.512-.73a.326.326 0 0 0-.232-.095z"/>
+              </svg>
+              <span>Reddit</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" id="native-share-btn" class="foot-btn foot-btn-demo">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+            <polyline points="16 6 12 2 8 6"></polyline>
+            <line x1="12" y1="2" x2="12" y2="15"></line>
+          </svg>
+          <span>System Share Sheet</span>
+        </button>
+        <div class="foot-right">
+          <button type="button" id="close-share-foot-btn" class="foot-btn foot-btn-secondary">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback Modal Dialog -->
+  <div id="feedback-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-title-row">
+          <svg class="modal-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <h3 id="feedback-modal-title" class="modal-title">Share Feedback</h3>
+        </div>
+        <button type="button" id="close-feedback-btn" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <form id="feedback-form">
+        <div class="modal-body">
+          <p class="modal-desc">
+            Found an issue, have a feature idea, or want to share feedback? We read every response to improve Rankora.
+          </p>
+
+          <div class="feedback-type-group">
+            <label class="field-label">Category</label>
+            <div class="sentiment-chips" id="feedback-category-chips">
+              <button type="button" class="sentiment-btn active" data-category="idea">💡 Feature Idea</button>
+              <button type="button" class="sentiment-btn" data-category="bug">🐛 Bug Report</button>
+              <button type="button" class="sentiment-btn" data-category="ux">✨ UX / Design</button>
+              <button type="button" class="sentiment-btn" data-category="general">💬 General</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="feedback-message" class="field-label">Your Message <span style="color: var(--accent-teal);">*</span></label>
+            <textarea id="feedback-message" class="text-input" rows="4" placeholder="Tell us what you liked, what's missing, or what should be improved..." required></textarea>
+          </div>
+
+          <div class="field-group">
+            <label for="feedback-email" class="field-label">Email (Optional — if you would like a reply)</label>
+            <input type="email" id="feedback-email" class="text-input" placeholder="name@domain.com">
+          </div>
+        </div>
+
+        <div class="modal-foot">
+          <a href="https://github.com/ivengexnce/ai-seo-meta-generator/issues/new" target="_blank" rel="noopener noreferrer" class="foot-btn foot-btn-demo">
+            <span>Open GitHub Issue</span>
+          </a>
+          <div class="foot-right">
+            <button type="button" id="close-feedback-foot-btn" class="foot-btn foot-btn-secondary">Cancel</button>
+            <button type="submit" id="submit-feedback-btn" class="foot-btn foot-btn-primary">Send Feedback</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 
