@@ -1,63 +1,126 @@
-> ⭐ **Star this if you found it useful**
-
 <p align="center">
-  <img src="og-image.png" alt="Rankora — AI SEO Metadata Workspace & Google SERP Simulator Screenshot" width="100%">
+  <img src="og-image.png" alt="Rankora — AI SEO Metadata Intelligence & SERP Simulator" width="100%">
 </p>
 
-<!-- [screenshot here] -->
+# Rankora — AI SEO Intelligence Workspace
 
-# Rankora
+> **Deterministic. High-CTR Search Metadata. In Seconds.**
 
-> **Your content. Better discovered.**
+Rankora is a production-grade, AI-orchestrated SEO metadata intelligence studio and live Google SERP simulator. Powered by Google Gemini 3.8 Flash, Rankora helps developers, creators, marketers, and engineering teams generate pixel-calibrated meta titles, descriptions, Open Graph protocol social cards, and Schema.org structured data with 100% Google Search Central compliance.
 
-An AI-powered SEO metadata workspace and live Google SERP simulator that helps developers, creators, marketers, and businesses generate search-ready titles, descriptions, and social tags.
-
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-rankoraa.vercel.app-8952e0?style=for-the-badge&logo=vercel&logoColor=white)](https://rankoraa.vercel.app/)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-3.0+-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
 [![Google Gemini API](https://img.shields.io/badge/Google%20Gemini-3.8%20Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com/)
-[![License MIT](https://img.shields.io/badge/License-MIT-14B8A6.svg?style=for-the-badge)](LICENSE)
-[![Deployed on Render](https://img.shields.io/badge/Render-Deployed-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
-[![Deployed on Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://rankoraa.vercel.app/)
+[![License MIT](https://img.shields.io/badge/License-MIT-00FF90.svg?style=for-the-badge)](LICENSE)
+[![Deployed on Vercel](https://img.shields.io/badge/Vercel-Production-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://rankoraa.vercel.app/)
+[![Deployed on Render](https://img.shields.io/badge/Render-Cloud%20Service-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
 
-🚀 **Live Demo:** [https://rankoraa.vercel.app/](https://rankoraa.vercel.app/)
-
----
-
-## 💡 What It Does
-
-- **Generates Search-Ready Titles & Descriptions**: Turns raw article drafts, product copy, or landing page text into click-worthy meta titles (50–60 characters) and meta descriptions (150–160 characters) calibrated to Google's pixel limits.
-- **Shows Live Google SERP Previews**: Renders a realistic desktop and mobile Google Search snippet preview so you can verify how your page will appear before deploying.
-- **Creates Social-Sharing Tags**: Automatically generates Open Graph (`og:title`, `og:description`, `og:image`) and Twitter Card tags for rich link previews across LinkedIn, X/Twitter, Slack, and Facebook.
-- **Extracts Relevant Keywords**: Discovers high-intent semantic keywords and topical entities from your content to help search crawlers accurately index your pages.
+🚀 **Live Production Application:** [https://rankoraa.vercel.app/](https://rankoraa.vercel.app/)  
+*(Legacy domain `ai-seo-meta-generator.vercel.app` automatically performs a permanent 301 redirect to `rankoraa.vercel.app`).*
 
 ---
 
-## ✨ Features
+## ⚡ Key Highlights & Capabilities
 
-- **Gemini 3.8 Flash Integration**: Powered by Google's modern Gemini models via the official `@google/genai` SDK for semantic entity extraction and high-CTR phrasing.
-- **Offline Heuristic Engine**: Graceful fallback generator that creates calibrated metadata even during API connectivity or quota limits.
-- **SEO Readiness Score**: Real-time 0–100 audit gauge with automated checks for title boundaries, description length, and social cards.
-- **Google Search Console Support**: Includes verified site ownership tokens and verification file routes out of the box.
-- **Dual Schema.org Markup**: Fully equipped with Google-compliant `FAQPage` JSON-LD structured data and microdata.
-- **Privacy-First Architecture**: No account required. Custom API keys are stored strictly in client-side `localStorage` and never logged or persisted.
-- **1-Click Export**: Easily copy formatted HTML `<head>` tags, raw text, or structured JSON.
-- **In-App Feedback & Social Sharing**: Integrated user feedback collection and Web Share API support.
+### 1. OneText-Inspired Landing Page Architecture
+- **Floating Pill Top Navbar**: A glassmorphic rounded header (`rgba(16, 24, 38, 0.78)`) featuring a white speech-bubble brand tag (`rankora.`), smooth pill navigation links, and a high-contrast rounded outline CTA button (`Get started →`).
+- **Asymmetric Two-Column Split Hero**: Bold, clean editorial typography featuring the monumental headline `"20% More Organic CTR. Guaranteed."`, concise value proposition subtext, and real-time micro-metrics.
+- **Hero Quick-Interactive URL / Topic Bar**: An integrated search bar directly in the hero (`[ AI* ] [ Enter your brand's URL or page topic... ] [ Test our AI → ]`). Entering a topic or URL smoothly transfers input to the studio, auto-scrolls, and launches inference.
+- **Photorealistic 3D Kinetic Sculpture Background**: A high-resolution Octane 3D render of a mechanical kinetic installation with glossy cobalt blue, cherry red, and warm amber tracks, chrome gears, coiled spring, and glowing spheres with dark slate gradient masking.
+- **Floating Customer Proof & Platform Shelf**: A bottom dock featuring a verified testimonial from Alex Rivera (*Founder of Native SEO & TechRank*), 5-star rating, and technology compatibility badges for `Next.js`, `Vercel`, `Shopify`, `Astro`, and `WordPress`.
+
+### 2. 12-Column Real-Time SEO Studio Workspace
+- **Google Pixel-Calibrated Meta Bounds**: Enforces strict boundaries (50–60 characters for titles, 150–160 characters for descriptions) so your search snippets never truncate on mobile or desktop search results.
+- **Live Google SERP Simulator**: Pixel-accurate desktop and mobile Google Search snippet previews, complete with URL breadcrumbs, title styling, and favicon rendering.
+- **Multi-Tab Preview Engine**: Switch instantly between **Google SERP View**, **Open Graph Social Card View** (LinkedIn, X/Twitter, Facebook, Slack), **JSON-LD Schema Markup**, and **HTML `<head>` Code Export**.
+- **SEO Readiness Meter**: Dynamic 0–100 quality audit gauge evaluating title boundaries, description completeness, keyword inclusion, and social card integrity.
+- **Dual Inference Engine**: Powered by Google Gemini 3.8 Flash via the official `google-genai` SDK with an automatic fallback heuristic engine when offline or out of quota.
+
+### 3. Japanese Origami-Inspired Interactive FAQ Experience
+- **Editorial Paper-Folding Aesthetics**: Transforms standard accordions into interactive folded paper panels with geometric fold creases, origami dog-ears, and smooth unfolding animations.
+- **Dual Schema.org Structured Data**: Fully indexed with Google-compliant `FAQPage` JSON-LD and microdata for organic rich snippets.
+
+### 4. Community Voice, Testimonials & Public Roadmap
+- **What Builders Say**: Dynamic horizontal review cards with infinite marquee animation displaying verified community feedback.
+- **Community Voice & Roadmap**: Direct in-app feedback console with interactive 5-star rating, character counter, prompt chips, and instant submission.
+- **Public Issue & Feature Tracker**: Transparent, live public roadmap displaying real-time issue status (`Open`, `In Progress`, `Resolved`).
+
+### 5. Rankora Private Admin Console (`/admin`)
+- **Moderation Dashboard**: Dedicated admin console to review and moderate submitted testimonials (approve to display on the live homepage) and update roadmap issue statuses.
+- **High-Contrast Theme**: Styled in Dark Carbon (`#0C1015`) and Vivid Violet (`#8952e0`) with an ultra-visible **Connect Console** button.
+- **Secure Session Authentication**: Protected via `ADMIN_SECRET` in `.env`. Supports `X-ADMIN-SECRET` header, password visibility eye toggle, and persistent session storage.
+
+### 6. Unified Single Static Architecture
+- Consolidated all static assets into a single directory: `public/static/`. Both local Flask development and Vercel edge deployment serve directly from this source of truth without duplicate file maintenance.
 
 ---
 
-## 🛠️ Tech Stack
+## 🎨 Design System & Color Palette
 
-- **Backend**: Python 3.11+, Flask, Gunicorn
-- **AI / LLM**: Google Gemini API (`gemini-3.8-flash` via official `google-genai` SDK)
-- **Frontend**: Semantic HTML5, Vanilla JavaScript, CSS3 (Modern Design System with Space Grotesk, Inter, and JetBrains Mono)
-- **Structured Data**: JSON-LD Schema.org (`FAQPage`)
-- **Deployment**: Render Cloud Web Service (`render.yaml`, `Procfile`) & Vercel Edge Serverless (`vercel.json`)
+Rankora follows a high-contrast dark theme calibrated for developer tools and analytical dashboards:
+
+| Token | Hex / Value | Description |
+| :--- | :--- | :--- |
+| **Canvas / Background** | `#0C1015` | Dark Carbon / Slate base canvas |
+| **Secondary Surface** | `#19202b` | Deep Navy card and surface background |
+| **Primary Accent** | `#8952e0` / `#9461e3` | Vivid Purple / Violet CTA gradients and glowing highlights |
+| **Action Highlight** | `#2ab4d9` | Electric Cyan for focus states and technical accents |
+| **Success / Verified** | `#00FF90` | Cyber Lime for 100% scores and verified badges |
+| **Warning / Rating** | `#F59E0B` | Warm Amber for star ratings and pending statuses |
+| **Typography** | `Space Grotesk`, `Inter`, `JetBrains Mono` | Editorial display headers, body prose, and monospace code |
 
 ---
 
-## 🚀 Local Development Setup
+## 🛠 Tech Stack
 
-Follow these steps to run Rankora locally on your machine:
+- **Backend**: Python 3.11+, Flask 3.0+, Gunicorn
+- **AI / LLM**: Google Gemini API (`gemini-3.8-flash`) via the modern official `google-genai` SDK
+- **Frontend**: Semantic HTML5, Vanilla JavaScript (ES6+), Modern CSS3 (CSS Variables, Grid, Flexbox)
+- **Animations**: Anime.js, CSS Keyframes, WebGL Three.js foundation
+- **Persistence**: Thread-safe atomic JSON file storage (`data/feedbacks.json`)
+- **Deployment**: Vercel Serverless Edge (`vercel.json`) & Render Cloud Web Service (`render.yaml`, `Procfile`)
+
+---
+
+## 📁 Project Directory Structure
+
+```text
+ai-seo-meta-generator/
+├── api/
+│   └── index.py                 # Vercel Serverless edge entrypoint
+├── data/
+│   └── feedbacks.json           # Thread-safe persistent storage for feedback & issues
+├── public/
+│   ├── static/                  # Single source of truth for all static assets
+│   │   ├── assets/brand/        # Official SVG logos and icons
+│   │   ├── hero-kinetic.jpg     # Photorealistic 3D kinetic sculpture artwork
+│   │   ├── og-image.png         # 1200x630 canonical social share card
+│   │   ├── script.js            # Frontend application logic and animations
+│   │   ├── style.css            # Comprehensive design system stylesheet
+│   │   ├── site.webmanifest     # Progressive Web App manifest
+│   │   └── favicon.*            # Multi-format favicons (ICO, SVG, PNG)
+│   ├── robots.txt               # Search engine crawling directives
+│   └── google*.html             # Google Search Console ownership verification
+├── templates/
+│   ├── index.html               # Main application workspace & landing page
+│   └── admin.html               # Private admin moderation console
+├── .env.example                 # Environment variables template
+├── app.py                       # Main Flask application and API route controllers
+├── Procfile                     # Process file for Render / Heroku
+├── render.yaml                  # Render Cloud infrastructure definition
+├── requirements.txt             # Python dependencies
+└── vercel.json                  # Vercel routing and edge configuration
+```
+
+---
+
+## 🚀 Quickstart & Local Setup
+
+### Prerequisites
+- Python 3.11 or higher
+- Git
+- A Google Gemini API Key (get one free at [aistudio.google.com](https://aistudio.google.com/))
 
 ### 1. Clone the repository
 ```bash
@@ -65,13 +128,13 @@ git clone https://github.com/ivengexnce/ai-seo-meta-generator.git
 cd ai-seo-meta-generator
 ```
 
-### 2. Create and activate a virtual environment
+### 2. Set up virtual environment
 ```bash
-# On macOS / Linux:
+# macOS / Linux
 python3 -m venv .venv
 source .venv/bin/activate
 
-# On Windows (PowerShell):
+# Windows (PowerShell)
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 ```
@@ -82,39 +145,51 @@ pip install -r requirements.txt
 ```
 
 ### 4. Configure environment variables
-Copy `.env.example` to `.env`:
+Create your local `.env` file from the provided template:
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and configure your API key (get one free at [aistudio.google.com](https://aistudio.google.com/)):
+Edit `.env` with your preferred credentials:
 ```ini
+# Gemini API Key (optional for testing; app includes offline fallback)
 GEMINI_API_KEY=your_gemini_api_key_here
-PORT=5000
-GOOGLE_SITE_VERIFICATION=your_verification_code_here
-```
-*(Tip: You can also enter `"demo"` as your API key or test in Demo Mode directly in the UI without an API key).*
 
-### 5. Start the server
+# Local Development Port
+PORT=5000
+
+# Private Admin Console Authentication Secret
+ADMIN_SECRET=meetmaru@1953
+
+# Canonical Base URL
+CANONICAL_URL=https://rankoraa.vercel.app
+
+# Google Site Verification Token (optional)
+GOOGLE_SITE_VERIFICATION=your_verification_token_here
+```
+
+### 5. Run the application
 ```bash
 python app.py
 ```
-
-Open [http://localhost:5000](http://localhost:5000) in your browser.
+Open **[http://localhost:5000](http://localhost:5000)** in your browser.  
+Open **[http://localhost:5000/admin](http://localhost:5000/admin)** to access the private moderation console.
 
 ---
 
-## 📡 API Endpoints
+## 📡 REST API Documentation
 
-### `POST /generate` (or `/api/generate`)
-Analyzes page content and returns search-calibrated metadata.
+### 1. Metadata Generation
+`POST /api/generate` (or `/generate`)
+
+Analyzes raw text or URL content and returns Google Search and Open Graph calibrated tags.
 
 **Request Body:**
 ```json
 {
-  "content": "Paste your article draft, product description, or page copy...",
-  "focus_keywords": "seo, metadata",
-  "api_key": "optional_override_or_demo"
+  "content": "Rankora is an AI-powered SEO metadata intelligence workspace that generates click-worthy meta tags and live SERP previews.",
+  "focus_keywords": "AI SEO, SERP simulator, meta tags",
+  "api_key": "optional_client_side_override"
 }
 ```
 
@@ -122,49 +197,111 @@ Analyzes page content and returns search-calibrated metadata.
 ```json
 {
   "meta_title": "AI SEO Meta Generator | Rankora — Search Intelligence",
-  "meta_description": "Generate optimized meta titles and descriptions, create social-sharing tags, and preview how pages appear in search results.",
-  "og_title": "Rankora — Your content deserves to be discovered.",
-  "og_description": "Generate search-ready SEO metadata, preview Google SERP snippets, and craft social tags with AI.",
+  "meta_description": "Generate search-calibrated meta titles, descriptions, and Open Graph tags. Live Google SERP simulator ensures zero truncation.",
+  "og_title": "Rankora — Your Content Deserves to Be Discovered",
+  "og_description": "Deterministic, AI-orchestrated SEO metadata and real-time Google search snippet previews.",
   "og_type": "website",
-  "keywords": ["SEO Optimization", "Rankora", "Search Intelligence", "Meta Tags", "Open Graph"]
+  "keywords": ["AI SEO", "Meta Tag Generator", "SERP Simulator", "Open Graph", "Technical SEO"]
 }
 ```
 
-### `GET /health` (or `/api/health`)
-Health check endpoint for deployment monitoring.
+---
+
+### 2. Public Community Endpoints
+
+#### Approved Testimonials
+`GET /api/testimonials`
+- **Access**: Public
+- **Description**: Returns all admin-approved testimonials sorted newest first for the homepage review marquee.
+
+#### Public Roadmap & Issues
+`GET /api/issues`
+- **Access**: Public
+- **Description**: Returns logged community feature requests and bug reports.
+
+#### Submit Feedback / Issue
+`POST /api/feedback`
+- **Access**: Public
+- **Body**:
 ```json
 {
-  "app": "Rankora — AI SEO Intelligence",
-  "status": "ok"
+  "name": "Sarah Connor",
+  "message": "The SERP simulator accurately caught our title truncation before deploy!",
+  "type": "testimonial",
+  "rating": 5
 }
 ```
 
-### `POST /api/feedback`
-Submits user feedback, feature suggestions, or bug reports.
-```json
-{
-  "message": "The SERP preview simulator is super helpful!",
-  "category": "idea",
-  "email": "user@example.com"
-}
-```
+---
 
-### `GET /og-image.png`
-Directly serves the canonical 1200 × 630 Open Graph preview card for social crawlers.
+### 3. Administrative Moderation Endpoints
 
-### `GET /robots.txt`
-Serves crawl directives allowing search indexation and declaring sitemap path.
+All admin endpoints require authentication via the `X-ADMIN-SECRET` header matching `ADMIN_SECRET` in `.env`.
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/feedback` | Fetch all feedbacks, testimonials, and issues |
+| `PATCH` | `/api/feedback/<id>/approve` | Toggle approval (`{"approved": true}`) |
+| `PATCH` | `/api/feedback/<id>/status` | Update issue status (`{"status": "in_progress"}`) |
+| `DELETE` | `/api/feedback/<id>` | Delete an item permanently |
+
+---
+
+### 4. Search Engine Crawling Endpoints
+
+- `GET /sitemap.xml`: Delivers dynamic search engine sitemap with canonical URLs and daily modification timestamps.
+- `GET /robots.txt`: Directs search crawlers to the sitemap and indexing permissions.
+- `GET /health` (or `/api/health`): Returns JSON health status for uptime monitors.
+
+---
+
+## 🔒 Privacy & Zero Retention Architecture
+
+Rankora is built on strict data minimization principles:
+- **Zero Storage of Inputs**: Submitted text is passed directly to the Gemini model for on-demand inference and discarded immediately. No page text is logged, sold, or used for model training.
+- **Client-Side Key Storage**: When you provide your own Google AI Studio key, it stays strictly in your browser's local `localStorage`. It is never stored on backend databases or shared.
+
+---
+
+## 🚢 Deployment Guide
+
+### Deploying to Vercel (Recommended)
+1. Fork or push this repository to GitHub.
+2. Import the project into your Vercel Dashboard.
+3. In Project Settings, configure Environment Variables:
+   - `GEMINI_API_KEY`: Your Google AI Studio API key.
+   - `ADMIN_SECRET`: Your chosen administrative secret.
+   - `CANONICAL_URL`: `https://your-custom-domain.com`.
+4. Click **Deploy**. Vercel will automatically build the serverless functions via `api/index.py` and serve static assets directly from `public/`.
+
+### Deploying to Render
+1. Create a new **Web Service** on Render and connect your GitHub repo.
+2. Set Environment to **Python 3**.
+3. Build Command: `pip install -r requirements.txt`.
+4. Start Command: `gunicorn app:app`.
+5. Add your environment variables in the Render Dashboard.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please check out [CONTRIBUTING.md](CONTRIBUTING.md) for local setup steps, PR guidelines, and a list of good first issues.
+Contributions are welcomed!
+1. Fork the Project.
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your Changes (`git commit -m 'feat: add AmazingFeature'`).
+4. Push to the Branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
+
+Please check [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE) &copy; 2026 Meet Maru.
+Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more details.
 
 ---
+
+<p align="center">
+  <b>Rankora</b> — Built with precision for developers, marketers, and creators worldwide.
+</p>
