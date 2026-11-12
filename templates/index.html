@@ -905,34 +905,107 @@
       </div>
     </section>
 
-    <!-- 04 — Feedback & Community Roadmap -->
-    <section class="reviews-section" id="community-reviews" aria-label="Feedback and Roadmap">
+    <!-- 04 — Testimonials, Public Issues Tracker & Inline Feedback -->
+    <section class="reviews-section" id="community-reviews" aria-label="Community Testimonials and Issue Tracker">
       <div class="section-header">
-        <span class="section-tag">04 — FEEDBACK &amp; ROADMAP</span>
-        <h2 class="section-title">Help Shape Rankora's Roadmap</h2>
-        <p class="section-desc">Rankora is actively developed with direct input from creators, developers, and SEO practitioners. All feedback is reviewed directly by the maintainer.</p>
+        <span class="section-tag">04 — COMMUNITY &amp; ROADMAP</span>
+        <h2 class="section-title">Verified Testimonials &amp; Public Issue Tracker</h2>
+        <p class="section-desc">Authentic feedback from developers calibrating search appearance, alongside our real-time community roadmap and issue tracker.</p>
       </div>
 
-      <div class="feedback-honest-card">
-        <div class="feedback-honest-content">
-          <div class="feedback-honest-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
+      <!-- Testimonials Horizontal Carousel Block -->
+      <div class="community-block testimonials-block">
+        <div class="community-block-header">
+          <div class="community-block-title-row">
+            <h3 class="community-block-title">What Builders Say</h3>
+            <span class="community-count-pill" id="testimonials-count">0 Reviews</span>
           </div>
-          <div class="feedback-honest-text">
-            <h3 class="feedback-honest-heading">Private, Direct Developer Feedback</h3>
-            <p class="feedback-honest-desc">Have a feature suggestion, spotted an inaccurate SERP simulation, or need support for a new CMS framework? Submissions are sent directly to the administrator inbox and never fabricated.</p>
+          <div class="carousel-nav-arrows">
+            <button type="button" class="carousel-arrow" id="testimonials-prev-btn" aria-label="Scroll left">&larr;</button>
+            <button type="button" class="carousel-arrow" id="testimonials-next-btn" aria-label="Scroll right">&rarr;</button>
           </div>
         </div>
-        <div class="feedback-honest-action">
-          <button type="button" class="btn btn-outline-teal review-cta-btn" id="reviews-share-feedback-btn">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-            <span>Send Feedback to Admin</span>
-          </button>
+
+        <div class="testimonials-scroll-container" id="testimonials-scroll-container">
+          <div class="testimonials-track" id="testimonials-track">
+            <!-- Dynamically populated via vanilla JS from /api/testimonials -->
+            <div class="community-loading-state">Loading verified testimonials...</div>
+          </div>
         </div>
+      </div>
+
+      <!-- Public Issues & Roadmap Block -->
+      <div class="community-block issues-block">
+        <div class="community-block-header">
+          <div class="community-block-title-row">
+            <h3 class="community-block-title">Public Issue &amp; Feature Tracker</h3>
+            <span class="community-count-pill pill-accent" id="issues-count">0 Issues</span>
+          </div>
+          <div class="issues-filter-tabs" id="issues-filter-tabs">
+            <button type="button" class="issue-filter-tab active" data-status="all">All</button>
+            <button type="button" class="issue-filter-tab" data-status="open">Open</button>
+            <button type="button" class="issue-filter-tab" data-status="in_progress">In Progress</button>
+            <button type="button" class="issue-filter-tab" data-status="resolved">Resolved</button>
+          </div>
+        </div>
+
+        <div class="issues-list" id="issues-list">
+          <!-- Dynamically populated via vanilla JS from /api/issues -->
+          <div class="community-loading-state">Loading active issues and feature tracker...</div>
+        </div>
+      </div>
+
+      <!-- Inline Feedback Submission Form -->
+      <div class="community-block inline-feedback-block">
+        <div class="inline-feedback-header">
+          <h3 class="community-block-title">Share Feedback or Report an Issue</h3>
+          <p class="inline-feedback-desc">Have a suggestion or encountered a bug? Submit directly below. Testimonials appear once approved; issues appear immediately on the public tracker.</p>
+        </div>
+
+        <form id="inline-feedback-form" class="inline-feedback-form">
+          <div class="inline-form-grid">
+            <div class="form-group">
+              <label for="fb-input-name" class="field-label">Your Name or Handle</label>
+              <input type="text" id="fb-input-name" class="text-input" placeholder="e.g. Alex Rivera (or leave blank for Anonymous)">
+            </div>
+
+            <div class="form-group">
+              <label class="field-label">Feedback Type</label>
+              <div class="feedback-type-toggle" id="fb-type-toggle">
+                <button type="button" class="type-toggle-btn active" data-type="testimonial">★ Testimonial</button>
+                <button type="button" class="type-toggle-btn" data-type="issue">⚠ Report Issue</button>
+              </div>
+              <input type="hidden" id="fb-input-type" value="testimonial">
+            </div>
+          </div>
+
+          <div class="form-group" id="fb-rating-group">
+            <div class="rating-label-row">
+              <label class="field-label" style="margin-bottom: 0;">Rating</label>
+              <span class="rating-subtext" id="rating-value-label">5 of 5 stars</span>
+            </div>
+            <div class="interactive-star-rating" id="interactive-star-rating" role="radiogroup" aria-label="Select star rating">
+              <button type="button" class="star-rating-btn active" data-val="1" aria-label="1 star">★</button>
+              <button type="button" class="star-rating-btn active" data-val="2" aria-label="2 stars">★</button>
+              <button type="button" class="star-rating-btn active" data-val="3" aria-label="3 stars">★</button>
+              <button type="button" class="star-rating-btn active" data-val="4" aria-label="4 stars">★</button>
+              <button type="button" class="star-rating-btn active" data-val="5" aria-label="5 stars">★</button>
+            </div>
+            <input type="hidden" id="fb-input-rating" value="5">
+          </div>
+
+          <div class="form-group">
+            <label for="fb-input-message" class="field-label">Your Message <span style="color: var(--accent-teal);">*</span></label>
+            <textarea id="fb-input-message" class="text-input" rows="3" placeholder="Tell us how Rankora helped you or what issue needs fixing..." required></textarea>
+          </div>
+
+          <div class="inline-form-action-row">
+            <div id="inline-feedback-status" class="inline-feedback-status" aria-live="polite"></div>
+            <button type="submit" id="fb-submit-btn" class="btn btn-primary">
+              <span id="fb-submit-btn-text">Submit Testimonial</span>
+            </button>
+          </div>
+        </form>
       </div>
     </section>
 

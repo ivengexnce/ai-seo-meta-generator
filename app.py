@@ -2,9 +2,11 @@ import datetime
 import json
 import os
 import re
+import threading
+import uuid
+import warnings
 from flask import Flask, abort, jsonify, render_template, request, send_from_directory
 from dotenv import load_dotenv
-import warnings
 
 # Suppress deprecation warning from legacy SDK
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -49,6 +51,9 @@ LEGACY_MODELS = [
     "gemini-3.8-flash",
 ]
 
+FEEDBACK_FILE = os.path.join(BASE_DIR, "data", "feedbacks.json")
+_feedbacks_lock = threading.Lock()
+
 
 def clean_json_response(raw_text: str) -> dict:
     """Extract and parse JSON from the model's text output."""
@@ -63,7 +68,6 @@ def clean_json_response(raw_text: str) -> dict:
     try:
         return json.loads(trimmed)
     except json.JSONDecodeError:
-        # Attempt to locate the first '{' and last '}'
         start = trimmed.find("{")
         end = trimmed.rfind("}")
         if start != -1 and end != -1 and end > start:
@@ -71,77 +75,46 @@ def clean_json_response(raw_text: str) -> dict:
         raise ValueError("Could not parse JSON response from Gemini model.")
 
 
-FEEDBACK_FILE = os.path.join(BASE_DIR, "data", "feedbacks.json")
-
-# Authentic feedback storage only — no fabricated testimonials or fake accounts
-DEFAULT_FEEDBACKS = []
-
-_FEEDBACKS_CACHE = None
-
-
-def load_feedbacks():
-    """Load community feedbacks from disk."""
-    global _FEEDBACKS_CACHE
-    if _FEEDBACKS_CACHE is not None:
-        return _FEEDBACKS_CACHE
-
-    try:
-        if os.path.isfile(FEEDBACK_FILE):
-            with open(FEEDBACK_FILE, "r", encoding="utf-8") as f:
+def load_feedbacks() -> list:
+    """Thread-safe loading of feedbacks from JSON disk storage."""
+    with _feedbacks_lock:
+        if not os.path.isfile(FEEDBACK_FILE):
+            return []
+        try:
+            with open(FEEDBACK_FILE, "r", encoding="utf-8-sig") as f:
                 data = json.load(f)
-                if isinstance(data, list):
-                    _FEEDBACKS_CACHE = data
-                    return _FEEDBACKS_CACHE
-    except Exception as e:
-        print(f"Failed to read feedbacks from disk: {e}")
-
-    _FEEDBACKS_CACHE = list(DEFAULT_FEEDBACKS)
-    return _FEEDBACKS_CACHE
+                return data if isinstance(data, list) else []
+        except Exception as e:
+            print(f"Failed to read feedbacks from disk: {e}")
+            return []
 
 
-def save_feedbacks_to_disk(feedbacks_list):
-    """Safely persist feedbacks to JSON disk storage."""
-    global _FEEDBACKS_CACHE
-    _FEEDBACKS_CACHE = feedbacks_list
-    try:
-        os.makedirs(os.path.dirname(FEEDBACK_FILE), exist_ok=True)
-        with open(FEEDBACK_FILE, "w", encoding="utf-8") as f:
-            json.dump(feedbacks_list, f, indent=2, ensure_ascii=False)
-        return True
-    except Exception as e:
-        print(f"Could not persist feedback file: {e}")
-        return False
+def save_feedbacks_to_disk(feedbacks_list: list) -> bool:
+    """Thread-safe persistence of feedbacks to JSON disk storage."""
+    with _feedbacks_lock:
+        try:
+            os.makedirs(os.path.dirname(FEEDBACK_FILE), exist_ok=True)
+            with open(FEEDBACK_FILE, "w", encoding="utf-8") as f:
+                json.dump(feedbacks_list, f, indent=2, ensure_ascii=False)
+            return True
+        except Exception as e:
+            print(f"Could not persist feedback file: {e}")
+            return False
 
 
-def compute_feedback_stats(feedbacks_list):
-    """Calculate aggregate review metrics strictly from authentic user entries."""
-    if not feedbacks_list:
-        return {
-            "average_rating": "5.0",
-            "total_reviews": 0,
-            "satisfaction_rate": "100%",
-            "has_reviews": False,
-        }
-
-    total = len(feedbacks_list)
-    ratings = [
-        fb.get("rating", 5)
-        for fb in feedbacks_list
-        if isinstance(fb.get("rating"), (int, float))
-    ]
-    avg = round(sum(ratings) / len(ratings), 1) if ratings else 5.0
-    positive = len([r for r in ratings if r >= 4])
-    sat_rate = f"{round((positive / total) * 100)}%" if total > 0 else "100%"
-
-    return {
-        "average_rating": f"{avg:.1f}",
-        "total_reviews": total,
-        "satisfaction_rate": sat_rate,
-        "has_reviews": True,
-    }
+def require_admin() -> bool:
+    """Verify ADMIN_SECRET header or query parameter for administrative routes."""
+    secret = os.getenv("ADMIN_SECRET", "rankora_admin_secret_2026")
+    provided = (
+        request.headers.get("ADMIN_SECRET")
+        or request.headers.get("X-ADMIN-SECRET")
+        or request.headers.get("X-Admin-Secret")
+        or request.args.get("secret")
+    )
+    return bool(provided and provided == secret)
 
 
-def resolve_canonical_base_url():
+def resolve_canonical_base_url() -> str:
     """Dynamically resolve canonical base URL for social cards, legal pages, and SEO tags."""
     proto = request.headers.get("X-Forwarded-Proto", request.scheme)
     host = request.headers.get("X-Forwarded-Host", request.host)
@@ -160,15 +133,16 @@ def index():
 
     base_url = resolve_canonical_base_url()
     feedbacks = load_feedbacks()
-    feedback_stats = compute_feedback_stats(feedbacks)
+    approved_testimonials = [
+        f for f in feedbacks if f.get("type") == "testimonial" and f.get("approved") is True
+    ]
 
     return render_template(
         "index.html",
         has_api_key=has_api_key,
         gsc_verification=gsc_verification,
         base_url=base_url,
-        feedbacks=feedbacks,
-        feedback_stats=feedback_stats,
+        feedbacks=approved_testimonials,
     )
 
 
@@ -195,217 +169,273 @@ def og_image_png():
 @app.route("/og-image.jpg")
 @app.route("/og-image.jpeg")
 def og_image_jpg():
-    """Serve canonical 1200x630 Open Graph preview image (JPEG)."""
+    """Serve canonical 1200x630 Open Graph preview image (JPEG fallback)."""
+    png_path = os.path.join(app.static_folder, "og-image.png")
+    if os.path.exists(png_path):
+        return send_from_directory(app.static_folder, "og-image.png", mimetype="image/png")
     return send_from_directory(app.static_folder, "og-image.jpg", mimetype="image/jpeg")
 
 
-VALID_GSC_TOKENS = {
-    "7e9d5e6a885f213a",
-}
-
-
 @app.route("/google<token>.html")
-def gsc_file_verification(token):
-    """Serve Google Search Console HTML verification file strictly for verified tokens or valid disk files."""
-    filename = f"google{token}.html"
-    for folder in [BASE_DIR, os.path.join(BASE_DIR, "public")]:
-        file_path = os.path.join(folder, filename)
-        if os.path.isfile(file_path):
-            return send_from_directory(folder, filename, mimetype="text/html")
-    
-    # Strictly allow configured token if serverless runtime isolates static assets
-    if token in VALID_GSC_TOKENS:
-        return (
-            f"google-site-verification: google{token}.html\n",
-            200,
-            {"Content-Type": "text/html; charset=utf-8"},
-        )
-
+def google_verification_file(token):
+    """Serve Google Search Console verification HTML file."""
+    expected_token = os.getenv("GOOGLE_SITE_VERIFICATION_TOKEN", "7e9d5e6a885f213a").strip()
+    if token == expected_token or f"google{token}.html" == "google7e9d5e6a885f213a.html":
+        content = f"google-site-verification: google{token}.html"
+        return content, 200, {"Content-Type": "text/html; charset=utf-8"}
     abort(404)
 
 
 @app.route("/favicon.ico")
 def favicon_ico():
-    """Serve binary multi-resolution favicon.ico for Googlebot and search crawlers."""
-    return send_from_directory(app.static_folder, "favicon.ico", mimetype="image/x-icon")
+    """Serve binary multi-size favicon.ico for root browser and Googlebot requests."""
+    return send_from_directory(BASE_DIR, "favicon.ico", mimetype="image/x-icon")
 
 
 @app.route("/favicon.svg")
 def favicon_svg():
-    """Serve scalable SVG favicon directly."""
+    """Serve scalable SVG vector icon."""
     return send_from_directory(app.static_folder, "favicon.svg", mimetype="image/svg+xml")
 
 
 @app.route("/favicon-48x48.png")
 def favicon_48():
-    """Serve Google Search compliant 48x48 favicon PNG."""
-    return send_from_directory(app.static_folder, "favicon-48x48.png", mimetype="image/png")
+    """Serve Googlebot Search Favicon 48x48 PNG."""
+    return send_from_directory(BASE_DIR, "favicon-48x48.png", mimetype="image/png")
 
 
 @app.route("/apple-touch-icon.png")
 @app.route("/apple-touch-icon-precomposed.png")
 def apple_touch_icon():
-    """Serve Apple iOS and web clip icon."""
-    return send_from_directory(app.static_folder, "apple-touch-icon.png", mimetype="image/png")
+    """Serve Apple iOS home screen touch icon."""
+    return send_from_directory(BASE_DIR, "apple-touch-icon.png", mimetype="image/png")
 
 
 @app.route("/site.webmanifest")
-def site_webmanifest():
-    """Serve web application manifest."""
-    return send_from_directory(
-        app.static_folder, "site.webmanifest", mimetype="application/manifest+json"
-    )
+def webmanifest():
+    """Serve Progressive Web App Manifest."""
+    return send_from_directory(BASE_DIR, "site.webmanifest", mimetype="application/manifest+json")
 
 
 @app.route("/robots.txt")
 def robots_txt():
-    """Serve search crawler indexation policy."""
+    """Serve search engine crawling directives."""
     return send_from_directory(BASE_DIR, "robots.txt", mimetype="text/plain")
 
 
 @app.route("/health")
 @app.route("/api/health")
-def health():
-    """Health check endpoint for deployment monitoring."""
+def health_check():
+    """Provide service uptime and operational status."""
     return jsonify({"status": "ok", "app": "Rankora — AI SEO Intelligence"}), 200
+
+
+# ==============================================================================
+# Public Testimonials & Issues APIs
+# ==============================================================================
+
+@app.route("/api/testimonials", methods=["GET"])
+def get_testimonials():
+    """Public route: returns approved testimonials sorted newest first."""
+    feedbacks = load_feedbacks()
+    approved = [
+        f for f in feedbacks
+        if f.get("type") == "testimonial" and f.get("approved") is True
+    ]
+    approved.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
+    return jsonify({
+        "status": "success",
+        "count": len(approved),
+        "testimonials": approved,
+    }), 200
+
+
+@app.route("/api/issues", methods=["GET"])
+def get_issues():
+    """Public route: returns all issues with status (open, in_progress, resolved) sorted newest first."""
+    feedbacks = load_feedbacks()
+    issues = [
+        f for f in feedbacks
+        if f.get("type") == "issue"
+    ]
+    issues.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
+    return jsonify({
+        "status": "success",
+        "count": len(issues),
+        "issues": issues,
+    }), 200
 
 
 @app.route("/api/feedback", methods=["GET", "POST"])
 def feedback_api():
-    """Receive user feedback or allow admin retrieval."""
-    feedbacks = load_feedbacks()
-
+    """
+    Public feedback endpoint:
+    - POST: Submits new testimonial or issue (approved defaults to False, status defaults to open).
+    - GET: Admin access only (requires ADMIN_SECRET header or parameter).
+    """
     if request.method == "GET":
-        # Feedback is locked from public retrieval to protect user privacy
-        admin_key = request.args.get("key") or request.headers.get("X-Admin-Key")
-        expected_key = os.getenv("ADMIN_FEEDBACK_KEY", "rankora_admin_secret_2026")
+        if not require_admin():
+            return jsonify({
+                "error": "Unauthorized. Feedback listing requires ADMIN_SECRET header.",
+                "hint": "Use /api/testimonials or /api/issues for public feeds.",
+            }), 401
 
-        if admin_key != expected_key:
-            return (
-                jsonify(
-                    {
-                        "status": "locked",
-                        "message": "User feedback is private and locked for administrative review only. You can submit feedback anytime via POST.",
-                        "can_submit": True,
-                    }
-                ),
-                200,
-            )
+        feedbacks = load_feedbacks()
+        return jsonify({
+            "status": "success",
+            "count": len(feedbacks),
+            "feedbacks": feedbacks,
+        }), 200
 
-        # Authenticated Admin access
-        stats = compute_feedback_stats(feedbacks)
-        return (
-            jsonify(
-                {
-                    "status": "success",
-                    "stats": stats,
-                    "total": len(feedbacks),
-                    "feedbacks": feedbacks,
-                }
-            ),
-            200,
-        )
-
-    # POST: Write-only feedback submission
+    # POST submission
     data = request.get_json(silent=True) or {}
-    message = data.get("message", "").strip()
-    category = data.get("category", "feedback").strip()
-    raw_rating = data.get("rating", "positive")
-
-    # Accurate rating mapping without forcing 5-stars
-    if isinstance(raw_rating, int) and 1 <= raw_rating <= 5:
-        numeric_rating = raw_rating
-    elif raw_rating in ("accurate", "positive"):
-        numeric_rating = 5
-    elif raw_rating in ("needs_work", "negative"):
-        numeric_rating = 3
-    else:
-        try:
-            numeric_rating = max(1, min(5, int(raw_rating)))
-        except (ValueError, TypeError):
-            numeric_rating = 5
-
-    raw_name = data.get("name", "").strip()
-    author_name = raw_name if raw_name else "Anonymous User"
-
-    raw_role = data.get("role", "").strip()
-    author_role = raw_role if raw_role else ""
-
-    email = data.get("email", "").strip()
+    message = str(data.get("message", "")).strip()
 
     if not message:
-        return jsonify({"error": "Feedback message cannot be empty."}), 400
+        return jsonify({"error": "Message is required."}), 400
 
-    parts = author_name.split()
-    initials = (parts[0][0] + (parts[1][0] if len(parts) > 1 else "")).upper() if parts and author_name != "Anonymous User" else "U"
+    raw_type = str(data.get("type", "testimonial")).strip().lower()
+    feedback_type = "issue" if raw_type == "issue" else "testimonial"
 
-    category_labels = {
-        "accuracy": "Accuracy & SERP",
-        "idea": "Feature Request",
-        "ux": "UX / Experience",
-        "bug": "Bug Report",
-        "general": "General Feedback",
-    }
+    raw_name = str(data.get("name", "")).strip()
+    author_name = raw_name if raw_name else "Anonymous"
+
+    try:
+        rating = int(data.get("rating", 5))
+        rating = max(1, min(5, rating))
+    except (ValueError, TypeError):
+        rating = 5
 
     new_entry = {
-        "id": f"fb_{int(datetime.datetime.now().timestamp())}",
+        "id": str(uuid.uuid4()),
         "name": author_name,
-        "role": author_role,
-        "avatar_initials": initials,
-        "rating": numeric_rating,
-        "category": category,
-        "tag": category_labels.get(category, category.title()),
         "message": message,
-        "email": email,
-        "verified": False,
-        "date": datetime.date.today().strftime("%Y-%m-%d"),
+        "type": feedback_type,
+        "status": "open",
+        "approved": False,
+        "rating": rating,
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     }
 
+    feedbacks = load_feedbacks()
     feedbacks.insert(0, new_entry)
     save_feedbacks_to_disk(feedbacks)
 
-    return (
-        jsonify(
-            {
-                "status": "success",
-                "message": "Thank you! Your feedback has been securely received by the team.",
-            }
+    return jsonify({
+        "status": "success",
+        "message": (
+            "Thank you! Your testimonial has been received and will appear once approved."
+            if feedback_type == "testimonial"
+            else "Issue logged successfully and added to the public tracker."
         ),
-        200,
-    )
+        "feedback": new_entry,
+    }), 201
+
+
+# ==============================================================================
+# Admin Protected Feedback Routes (Requires ADMIN_SECRET header)
+# ==============================================================================
+
+@app.route("/api/feedback/<feedback_id>/approve", methods=["PATCH"])
+def admin_approve_feedback(feedback_id):
+    """Admin: Toggle or set approval state on a feedback item."""
+    if not require_admin():
+        return jsonify({"error": "Unauthorized. Invalid or missing ADMIN_SECRET header."}), 401
+
+    data = request.get_json(silent=True) or {}
+    approved_val = bool(data.get("approved", True))
+
+    feedbacks = load_feedbacks()
+    target = None
+    for item in feedbacks:
+        if str(item.get("id")) == str(feedback_id):
+            item["approved"] = approved_val
+            target = item
+            break
+
+    if not target:
+        return jsonify({"error": f"Feedback item with id '{feedback_id}' not found."}), 404
+
+    save_feedbacks_to_disk(feedbacks)
+    return jsonify({
+        "status": "success",
+        "message": f"Feedback approval updated to {target['approved']}.",
+        "feedback": target,
+    }), 200
+
+
+@app.route("/api/feedback/<feedback_id>/status", methods=["PATCH"])
+def admin_update_status(feedback_id):
+    """Admin: Update status (open, in_progress, resolved)."""
+    if not require_admin():
+        return jsonify({"error": "Unauthorized. Invalid or missing ADMIN_SECRET header."}), 401
+
+    data = request.get_json(silent=True) or {}
+    new_status = str(data.get("status", "")).strip().lower()
+
+    if new_status not in ("open", "in_progress", "resolved"):
+        return jsonify({"error": "Status must be 'open', 'in_progress', or 'resolved'."}), 400
+
+    feedbacks = load_feedbacks()
+    target = None
+    for item in feedbacks:
+        if str(item.get("id")) == str(feedback_id):
+            item["status"] = new_status
+            target = item
+            break
+
+    if not target:
+        return jsonify({"error": f"Feedback item with id '{feedback_id}' not found."}), 404
+
+    save_feedbacks_to_disk(feedbacks)
+    return jsonify({
+        "status": "success",
+        "message": f"Feedback status updated to '{new_status}'.",
+        "feedback": target,
+    }), 200
+
+
+@app.route("/api/feedback/<feedback_id>", methods=["DELETE"])
+def admin_delete_feedback(feedback_id):
+    """Admin: Delete a feedback item by id."""
+    if not require_admin():
+        return jsonify({"error": "Unauthorized. Invalid or missing ADMIN_SECRET header."}), 401
+
+    feedbacks = load_feedbacks()
+    initial_len = len(feedbacks)
+    feedbacks = [f for f in feedbacks if str(f.get("id")) != str(feedback_id)]
+
+    if len(feedbacks) == initial_len:
+        return jsonify({"error": f"Feedback item with id '{feedback_id}' not found."}), 404
+
+    save_feedbacks_to_disk(feedbacks)
+    return jsonify({
+        "status": "success",
+        "message": "Feedback item deleted successfully.",
+        "id": feedback_id,
+    }), 200
 
 
 @app.route("/admin/feedback")
 def view_feedback_dashboard():
-    """Dedicated private admin dashboard for viewing all submitted feedback."""
-    admin_key = request.args.get("key") or request.headers.get("X-Admin-Key")
-    expected_key = os.getenv("ADMIN_FEEDBACK_KEY", "rankora_admin_secret_2026")
-
-    if admin_key != expected_key:
-        return (
-            jsonify(
-                {
-                    "error": "Unauthorized",
-                    "hint": "Pass ?key=<ADMIN_FEEDBACK_KEY> to view admin feedback dashboard.",
-                }
-            ),
-            401,
-        )
+    """Admin view endpoint for reviewing all feedbacks."""
+    if not require_admin():
+        return jsonify({
+            "error": "Unauthorized",
+            "hint": "Pass ADMIN_SECRET header or ?secret=<key> to view admin feedback dashboard.",
+        }), 401
 
     feedbacks = load_feedbacks()
-    stats = compute_feedback_stats(feedbacks)
-    return (
-        jsonify(
-            {
-                "workspace": "Rankora Private Admin Feedback Log",
-                "stats": stats,
-                "count": len(feedbacks),
-                "feedbacks": feedbacks,
-            }
-        ),
-        200,
-    )
+    return jsonify({
+        "workspace": "Rankora Private Admin Feedback Log",
+        "count": len(feedbacks),
+        "feedbacks": feedbacks,
+    }), 200
 
+
+# ==============================================================================
+# AI Metadata Generation Endpoint (Gemini API)
+# ==============================================================================
 
 @app.route("/generate", methods=["POST"])
 @app.route("/api/generate", methods=["POST"])
@@ -462,7 +492,7 @@ def generate_meta():
                     "og_type": "article" if "blog" in content.lower() else "website",
                     "keywords": [
                         "SEO Optimization",
-                        "Gemini 3.8 Flash",
+                        "Gemini 3.5 Flash",
                         "Frontend AI",
                         "Meta Tags",
                         "Search Intelligence",

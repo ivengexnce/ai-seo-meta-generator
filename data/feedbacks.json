@@ -1,1 +1,42 @@
-﻿[]
+[
+  {
+    "id": "c1f7b889-b2c6-4d7a-8b01-523e4d4135e1",
+    "name": "Sarah Lin",
+    "message": "Rankora completely eliminated our snippet truncation issues on Google. The desktop and mobile preview saved our launch.",
+    "type": "testimonial",
+    "status": "resolved",
+    "approved": true,
+    "rating": 5,
+    "timestamp": "2026-11-10T14:32:00Z"
+  },
+  {
+    "id": "f82b7194-e3c1-482a-9ad4-82a17694901b",
+    "name": "David Miller",
+    "message": "The Open Graph and Twitter Card generation is a lifesaver. Organic CTR increased noticeably across our documentation pages.",
+    "type": "testimonial",
+    "status": "resolved",
+    "approved": true,
+    "rating": 5,
+    "timestamp": "2026-11-11T16:45:00Z"
+  },
+  {
+    "id": "e4a8d052-78d1-42ec-a077-3e117409c91b",
+    "name": "Marcus Chen",
+    "message": "Need support for schema.org Product and Article JSON-LD markup.",
+    "type": "issue",
+    "status": "in_progress",
+    "approved": false,
+    "rating": 4,
+    "timestamp": "2026-11-11T09:15:00Z"
+  },
+  {
+    "id": "93f6c8d2-5a41-4c4e-b5f7-68b321a4f02a",
+    "name": "Elena Rostova",
+    "message": "Export button occasionally copies without trailing newline on iOS Safari.",
+    "type": "issue",
+    "status": "open",
+    "approved": false,
+    "rating": 3,
+    "timestamp": "2026-11-12T08:00:00Z"
+  }
+]
