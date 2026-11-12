@@ -77,11 +77,34 @@ def index():
     gsc_verification = os.getenv(
         "GOOGLE_SITE_VERIFICATION", "bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA"
     ).strip() or "bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA"
+
+    # Dynamically resolve canonical base URL (supports rankoraa.vercel.app and custom domains)
+    proto = request.headers.get("X-Forwarded-Proto", request.scheme)
+    host = request.headers.get("X-Forwarded-Host", request.host)
+    if not host or "127.0.0.1" in host or "localhost" in host:
+        base_url = os.getenv("CANONICAL_URL", "https://rankoraa.vercel.app")
+    else:
+        base_url = f"{proto}://{host}".rstrip("/")
+
     return render_template(
         "index.html",
         has_api_key=has_api_key,
         gsc_verification=gsc_verification,
+        base_url=base_url,
     )
+
+
+@app.route("/og-image.png")
+def og_image_png():
+    """Serve canonical 1200x630 Open Graph preview image (PNG)."""
+    return send_from_directory(app.static_folder, "og-image.png", mimetype="image/png")
+
+
+@app.route("/og-image.jpg")
+@app.route("/og-image.jpeg")
+def og_image_jpg():
+    """Serve canonical 1200x630 Open Graph preview image (JPEG)."""
+    return send_from_directory(app.static_folder, "og-image.jpg", mimetype="image/jpeg")
 
 
 VALID_GSC_TOKENS = {

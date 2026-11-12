@@ -9,6 +9,14 @@
       "dest": "/robots.txt"
     },
     {
+      "src": "/og-image.png",
+      "dest": "/static/og-image.png"
+    },
+    {
+      "src": "/og-image.jpg",
+      "dest": "/static/og-image.jpg"
+    },
+    {
       "src": "/static/(.*)",
       "dest": "/static/$1"
     },

@@ -11,21 +11,29 @@
   <meta name="author" content="Rankora">
   <meta name="theme-color" content="#101827">
 
-  <!-- Open Graph / Social Media -->
+  <!-- Open Graph / Social Media Meta Tags -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ai-seo-meta-generator.vercel.app/">
-  <meta property="og:title" content="Your content deserves to be discovered.">
+  <meta property="og:url" content="{{ base_url or 'https://rankoraa.vercel.app' }}/">
+  <meta property="og:site_name" content="Rankora">
+  <meta property="og:title" content="Rankora — Your content deserves to be discovered.">
   <meta property="og:description"
-    content="Generate smarter SEO metadata and preview how your pages may appear in search.">
-  <meta property="og:image" content="{{ url_for('static', filename='og-image.jpg') }}">
+    content="Generate search-ready SEO metadata, preview Google SERP snippets, and craft social tags with AI.">
+  <meta property="og:image" content="{{ base_url or 'https://rankoraa.vercel.app' }}/static/og-image.png">
+  <meta property="og:image:secure_url" content="{{ base_url or 'https://rankoraa.vercel.app' }}/static/og-image.png">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Rankora — AI SEO Metadata Workspace and Google SERP Simulator">
 
-  <!-- Twitter Card -->
+  <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Your content deserves to be discovered.">
-  <meta name="twitter:description" content="Create, preview, and export search-ready metadata.">
-  <meta name="twitter:image" content="{{ url_for('static', filename='og-image.jpg') }}">
+  <meta name="twitter:site" content="@rankora">
+  <meta name="twitter:creator" content="@rankora">
+  <meta name="twitter:url" content="{{ base_url or 'https://rankoraa.vercel.app' }}/">
+  <meta name="twitter:title" content="Rankora — Your content deserves to be discovered.">
+  <meta name="twitter:description" content="Create, preview, and export search-ready metadata with an AI-powered SEO workspace.">
+  <meta name="twitter:image" content="{{ base_url or 'https://rankoraa.vercel.app' }}/static/og-image.png">
+  <meta name="twitter:image:alt" content="Rankora — AI SEO Metadata Workspace and Google SERP Simulator">
 
   <!-- Google Search Console Verification -->
   <meta name="google-site-verification" content="{{ gsc_verification or 'bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA' }}">
