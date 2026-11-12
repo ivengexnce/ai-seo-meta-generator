@@ -521,7 +521,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       const offset = circumference - (score / 100) * circumference;
       scoreProgressEl.style.strokeDashoffset = offset;
       if (score >= 80) {
-        scoreProgressEl.style.stroke = '#14b8a6';
+        scoreProgressEl.style.stroke = '#10b981';
       } else if (score >= 50) {
         scoreProgressEl.style.stroke = '#f59e0b';
       } else {

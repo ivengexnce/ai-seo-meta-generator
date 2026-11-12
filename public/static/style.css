@@ -1,8 +1,8 @@
 /* ==========================================================================
    Rankora — AI SEO Intelligence Design System
-   Brand Architecture: Deep Navy (#101827), Electric Teal (#14B8A6),
+   Brand Architecture: Deep Navy (#101827), Electric Teal (#10B981),
                       Cloud White (#F8FAFC), Slate (#64748B), Signal Violet (#8B5CF6)
-   Color Distribution: 70% Neutral Surfaces, 20% Primary Teal, 8% Secondary Accents, 2% Status
+   Color Distribution: 70% Neutral Surfaces, 20% Primary Emerald, 8% Secondary Accents, 2% Status
    Typography: Space Grotesk (Headings), Inter (Interface/Body), JetBrains Mono (Technical Values)
    ========================================================================== */
 
@@ -37,17 +37,17 @@
   --text-dim: #475569;
 
   /* ------------------------------------------------------------------------
-     20% Primary Accent: Electric Teal (#14B8A6)
+     20% Primary Accent: Electric Teal (#10B981)
      Used for primary CTA buttons, active state indicators, and focus highlights
      ------------------------------------------------------------------------ */
-  --accent-teal: #14b8a6;
-  --accent-primary: #14b8a6;
-  --accent-teal-hover: #0d9488;
-  --accent-teal-active: #0f766e;
-  --accent-teal-glow: rgba(20, 184, 166, 0.28);
-  --accent-teal-subtle: rgba(20, 184, 166, 0.12);
-  --accent-teal-border: rgba(20, 184, 166, 0.35);
-  --border-focus: #14b8a6;
+  --accent-teal: #10b981;
+  --accent-primary: #10b981;
+  --accent-teal-hover: #059669;
+  --accent-teal-active: #047857;
+  --accent-teal-glow: rgba(16, 185, 129, 0.28);
+  --accent-teal-subtle: rgba(16, 185, 129, 0.12);
+  --accent-teal-border: rgba(16, 185, 129, 0.35);
+  --border-focus: #10b981;
 
   /* ------------------------------------------------------------------------
      8% Secondary Accent: Signal Violet (#8B5CF6)
@@ -92,7 +92,7 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.45);
-  --shadow-glow: 0 0 20px rgba(20, 184, 166, 0.2);
+  --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.2);
 
   --transition-fast: 150ms ease;
   --transition-normal: 200ms ease;
@@ -136,7 +136,7 @@ body::before {
   transform: translateX(-50%);
   width: 1000px;
   height: 480px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(20, 184, 166, 0.08) 0%, rgba(139, 92, 246, 0.04) 40%, transparent 70%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(16, 185, 129, 0.08) 0%, rgba(139, 92, 246, 0.04) 40%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -394,13 +394,13 @@ button {
   align-items: center;
   gap: 8px;
   padding: 4px 14px;
-  background: rgba(20, 184, 166, 0.08);
+  background: rgba(16, 185, 129, 0.08);
   border: 1px solid var(--accent-teal-border);
   border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.1em;
-  color: #2dd4bf;
+  color: #34d399;
   text-transform: uppercase;
   margin-bottom: 18px;
 }
@@ -448,7 +448,7 @@ button {
   font-size: 0.95rem;
   font-weight: 600;
   border-radius: var(--radius-md);
-  box-shadow: 0 4px 14px rgba(20, 184, 166, 0.35);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
   transition: all var(--transition-normal);
 }
 
@@ -456,7 +456,7 @@ button {
   background: var(--accent-teal-hover);
   color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(20, 184, 166, 0.45);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
 }
 
 .hero-btn-secondary {
@@ -749,7 +749,7 @@ textarea#page-content::placeholder {
   font-size: 1rem;
   font-weight: 600;
   border-radius: var(--radius-md);
-  box-shadow: 0 4px 14px rgba(20, 184, 166, 0.35);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
   transition: all var(--transition-normal);
 }
 
@@ -757,7 +757,7 @@ textarea#page-content::placeholder {
   background: var(--accent-teal-hover);
   color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(20, 184, 166, 0.45);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
 }
 
 .submit-btn:disabled {
@@ -824,8 +824,8 @@ textarea#page-content::placeholder {
   gap: 12px;
   padding: 10px 16px;
   margin-bottom: 20px;
-  background: rgba(20, 184, 166, 0.08);
-  border: 1px solid rgba(20, 184, 166, 0.25);
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
   border-radius: var(--radius-md);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
   animation: slideDownFade 0.3s ease-out;
@@ -906,14 +906,14 @@ textarea#page-content::placeholder {
 
 .feedback-pill-btn.feedback-pill-text {
   color: var(--accent-teal);
-  border-color: rgba(20, 184, 166, 0.3);
-  background: rgba(20, 184, 166, 0.08);
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.08);
 }
 
 .feedback-pill-btn.feedback-pill-text:hover {
-  background: rgba(20, 184, 166, 0.18);
+  background: rgba(16, 185, 129, 0.18);
   border-color: var(--accent-teal);
-  color: #2dd4bf;
+  color: #34d399;
 }
 
 .feedback-strip-thank-you {
@@ -941,7 +941,7 @@ textarea#page-content::placeholder {
 }
 
 .share-trigger-link:hover {
-  color: #2dd4bf;
+  color: #34d399;
 }
 
 .feedback-strip-close {
@@ -1165,8 +1165,8 @@ textarea#page-content::placeholder {
 }
 
 .tag-meta {
-  background: rgba(20, 184, 166, 0.12);
-  color: #2dd4bf;
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
   border: 1px solid var(--accent-teal-border);
 }
 
@@ -1424,7 +1424,7 @@ textarea#page-content::placeholder {
   position: absolute;
   width: 160px;
   height: 160px;
-  background: radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
 }
 
 .social-content {
@@ -1629,7 +1629,7 @@ textarea#page-content::placeholder {
   width: 40px;
   height: 40px;
   border-radius: var(--radius-md);
-  background: rgba(20, 184, 166, 0.1);
+  background: rgba(16, 185, 129, 0.1);
   border: 1px solid var(--accent-teal-border);
   display: flex;
   align-items: center;
@@ -1711,7 +1711,7 @@ textarea#page-content::placeholder {
 }
 
 .faq-item.open {
-  border-color: rgba(20, 184, 166, 0.45);
+  border-color: rgba(16, 185, 129, 0.45);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
@@ -1732,7 +1732,7 @@ textarea#page-content::placeholder {
 }
 
 .faq-question:hover {
-  color: #2dd4bf;
+  color: #34d399;
 }
 
 .faq-icon {
@@ -1765,7 +1765,7 @@ textarea#page-content::placeholder {
   background: rgba(30, 41, 59, 0.7);
   padding: 2px 6px;
   border-radius: 4px;
-  color: #2dd4bf;
+  color: #34d399;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -1782,7 +1782,7 @@ textarea#page-content::placeholder {
   margin-top: 88px;
   padding: 64px 0 32px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: radial-gradient(ellipse 70% 45% at 50% 0%, rgba(20, 184, 166, 0.06), transparent 75%);
+  background: radial-gradient(ellipse 70% 45% at 50% 0%, rgba(16, 185, 129, 0.06), transparent 75%);
 }
 
 .app-footer::before {
@@ -1852,8 +1852,8 @@ textarea#page-content::placeholder {
 }
 
 .badge-pill:hover {
-  background: rgba(20, 184, 166, 0.12);
-  border-color: rgba(20, 184, 166, 0.4);
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.4);
   color: var(--accent-teal);
   transform: translateY(-1px);
 }
@@ -2008,7 +2008,7 @@ textarea#page-content::placeholder {
 .back-to-top-btn:hover {
   color: var(--accent-teal);
   background: rgba(30, 41, 59, 0.95);
-  border-color: rgba(20, 184, 166, 0.4);
+  border-color: rgba(16, 185, 129, 0.4);
   transform: translateY(-2px);
 }
 
@@ -2219,11 +2219,11 @@ textarea#page-content::placeholder {
 }
 
 .floating-feedback-pill:hover {
-  background: rgba(20, 184, 166, 0.15);
+  background: rgba(16, 185, 129, 0.15);
   border-color: var(--accent-teal);
-  color: #2dd4bf;
+  color: #34d399;
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(20, 184, 166, 0.25);
+  box-shadow: 0 6px 24px rgba(16, 185, 129, 0.25);
 }
 
 /* ==========================================================================
@@ -2330,9 +2330,9 @@ textarea#page-content::placeholder {
 }
 
 .sentiment-btn.active {
-  background: rgba(20, 184, 166, 0.15);
+  background: rgba(16, 185, 129, 0.15);
   border-color: var(--accent-teal);
-  color: #2dd4bf;
+  color: #34d399;
 }
 
 /* ==========================================================================
@@ -2515,8 +2515,8 @@ textarea#page-content::placeholder {
 }
 
 .community-count-pill.pill-accent {
-  background: rgba(20, 184, 166, 0.1);
-  border-color: rgba(20, 184, 166, 0.25);
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.25);
   color: var(--accent-teal);
 }
 
@@ -2772,7 +2772,7 @@ textarea#page-content::placeholder {
   position: relative;
   background: #0D131F;
   background: linear-gradient(180deg, #111827 0%, #0B0F19 100%);
-  border: 1px solid rgba(20, 184, 166, 0.28);
+  border: 1px solid rgba(16, 185, 129, 0.28);
   border-radius: 16px;
   padding: 36px 40px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
@@ -2787,7 +2787,7 @@ textarea#page-content::placeholder {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #14B8A6 0%, #06B6D4 50%, #8B5CF6 100%);
+  background: linear-gradient(90deg, #10B981 0%, #06B6D4 50%, #8B5CF6 100%);
 }
 
 .inline-feedback-header {
@@ -2806,12 +2806,12 @@ textarea#page-content::placeholder {
   align-items: center;
   gap: 6px;
   padding: 4px 12px;
-  background: rgba(20, 184, 166, 0.12);
-  border: 1px solid rgba(20, 184, 166, 0.35);
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
   border-radius: 9999px;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #2DD4BF;
+  color: #34D399;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -2883,9 +2883,9 @@ textarea#page-content::placeholder {
 
 .inline-feedback-form .text-input:focus {
   outline: none;
-  border-color: #14B8A6;
+  border-color: #10B981;
   background: #0A0F1A;
-  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.22);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.22);
 }
 
 /* Sleek Segmented Type Toggle */
@@ -2921,10 +2921,10 @@ textarea#page-content::placeholder {
 }
 
 .type-toggle-btn.active[data-type="testimonial"] {
-  background: rgba(20, 184, 166, 0.16);
-  color: #2DD4BF;
-  border-color: rgba(20, 184, 166, 0.5);
-  box-shadow: 0 2px 8px rgba(20, 184, 166, 0.2);
+  background: rgba(16, 185, 129, 0.16);
+  color: #34D399;
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
 }
 
 .type-toggle-btn.active[data-type="issue"] {
@@ -3032,16 +3032,16 @@ textarea#page-content::placeholder {
 
 .btn-primary,
 .fb-submit-cta {
-  background: #14B8A6;
+  background: #10B981;
   color: #031518 !important;
-  border-color: #14B8A6;
-  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.38);
+  border-color: #10B981;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.38);
 }
 
 .btn-primary:hover,
 .fb-submit-cta:hover {
-  background: #2DD4BF;
-  border-color: #2DD4BF;
+  background: #34D399;
+  border-color: #34D399;
   color: #020F12 !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(45, 212, 191, 0.55);
@@ -3050,7 +3050,7 @@ textarea#page-content::placeholder {
 .btn-primary:active,
 .fb-submit-cta:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
 .btn-primary:disabled,
@@ -3093,7 +3093,7 @@ textarea#page-content::placeholder {
   gap: 24px;
   padding: 24px 32px;
   background: rgba(17, 24, 39, 0.75);
-  border: 1px solid rgba(20, 184, 166, 0.3);
+  border: 1px solid rgba(16, 185, 129, 0.3);
   border-radius: var(--radius-lg);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
   margin-bottom: 32px;
@@ -3158,7 +3158,7 @@ textarea#page-content::placeholder {
   font-size: 0.86rem;
   font-weight: 600;
   cursor: pointer;
-  background: rgba(20, 184, 166, 0.12);
+  background: rgba(16, 185, 129, 0.12);
   border: 1px solid var(--accent-teal);
   color: var(--accent-teal);
   transition: all var(--transition-fast);
@@ -3168,7 +3168,7 @@ textarea#page-content::placeholder {
   background: var(--accent-teal);
   color: #042f2e;
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.3);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
 }
 
 /* Review Filter Chips */
@@ -3199,7 +3199,7 @@ textarea#page-content::placeholder {
 }
 
 .review-filter-chip.active {
-  background: rgba(20, 184, 166, 0.15);
+  background: rgba(16, 185, 129, 0.15);
   border-color: var(--accent-teal);
   color: var(--accent-teal);
 }
@@ -3222,7 +3222,7 @@ textarea#page-content::placeholder {
 }
 
 .review-card:hover {
-  border-color: rgba(20, 184, 166, 0.4);
+  border-color: rgba(16, 185, 129, 0.4);
   transform: translateY(-3px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   background: rgba(17, 24, 39, 0.85);
@@ -3235,11 +3235,11 @@ textarea#page-content::placeholder {
 
 @keyframes pulseNewReview {
   0% {
-    box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.6);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
     transform: scale(0.98);
   }
   50% {
-    box-shadow: 0 0 20px 4px rgba(20, 184, 166, 0.4);
+    box-shadow: 0 0 20px 4px rgba(16, 185, 129, 0.4);
     transform: scale(1.02);
   }
   100% {
@@ -3259,8 +3259,8 @@ textarea#page-content::placeholder {
   width: 40px;
   height: 40px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, rgba(20, 184, 166, 0.35), rgba(139, 92, 246, 0.35));
-  border: 1px solid rgba(20, 184, 166, 0.4);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.35), rgba(139, 92, 246, 0.35));
+  border: 1px solid rgba(16, 185, 129, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3329,8 +3329,8 @@ textarea#page-content::placeholder {
   display: inline-block;
   padding: 2px 8px;
   border-radius: var(--radius-full);
-  background: rgba(20, 184, 166, 0.08);
-  border: 1px solid rgba(20, 184, 166, 0.2);
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
   color: var(--accent-teal);
   font-size: 0.72rem;
   font-weight: 500;
