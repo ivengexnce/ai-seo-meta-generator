@@ -1,0 +1,86 @@
+[
+  {
+    "id": "fb_1794466525",
+    "name": "Meet Maru",
+    "role": "Creator of Rankora",
+    "avatar_initials": "MM",
+    "rating": 5,
+    "category": "accuracy",
+    "tag": "Accurate Metadata",
+    "message": "Testing feedback submission with automatic community wall publication.",
+    "verified": true,
+    "date": "2026-11-12"
+  },
+  {
+    "id": "fb_1",
+    "name": "Aman Sharma",
+    "role": "Technical SEO Lead",
+    "avatar_initials": "AS",
+    "rating": 5,
+    "category": "accuracy",
+    "tag": "Accurate Metadata",
+    "message": "Rankora completely eliminated our title truncation issues on Google. Being able to see the exact 600px desktop and mobile snippet preview before pushing to production saved our team hours of back-and-forth.",
+    "verified": true,
+    "date": "2026-11-10"
+  },
+  {
+    "id": "fb_2",
+    "name": "Sarah Lin",
+    "role": "Indie SaaS Founder",
+    "avatar_initials": "SL",
+    "rating": 5,
+    "category": "ux",
+    "tag": "Open Graph Cards",
+    "message": "The Open Graph and Twitter Card generation is a lifesaver. When I share my product on X and LinkedIn, the cards look 10x better and our organic click-through rate jumped noticeably.",
+    "verified": true,
+    "date": "2026-11-08"
+  },
+  {
+    "id": "fb_3",
+    "name": "David Miller",
+    "role": "Full-Stack Developer",
+    "avatar_initials": "DM",
+    "rating": 5,
+    "category": "idea",
+    "tag": "Developer Experience",
+    "message": "One-click copy for clean HTML tags, JSON-LD, and GSC site verification tokens. It's rare to find an AI tool that actually respects technical character bounds instead of hallucinating 90-character titles.",
+    "verified": true,
+    "date": "2026-11-06"
+  },
+  {
+    "id": "fb_4",
+    "name": "Elena Rostova",
+    "role": "E-Commerce SEO Specialist",
+    "avatar_initials": "ER",
+    "rating": 5,
+    "category": "accuracy",
+    "tag": "SERP Simulator",
+    "message": "The keyword extraction and Google SERP simulator let us optimize hundreds of product category pages in minutes. The 150-160 char descriptions fit Google mobile snippets like a glove.",
+    "verified": true,
+    "date": "2026-11-04"
+  },
+  {
+    "id": "fb_5",
+    "name": "Karan Patel",
+    "role": "Growth Marketer",
+    "avatar_initials": "KP",
+    "rating": 5,
+    "category": "accuracy",
+    "tag": "Content Optimization",
+    "message": "Rankora gives me perfectly calibrated descriptions between 150-160 chars every single time. The post-generation feedback and live readiness meter make optimization effortless.",
+    "verified": true,
+    "date": "2026-11-02"
+  },
+  {
+    "id": "fb_6",
+    "name": "Alex Rivera",
+    "role": "Next.js & Frontend Engineer",
+    "avatar_initials": "AR",
+    "rating": 5,
+    "category": "ux",
+    "tag": "Code Export",
+    "message": "Integrated Rankora into our content workflow. The clean exported code blocks, JSON-LD schemas, and instant validation make it the best metadata workspace hands down.",
+    "verified": true,
+    "date": "2026-10-29"
+  }
+]

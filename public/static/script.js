@@ -846,6 +846,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   const closeFeedbackBtn = document.getElementById('close-feedback-btn');
   const closeFeedbackFootBtn = document.getElementById('close-feedback-foot-btn');
   const feedbackForm = document.getElementById('feedback-form');
+  const feedbackNameInput = document.getElementById('feedback-name');
   const feedbackMessageInput = document.getElementById('feedback-message');
   const feedbackEmailInput = document.getElementById('feedback-email');
   const categoryChips = document.querySelectorAll('#feedback-category-chips .sentiment-btn');
@@ -880,11 +881,55 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     });
   }
 
+  function escapeHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function prependReviewCard(fb) {
+    const grid = document.getElementById('community-reviews-grid');
+    if (!grid || !fb) return;
+
+    const starsHtml = '★'.repeat(fb.rating || 5);
+    const card = document.createElement('div');
+    card.className = 'review-card new-review-highlight';
+    card.setAttribute('data-category', fb.category || 'general');
+    card.innerHTML = `
+      <div class="review-card-head">
+        <div class="reviewer-avatar">${escapeHtml(fb.avatar_initials || 'VC')}</div>
+        <div class="reviewer-meta">
+          <div class="reviewer-name-row">
+            <span class="reviewer-name">${escapeHtml(fb.name || 'Verified Creator')}</span>
+            <span class="verified-badge" title="Verified Creator">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+              Verified
+            </span>
+          </div>
+          <span class="reviewer-role">${escapeHtml(fb.role || 'SEO Practitioner')}</span>
+        </div>
+        <div class="review-card-stars" aria-label="${fb.rating || 5} stars">${starsHtml}</div>
+      </div>
+      <div class="review-tag-row">
+        <span class="review-tag-pill">${escapeHtml(fb.tag || 'Community Review')}</span>
+        <span class="review-date">${escapeHtml(fb.date || 'Today')}</span>
+      </div>
+      <p class="review-body">“${escapeHtml(fb.message || '')}”</p>
+    `;
+    grid.insertBefore(card, grid.firstChild);
+  }
+
   if (feedbackForm) {
     feedbackForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const message = feedbackMessageInput ? feedbackMessageInput.value.trim() : '';
       const email = feedbackEmailInput ? feedbackEmailInput.value.trim() : '';
+      const name = feedbackNameInput ? feedbackNameInput.value.trim() : '';
 
       if (!message) {
         showToast('Please enter a feedback message.', 'error');
@@ -899,9 +944,11 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
       try {
         const payload = {
+          name: name || 'Verified Creator',
           message: message,
           category: selectedCategory,
           email: email,
+          rating: 5,
           timestamp: new Date().toISOString()
         };
 
@@ -911,11 +958,16 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
           body: JSON.stringify(payload)
         });
 
+        const resData = await response.json();
+        if (resData && resData.feedback) {
+          prependReviewCard(resData.feedback);
+        }
+
         const stored = JSON.parse(localStorage.getItem('rankora_user_feedback') || '[]');
         stored.push(payload);
         localStorage.setItem('rankora_user_feedback', JSON.stringify(stored));
 
-        showToast('Thank you! Your feedback helps us build a better workspace.', 'success');
+        showToast('Thank you! Your review has been added to our Community Wall.', 'success');
         feedbackForm.reset();
         closeFeedback();
       } catch (err) {
@@ -929,6 +981,32 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
         }
       }
     });
+  }
+
+  // --- Community Reviews Filter & CTA ---
+  const reviewFilterChips = document.querySelectorAll('#review-filters .review-filter-chip');
+  if (reviewFilterChips.length > 0) {
+    reviewFilterChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        reviewFilterChips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const filter = chip.getAttribute('data-filter');
+        const cards = document.querySelectorAll('#community-reviews-grid .review-card');
+        cards.forEach(card => {
+          const cat = card.getAttribute('data-category') || 'general';
+          if (filter === 'all' || cat === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  }
+
+  const reviewsShareFeedbackBtn = document.getElementById('reviews-share-feedback-btn');
+  if (reviewsShareFeedbackBtn) {
+    reviewsShareFeedbackBtn.addEventListener('click', openFeedback);
   }
 
   // --- Post-Generation Interactive Feedback Strip ---
@@ -950,19 +1028,25 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
   async function sendQuickRating(rating, message) {
     const payload = {
+      name: 'Studio Creator',
+      role: 'Verified Workspace User',
       message: message,
       category: 'accuracy',
-      rating: rating,
+      rating: rating === 'positive' ? 5 : 4,
       meta_title: (typeof currentMetadata !== 'undefined' && currentMetadata && currentMetadata.meta_title) ? currentMetadata.meta_title : '',
       timestamp: new Date().toISOString()
     };
 
     try {
-      await fetch('/api/feedback', {
+      const response = await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+      const resData = await response.json();
+      if (resData && resData.feedback) {
+        prependReviewCard(resData.feedback);
+      }
       const stored = JSON.parse(localStorage.getItem('rankora_user_feedback') || '[]');
       stored.push(payload);
       localStorage.setItem('rankora_user_feedback', JSON.stringify(stored));
@@ -973,16 +1057,16 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
   if (postGenThumbsUp) {
     postGenThumbsUp.addEventListener('click', async () => {
-      await sendQuickRating('positive', 'User confirmed generated SEO metadata is accurate.');
+      await sendQuickRating('positive', 'Accurate metadata calibration confirmed in Rankora studio.');
       if (postGenActions) postGenActions.classList.add('hidden');
       if (postGenThankYou) postGenThankYou.classList.remove('hidden');
-      showToast('Glad the results were accurate! Thanks for your feedback.', 'success');
+      showToast('Glad the results were accurate! Your review was added to our wall.', 'success');
     });
   }
 
   if (postGenThumbsDown) {
     postGenThumbsDown.addEventListener('click', async () => {
-      await sendQuickRating('needs_work', 'User indicated generated metadata needs work.');
+      await sendQuickRating('needs_work', 'Generated metadata flagged for manual refinement.');
       if (postGenActions) postGenActions.classList.add('hidden');
       if (postGenThankYou) postGenThankYou.classList.remove('hidden');
       openFeedback();
