@@ -1477,7 +1477,308 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     });
   }
 
+
+  // =========================================================================
+  // Three.js Interactive 3D Hero SEO Constellation Canvas
+  // =========================================================================
+  function initHeroThreeCanvas() {
+    const canvas = document.getElementById('hero-three-canvas');
+    const container = document.getElementById('hero-canvas-container');
+    if (!canvas || !container || typeof THREE === 'undefined') return;
+
+    // Respect reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(55, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 6.8;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // 1. Central Core Wireframe Icosahedron (Vivid Purple #8952e0)
+    const coreGeo = new THREE.IcosahedronGeometry(1.85, 1);
+    const coreMat = new THREE.MeshBasicMaterial({
+      color: 0x8952e0,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.38
+    });
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    scene.add(coreMesh);
+
+    // 2. Inner Glowing Core Sphere
+    const innerGeo = new THREE.IcosahedronGeometry(0.9, 0);
+    const innerMat = new THREE.MeshBasicMaterial({
+      color: 0x9461e3,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.65
+    });
+    const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+    scene.add(innerMesh);
+
+    // 3. Orbiting Torus Ring (Electric Cyan #2ab4d9)
+    const ringGeo = new THREE.TorusGeometry(3.1, 0.016, 16, 120);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: 0x2ab4d9,
+      transparent: true,
+      opacity: 0.45
+    });
+    const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+    ringMesh.rotation.x = Math.PI / 2.7;
+    ringMesh.rotation.y = Math.PI / 5;
+    scene.add(ringMesh);
+
+    // 4. Orbiting Meta Nodes (Lime #00FF90 and Cyan #2ab4d9)
+    const nodeGeo = new THREE.OctahedronGeometry(0.14, 0);
+    const nodeMatCyan = new THREE.MeshBasicMaterial({ color: 0x2ab4d9 });
+    const nodeMatLime = new THREE.MeshBasicMaterial({ color: 0x00FF90 });
+    const nodes = [];
+    const nodeCount = 5;
+
+    for (let i = 0; i < nodeCount; i++) {
+      const node = new THREE.Mesh(nodeGeo, i % 2 === 0 ? nodeMatCyan : nodeMatLime);
+      scene.add(node);
+      nodes.push({
+        mesh: node,
+        angle: (i * (Math.PI * 2)) / nodeCount,
+        speed: 0.008 + (i * 0.002),
+        radius: 3.1
+      });
+    }
+
+    // 5. Constellation Particles Field
+    const particleCount = 110;
+    const particleGeo = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const particleSpeeds = [];
+
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 16;
+      positions[i + 1] = (Math.random() - 0.5) * 10;
+      positions[i + 2] = (Math.random() - 0.5) * 8;
+      particleSpeeds.push({
+        vx: (Math.random() - 0.5) * 0.004,
+        vy: (Math.random() - 0.5) * 0.004,
+        vz: (Math.random() - 0.5) * 0.004
+      });
+    }
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const particleMat = new THREE.PointsMaterial({
+      color: 0x9461e3,
+      size: 0.075,
+      transparent: true,
+      opacity: 0.75
+    });
+    const particles = new THREE.Points(particleGeo, particleMat);
+    scene.add(particles);
+
+    // Mouse Tracking with smooth lerp
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    function onMouseMove(e) {
+      const rect = container.getBoundingClientRect();
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+      targetX = ((clientX - rect.left) / container.clientWidth - 0.5) * 2.2;
+      targetY = ((clientY - rect.top) / container.clientHeight - 0.5) * -1.8;
+    }
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('touchmove', onMouseMove, { passive: true });
+
+    // Handle Window Resize
+    function onResize() {
+      if (!container) return;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener('resize', onResize);
+
+    // Visibility Observer to pause loop offscreen
+    let isVisible = true;
+    const heroSec = document.getElementById('hero-section');
+    if (heroSec && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        isVisible = entries[0].isIntersecting;
+      }, { threshold: 0.05 });
+      observer.observe(heroSec);
+    }
+
+    // Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+      if (!isVisible) return;
+
+      if (!prefersReducedMotion) {
+        mouseX += (targetX - mouseX) * 0.05;
+        mouseY += (targetY - mouseY) * 0.05;
+
+        camera.position.x = mouseX * 2.2;
+        camera.position.y = mouseY * 1.6;
+        camera.lookAt(scene.position);
+
+        coreMesh.rotation.y += 0.003;
+        coreMesh.rotation.x += 0.0018;
+
+        innerMesh.rotation.y -= 0.005;
+        innerMesh.rotation.z += 0.003;
+
+        ringMesh.rotation.z += 0.0025;
+
+        // Orbit nodes
+        nodes.forEach(n => {
+          n.angle += n.speed;
+          n.mesh.position.x = Math.cos(n.angle) * n.radius;
+          n.mesh.position.y = Math.sin(n.angle) * n.radius * Math.sin(ringMesh.rotation.x);
+          n.mesh.position.z = Math.sin(n.angle) * n.radius * Math.cos(ringMesh.rotation.x);
+          n.mesh.rotation.x += 0.02;
+          n.mesh.rotation.y += 0.02;
+        });
+
+        // Drift particles
+        const posAttr = particleGeo.attributes.position;
+        const arr = posAttr.array;
+        for (let i = 0; i < particleCount; i++) {
+          const sp = particleSpeeds[i];
+          arr[i * 3] += sp.vx;
+          arr[i * 3 + 1] += sp.vy;
+          arr[i * 3 + 2] += sp.vz;
+
+          if (arr[i * 3] > 8) arr[i * 3] = -8;
+          if (arr[i * 3] < -8) arr[i * 3] = 8;
+          if (arr[i * 3 + 1] > 5) arr[i * 3 + 1] = -5;
+          if (arr[i * 3 + 1] < -5) arr[i * 3 + 1] = 5;
+        }
+        posAttr.needsUpdate = true;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  }
+
+  // =========================================================================
+  // Anime.js Choreographed Animations & Micro-Interactions
+  // =========================================================================
+  function initAnimeVisuals() {
+    if (typeof anime === 'undefined') return;
+
+    // 1. Staggered Hero Entrance
+    anime({
+      targets: '.hero-section .anime-reveal',
+      translateY: [24, 0],
+      opacity: [0, 1],
+      delay: anime.stagger(110, { start: 180 }),
+      duration: 950,
+      easing: 'easeOutCubic'
+    });
+
+    // 2. Animated Spring Counter for Hero Metrics
+    const metric100 = document.querySelector('.hero-metric-val[data-target="100"]');
+    if (metric100) {
+      anime({
+        targets: metric100,
+        innerHTML: [0, 100],
+        round: 1,
+        easing: 'easeOutExpo',
+        duration: 2200,
+        delay: 500,
+        update: (anim) => {
+          metric100.innerHTML = Math.round(anim.animations[0].currentValue) + '%';
+        }
+      });
+    }
+
+    // 3. Magnetic Button Micro-Interaction on .magnetic-btn
+    const magneticBtns = document.querySelectorAll('.magnetic-btn');
+    magneticBtns.forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        anime({
+          targets: btn,
+          translateX: x * 0.18,
+          translateY: y * 0.18,
+          duration: 300,
+          easing: 'easeOutQuad'
+        });
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        anime({
+          targets: btn,
+          translateX: 0,
+          translateY: 0,
+          duration: 500,
+          easing: 'easeOutElastic(1, .5)'
+        });
+      });
+    });
+
+    // 4. Particle Burst Effect on Primary CTA Clicks
+    function spawnParticleBurst(x, y) {
+      const colors = ['#8952e0', '#9461e3', '#2ab4d9', '#00FF90'];
+      const particles = [];
+      const count = 12;
+
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'anime-particle';
+        p.style.left = `${x}px`;
+        p.style.top = `${y}px`;
+        p.style.background = colors[i % colors.length];
+        document.body.appendChild(p);
+        particles.push(p);
+      }
+
+      anime({
+        targets: particles,
+        translateX: () => (Math.random() - 0.5) * 80,
+        translateY: () => (Math.random() - 0.5) * 80,
+        scale: [{ value: 1.4, duration: 150 }, { value: 0, duration: 450 }],
+        opacity: [1, 0],
+        duration: 600,
+        easing: 'easeOutExpo',
+        complete: () => {
+          particles.forEach(p => p.remove());
+        }
+      });
+    }
+
+    // Attach burst to key action buttons
+    document.querySelectorAll('.hero-btn-primary, #fb-submit-btn, #generate-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX || rect.left + rect.width / 2;
+        const y = e.clientY || rect.top + rect.height / 2;
+        spawnParticleBurst(x, y);
+      });
+    });
+  }
+
+  // Initialize Three.js 3D Hero & Anime.js interactions
+  initHeroThreeCanvas();
+  initAnimeVisuals();
+
   // Initial load
   loadTestimonials();
   loadIssues();
+
 });

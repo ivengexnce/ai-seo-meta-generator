@@ -9,7 +9,7 @@
     content="Generate SEO meta titles, descriptions, social tags, and keyword ideas with an AI-powered metadata workspace.">
   <meta name="keywords" content="Rankora, SEO, Meta Tags, Open Graph, Google SERP, Gemini AI, Search Console">
   <meta name="author" content="Rankora">
-  <meta name="theme-color" content="#101827">
+  <meta name="theme-color" content="#0C1015">
   <link rel="canonical" href="{{ base_url or 'https://rankoraa.vercel.app' }}/">
 
   <!-- Open Graph / Social Media Meta Tags -->
@@ -57,7 +57,11 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=7.0">
+    <!-- Three.js (r128) & Anime.js (3.2.1) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=8.0">
 
   <!-- SEO Structured Data: SoftwareApplication with AggregateRating & Reviews for Google Rich Snippets -->
   <script type="application/ld+json">
@@ -247,27 +251,56 @@
       </div>
     </header>
 
-    <!-- Hero Header Section -->
-    <section class="hero-section">
-      <h1 class="hero-title">Your content deserves to be discovered.</h1>
-      <p class="hero-subtitle">
-        Generate smarter SEO metadata, preview your search snippets, and prepare your pages for search.
-      </p>
-      <div class="hero-cta-row">
-        <a href="#studio-workspace" class="hero-btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="m5 12 7-7 7 7"></path>
-            <path d="M12 19V5"></path>
-          </svg>
-          <span>Generate metadata</span>
-        </a>
-        <button type="button" id="hero-serp-btn" class="hero-btn-secondary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="m21 21-4.35-4.35"></path>
-          </svg>
-          <span>View SERP preview</span>
-        </button>
+    <!-- Hero Header Section with Three.js 3D Interactive Canvas -->
+    <section class="hero-section" id="hero-section">
+      <div class="hero-canvas-container" id="hero-canvas-container" aria-hidden="true">
+        <canvas id="hero-three-canvas"></canvas>
+        <div class="hero-canvas-gradient-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge anime-reveal">
+          <span class="hero-badge-dot"></span>
+          <span>Next-Gen SEO Architecture</span>
+          <span class="hero-badge-pill">Gemini 3.8 Flash</span>
+        </div>
+        <h1 class="hero-title anime-reveal">Your content deserves to be discovered<span class="brand-dot">.</span></h1>
+        <p class="hero-subtitle anime-reveal">
+          Generate smarter SEO metadata, preview your search snippets, and prepare your pages for search.
+        </p>
+        <div class="hero-cta-row anime-reveal">
+          <a href="#studio-workspace" class="hero-btn-primary magnetic-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="m5 12 7-7 7 7"></path>
+              <path d="M12 19V5"></path>
+            </svg>
+            <span>Generate metadata</span>
+          </a>
+          <button type="button" id="hero-serp-btn" class="hero-btn-secondary magnetic-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <span>View SERP preview</span>
+          </button>
+        </div>
+
+        <!-- Hero Stats Ribbon (anime.js dynamic counter targets) -->
+        <div class="hero-metrics-ribbon anime-reveal">
+          <div class="hero-metric-item">
+            <span class="hero-metric-val" data-target="100">100%</span>
+            <span class="hero-metric-lbl">SERP Pixel Fidelity</span>
+          </div>
+          <div class="hero-metric-sep"></div>
+          <div class="hero-metric-item">
+            <span class="hero-metric-val" data-target="0">0ms</span>
+            <span class="hero-metric-lbl">Data Retention</span>
+          </div>
+          <div class="hero-metric-sep"></div>
+          <div class="hero-metric-item">
+            <span class="hero-metric-val highlight-lime" data-target="2.7">2.7s</span>
+            <span class="hero-metric-lbl">Flash-Lite Latency</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1025,15 +1058,36 @@
       </div>
     </section>
 
-    <!-- 04 — Testimonials, Public Issues Tracker & Inline Feedback -->
-        <section class="reviews-section" id="community-reviews" aria-label="Community Voice and Public Roadmap">
+    <!-- 04 — What Builders Say, Community Feedback & Public Issues Tracker -->
+    <section class="reviews-section" id="community-reviews" aria-label="What Builders Say, Community Voice and Public Roadmap">
       <div class="section-header">
         <span class="section-tag">04 — COMMUNITY &amp; ROADMAP</span>
-        <h2 class="section-title">Community Voice &amp; Public Roadmap</h2>
-        <p class="section-desc">Submit your feedback directly, track live feature requests and bugs on our public roadmap, and explore verified builder testimonials.</p>
+        <h2 class="section-title">What Builders Say &amp; Community Roadmap</h2>
+        <p class="section-desc">Explore verified builder reviews, submit your ideas directly, and track live feature requests on our public roadmap.</p>
       </div>
 
-      <!-- 1. Inline Feedback Submission Form (Community Voice & Roadmap) -->
+      <!-- 1. Testimonials Horizontal Marquee Block (What Builders Say) -->
+      <div class="community-block testimonials-block">
+        <div class="community-block-header">
+          <div class="community-block-title-row">
+            <h3 class="community-block-title">What Builders Say</h3>
+            <span class="community-count-pill" id="testimonials-count">0 Reviews</span>
+          </div>
+          <div class="carousel-nav-arrows">
+            <button type="button" class="carousel-arrow" id="testimonials-prev-btn" aria-label="Scroll left">&larr;</button>
+            <button type="button" class="carousel-arrow" id="testimonials-next-btn" aria-label="Scroll right">&rarr;</button>
+          </div>
+        </div>
+
+        <div class="testimonials-scroll-container" id="testimonials-scroll-container">
+          <div class="testimonials-track testimonials-marquee-track" id="testimonials-track">
+            <!-- Dynamically populated via vanilla JS from /api/testimonials -->
+            <div class="community-loading-state">Loading verified testimonials...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Inline Feedback Submission Form (Community Voice & Roadmap) -->
       <div class="community-block inline-feedback-block">
         <div class="inline-feedback-header">
           <div class="inline-feedback-badge-row">
@@ -1088,7 +1142,7 @@
 
           <div class="form-group">
             <div class="message-label-row">
-              <label for="fb-input-message" class="field-label">Your Message <span style="color: var(--accent-teal);">*</span></label>
+              <label for="fb-input-message" class="field-label">Your Message <span style="color: var(--accent-violet);">*</span></label>
               <span class="char-count" id="fb-char-count">0 / 500</span>
             </div>
             <div class="quick-prompt-chips" id="quick-prompt-chips">
@@ -1114,7 +1168,7 @@
         </form>
       </div>
 
-      <!-- 2. Public Issues & Feature Tracker -->
+      <!-- 3. Public Issues & Feature Tracker -->
       <div class="community-block issues-block">
         <div class="community-block-header">
           <div class="community-block-title-row">
@@ -1132,27 +1186,6 @@
         <div class="issues-list" id="issues-list">
           <!-- Dynamically populated via vanilla JS from /api/issues -->
           <div class="community-loading-state">Loading active issues and feature tracker...</div>
-        </div>
-      </div>
-
-      <!-- 3. Testimonials Horizontal Marquee Block -->
-      <div class="community-block testimonials-block">
-        <div class="community-block-header">
-          <div class="community-block-title-row">
-            <h3 class="community-block-title">What Builders Say</h3>
-            <span class="community-count-pill" id="testimonials-count">0 Reviews</span>
-          </div>
-          <div class="carousel-nav-arrows">
-            <button type="button" class="carousel-arrow" id="testimonials-prev-btn" aria-label="Scroll left">&larr;</button>
-            <button type="button" class="carousel-arrow" id="testimonials-next-btn" aria-label="Scroll right">&rarr;</button>
-          </div>
-        </div>
-
-        <div class="testimonials-scroll-container" id="testimonials-scroll-container">
-          <div class="testimonials-track testimonials-marquee-track" id="testimonials-track">
-            <!-- Dynamically populated via vanilla JS from /api/testimonials -->
-            <div class="community-loading-state">Loading verified testimonials...</div>
-          </div>
         </div>
       </div>
     </section>
@@ -1551,7 +1584,7 @@
     </div>
   </div>
 
-  <script src="{{ url_for('static', filename='script.js') }}?v=7.0"></script>
+  <script src="{{ url_for('static', filename='script.js') }}?v=8.0"></script>
 </body>
 
 </html>
