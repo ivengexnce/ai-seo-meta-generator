@@ -1,3 +1,5 @@
+> ⭐ **Star this if you found it useful**
+
 <p align="center">
   <img src="og-image.png" alt="Rankora — AI SEO Metadata Workspace & Google SERP Simulator Screenshot" width="100%">
 </p>
@@ -166,5 +168,3 @@ Contributions are welcome! Please check out [CONTRIBUTING.md](CONTRIBUTING.md) f
 This project is licensed under the [MIT License](LICENSE) &copy; 2026 Meet Maru.
 
 ---
-
-⭐ **Star this if you found it useful**
