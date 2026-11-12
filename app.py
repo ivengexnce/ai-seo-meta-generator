@@ -189,38 +189,44 @@ def google_verification_file(token):
 @app.route("/favicon.ico")
 def favicon_ico():
     """Serve binary multi-size favicon.ico for root browser and Googlebot requests."""
-    return send_from_directory(BASE_DIR, "favicon.ico", mimetype="image/x-icon")
+    folder = app.static_folder if os.path.exists(os.path.join(app.static_folder, "favicon.ico")) else BASE_DIR
+    return send_from_directory(folder, "favicon.ico", mimetype="image/x-icon")
 
 
 @app.route("/favicon.svg")
 def favicon_svg():
     """Serve scalable SVG vector icon."""
-    return send_from_directory(app.static_folder, "favicon.svg", mimetype="image/svg+xml")
+    folder = app.static_folder if os.path.exists(os.path.join(app.static_folder, "favicon.svg")) else BASE_DIR
+    return send_from_directory(folder, "favicon.svg", mimetype="image/svg+xml")
 
 
 @app.route("/favicon-48x48.png")
 def favicon_48():
     """Serve Googlebot Search Favicon 48x48 PNG."""
-    return send_from_directory(BASE_DIR, "favicon-48x48.png", mimetype="image/png")
+    folder = app.static_folder if os.path.exists(os.path.join(app.static_folder, "favicon-48x48.png")) else BASE_DIR
+    return send_from_directory(folder, "favicon-48x48.png", mimetype="image/png")
 
 
 @app.route("/apple-touch-icon.png")
 @app.route("/apple-touch-icon-precomposed.png")
 def apple_touch_icon():
     """Serve Apple iOS home screen touch icon."""
-    return send_from_directory(BASE_DIR, "apple-touch-icon.png", mimetype="image/png")
+    folder = app.static_folder if os.path.exists(os.path.join(app.static_folder, "apple-touch-icon.png")) else BASE_DIR
+    return send_from_directory(folder, "apple-touch-icon.png", mimetype="image/png")
 
 
 @app.route("/site.webmanifest")
 def webmanifest():
     """Serve Progressive Web App Manifest."""
-    return send_from_directory(BASE_DIR, "site.webmanifest", mimetype="application/manifest+json")
+    folder = app.static_folder if os.path.exists(os.path.join(app.static_folder, "site.webmanifest")) else BASE_DIR
+    return send_from_directory(folder, "site.webmanifest", mimetype="application/manifest+json")
 
 
 @app.route("/robots.txt")
 def robots_txt():
     """Serve search engine crawling directives."""
-    return send_from_directory(BASE_DIR, "robots.txt", mimetype="text/plain")
+    folder = BASE_DIR if os.path.exists(os.path.join(BASE_DIR, "robots.txt")) else app.static_folder
+    return send_from_directory(folder, "robots.txt", mimetype="text/plain")
 
 
 @app.route("/health")
