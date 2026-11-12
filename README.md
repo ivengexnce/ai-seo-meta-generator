@@ -128,3 +128,31 @@ Open `http://127.0.0.1:5000` in your browser.
 **Meet Maru**
 - GitHub: [@ivengexnce](https://github.com/ivengexnce)
 - Project Capstone: **FlyRank Front-End AI Engineering Internship Program**
+
+
+---
+
+## 🔑 ATS Keywords & Technical Stack Matrix
+
+- **Languages & Frameworks:** Python 3.11+, Flask, Google Gemini 1.5 Flash API, HTML5, CSS3, JavaScript.
+- **SEO & Search Technologies:** Meta Title/Description Optimization, OpenGraph Protocol, Twitter Cards, SERP Snippet Preview, Keyword Extraction, Google Search Console Verification.
+- **Cloud & Deployment:** Render Cloud Web Service (`render.yaml`, `Procfile`), Gunicorn, RESTful API.
+
+---
+
+## 🛡️ Pre-Flight Security Audit (`/security` Verified)
+
+- **OWASP API Security:** User input strings are strictly escaped before rendering in preview cards to eliminate stored/reflected XSS.
+- **Secret Isolation:** `.env` is strictly protected by `.gitignore`; `.env.example` provides turnkey dummy configuration.
+- **Rate & Error Limits:** Safe handling of upstream Gemini API rate limits with informative HTTP 429 backoff responses.
+
+---
+
+## 🚀 Cloud Deployment (Render)
+
+Deploy seamlessly using `render.yaml`:
+```bash
+# In Render Dashboard: New > Blueprint > select repository
+# Build: pip install -r requirements.txt
+# Start: gunicorn app:app --workers 2 --timeout 120
+```
