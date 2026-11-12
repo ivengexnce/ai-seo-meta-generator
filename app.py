@@ -238,10 +238,10 @@ def generate_meta():
                     "og_type": "article" if "blog" in content.lower() else "website",
                     "keywords": [
                         "SEO Optimization",
-                        "Gemini 3.6 Flash",
+                        "Gemini 3.8 Flash",
                         "Frontend AI",
                         "Meta Tags",
-                        "FlyRank Capstone",
+                        "Search Intelligence",
                         "Open Graph",
                         "Performance",
                     ],

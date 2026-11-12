@@ -1,94 +1,135 @@
-# Rankora — AI SEO Intelligence
+<p align="center">
+  <img src="og-image.png" alt="Rankora — AI SEO Metadata Workspace & Google SERP Simulator Screenshot" width="100%">
+</p>
 
-**Your content. Better discovered.**
+<!-- [screenshot here] -->
 
-Generate search-ready metadata, preview your search appearance, and optimize content with AI.
+# Rankora
 
-Rankora is a modern, focused SEO metadata workspace that helps developers, marketers, creators, and businesses generate optimized meta titles and descriptions, create social-sharing metadata, discover relevant keywords, preview how pages appear in Google SERP results, and verify site ownership via Google Search Console.
+> **Your content. Better discovered.**
 
----
+An AI-powered SEO metadata workspace and live Google SERP simulator that helps developers, creators, marketers, and businesses generate search-ready titles, descriptions, and social tags.
 
-## Brand & Design Architecture
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-3.0+-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![Google Gemini API](https://img.shields.io/badge/Google%20Gemini-3.8%20Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com/)
+[![License MIT](https://img.shields.io/badge/License-MIT-14B8A6.svg?style=for-the-badge)](LICENSE)
+[![Deployed on Render](https://img.shields.io/badge/Render-Deployed-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
+[![Deployed on Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://rankoraa.vercel.app/)
 
-- **Tagline**: *Your content. Better discovered.*
-- **Brand Personality**: Intelligent, confident, minimal, data-driven, approachable.
-- **Color Palette (Restrained 70 / 20 / 8 / 2 System)**:
-  - **Deep Navy** (`#101827`): Main background, navigation, and footer surfaces (70%).
-  - **Electric Teal** (`#14B8A6`): Primary buttons, active states, and focus highlights (20%).
-  - **Cloud White** (`#F8FAFC`): Primary text and light surfaces.
-  - **Slate** (`#64748B`): Secondary text, labels, and technical descriptions (8%).
-  - **Signal Violet** (`#8B5CF6`): AI-generated labels and Gemini badges.
-  - **Status Accents**: Green (`#22C55E`), Amber (`#F59E0B`), Red (`#EF4444`) (2%).
-- **Typography**:
-  - **Display / Headings**: Space Grotesk (600–700)
-  - **Body / Interface**: Inter (400–600)
-  - **Technical Values**: JetBrains Mono (character counters, URLs, code snippets)
+🚀 **Live Demo:** [https://rankoraa.vercel.app/](https://rankoraa.vercel.app/)
 
 ---
 
-## Core Features & Workflow
+## 💡 What It Does
 
-### 1. Workflow: Enter content → Generate → Review → Preview → Copy or export
-1. **Enter Content Brief**: Paste article text, landing page drafts, or product specifications.
-2. **AI Intelligence**: Google Gemini 3.8 Flash extracts core search intent, primary entities, and high-CTR phrasing.
-3. **Calibrated SERP Preview**: Live authentic Google desktop search snippet with breadcrumb path and title truncation checks.
-4. **Copy & Deploy**: One-click copy for HTML `<head>` tags, JSON schema, or individual fields.
-
-### 2. Search Console Verification
-- Live site verification meta tag:
-  `<meta name="google-site-verification" content="bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA">`
-- HTML verification file served dynamically:
-  `/google7e9d5e6a885f213a.html` &rarr; `google-site-verification: google7e9d5e6a885f213a.html`
-
-### 3. Technical SEO Calibration Standards
-- **Meta Titles**: Strictly targeted to 50–60 characters to avoid Google desktop truncation.
-- **Meta Descriptions**: Strictly targeted to 150–160 characters to maximize search snippet CTR.
-- **Open Graph & Twitter Cards**: `og:title`, `og:description`, `og:type`, `og:image`, and `twitter:card` tags.
-- **Semantic Keyword Extraction**: 5–10 algorithmically ranked keywords and topical phrases.
+- **Generates Search-Ready Titles & Descriptions**: Turns raw article drafts, product copy, or landing page text into click-worthy meta titles (50–60 characters) and meta descriptions (150–160 characters) calibrated to Google's pixel limits.
+- **Shows Live Google SERP Previews**: Renders a realistic desktop and mobile Google Search snippet preview so you can verify how your page will appear before deploying.
+- **Creates Social-Sharing Tags**: Automatically generates Open Graph (`og:title`, `og:description`, `og:image`) and Twitter Card tags for rich link previews across LinkedIn, X/Twitter, Slack, and Facebook.
+- **Extracts Relevant Keywords**: Discovers high-intent semantic keywords and topical entities from your content to help search crawlers accurately index your pages.
 
 ---
 
-## Brand Assets
+## ✨ Features
 
+- **Gemini 3.8 Flash Integration**: Powered by Google's modern Gemini models via the official `@google/genai` SDK for semantic entity extraction and high-CTR phrasing.
+- **Offline Heuristic Engine**: Graceful fallback generator that creates calibrated metadata even during API connectivity or quota limits.
+- **SEO Readiness Score**: Real-time 0–100 audit gauge with automated checks for title boundaries, description length, and social cards.
+- **Google Search Console Support**: Includes verified site ownership tokens and verification file routes out of the box.
+- **Dual Schema.org Markup**: Fully equipped with Google-compliant `FAQPage` JSON-LD structured data and microdata.
+- **Privacy-First Architecture**: No account required. Custom API keys are stored strictly in client-side `localStorage` and never logged or persisted.
+- **1-Click Export**: Easily copy formatted HTML `<head>` tags, raw text, or structured JSON.
+- **In-App Feedback & Social Sharing**: Integrated user feedback collection and Web Share API support.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Backend**: Python 3.11+, Flask, Gunicorn
+- **AI / LLM**: Google Gemini API (`gemini-3.8-flash` via official `google-genai` SDK)
+- **Frontend**: Semantic HTML5, Vanilla JavaScript, CSS3 (Modern Design System with Space Grotesk, Inter, and JetBrains Mono)
+- **Structured Data**: JSON-LD Schema.org (`FAQPage`)
+- **Deployment**: Render Cloud Web Service (`render.yaml`, `Procfile`) & Vercel Edge Serverless (`vercel.json`)
+
+---
+
+## 🚀 Local Development Setup
+
+Follow these steps to run Rankora locally on your machine:
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/ivengexnce/ai-seo-meta-generator.git
+cd ai-seo-meta-generator
 ```
-static/
-├── assets/
-│   └── brand/
-│       ├── icon.svg        # Standalone vector brand mark
-│       ├── logo.svg        # Primary dark logo (teal symbol + white wordmark)
-│       ├── logo-dark.svg   # Dark surface vector logo
-│       └── logo-light.svg  # Light surface vector logo (deep teal symbol + navy wordmark)
-├── favicon.svg             # Scalable browser favicon
-└── site.webmanifest        # PWA application manifest
+
+### 2. Create and activate a virtual environment
+```bash
+# On macOS / Linux:
+python3 -m venv .venv
+source .venv/bin/activate
+
+# On Windows (PowerShell):
+python -m venv .venv
+.venv\Scripts\Activate.ps1
 ```
+
+### 3. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configure environment variables
+Copy `.env.example` to `.env`:
+```bash
+cp .env.example .env
+```
+
+Open `.env` and configure your API key (get one free at [aistudio.google.com](https://aistudio.google.com/)):
+```ini
+GEMINI_API_KEY=your_gemini_api_key_here
+PORT=5000
+GOOGLE_SITE_VERIFICATION=your_verification_code_here
+```
+*(Tip: You can also enter `"demo"` as your API key or test in Demo Mode directly in the UI without an API key).*
+
+### 5. Start the server
+```bash
+python app.py
+```
+
+Open [http://localhost:5000](http://localhost:5000) in your browser.
 
 ---
 
-## API Endpoints
+## 📡 API Endpoints
 
-### 1. `POST /generate` (or `/api/generate`)
-Analyzes page content and returns strict calibrated metadata:
+### `POST /generate` (or `/api/generate`)
+Analyzes page content and returns search-calibrated metadata.
+
+**Request Body:**
 ```json
 {
-  "content": "Page content brief, article draft, or product copy...",
+  "content": "Paste your article draft, product description, or page copy...",
   "focus_keywords": "seo, metadata",
   "api_key": "optional_override_or_demo"
 }
 ```
 
-**Response:**
+**Response (200 OK):**
 ```json
 {
-  "meta_title": "Page Title Between 50 and 60 Characters",
-  "meta_description": "Search snippet description calibrated strictly between 150 and 160 characters with high-CTR action phrasing.",
-  "og_title": "Engaging Open Graph Title for Social Previews",
-  "og_description": "Open Graph description calibrated for social media feeds",
+  "meta_title": "AI SEO Meta Generator | Rankora — Search Intelligence",
+  "meta_description": "Generate optimized meta titles and descriptions, create social-sharing tags, and preview how pages appear in search results.",
+  "og_title": "Rankora — Your content deserves to be discovered.",
+  "og_description": "Generate search-ready SEO metadata, preview Google SERP snippets, and craft social tags with AI.",
   "og_type": "website",
-  "keywords": ["keyword 1", "keyword 2", "keyword 3", "keyword 4", "keyword 5"]
+  "keywords": ["SEO Optimization", "Rankora", "Search Intelligence", "Meta Tags", "Open Graph"]
 }
 ```
 
-### 2. `GET /health` (or `/api/health`)
+### `GET /health` (or `/api/health`)
+Health check endpoint for deployment monitoring.
 ```json
 {
   "app": "Rankora — AI SEO Intelligence",
@@ -96,63 +137,34 @@ Analyzes page content and returns strict calibrated metadata:
 }
 ```
 
-### 3. `GET /robots.txt`
+### `POST /api/feedback`
+Submits user feedback, feature suggestions, or bug reports.
+```json
+{
+  "message": "The SERP preview simulator is super helpful!",
+  "category": "idea",
+  "email": "user@example.com"
+}
+```
+
+### `GET /og-image.png`
+Directly serves the canonical 1200 × 630 Open Graph preview card for social crawlers.
+
+### `GET /robots.txt`
 Serves crawl directives allowing search indexation and declaring sitemap path.
 
 ---
 
-## Local Development
+## 🤝 Contributing
 
-```bash
-# Clone the repository
-git clone https://github.com/ivengexnce/ai-seo-meta-generator.git
-cd ai-seo-meta-generator
-
-# Setup virtual environment
-python -m venv .venv
-source .venv/bin/activate  # Or on Windows: .venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run development server
-python app.py
-```
-
-Open `http://127.0.0.1:5000` in your browser.
+Contributions are welcome! Please check out [CONTRIBUTING.md](CONTRIBUTING.md) for local setup steps, PR guidelines, and a list of good first issues.
 
 ---
 
-## Author & Project Info
+## 📄 License
 
-**Meet Maru**
-- GitHub: [@ivengexnce](https://github.com/ivengexnce)
-- Project Capstone: **FlyRank Front-End AI Engineering Internship Program**
-
+This project is licensed under the [MIT License](LICENSE) &copy; 2026 Meet Maru.
 
 ---
 
-## 🔑 ATS Keywords & Technical Stack Matrix
-
-- **Languages & Frameworks:** Python 3.11+, Flask, Google Gemini 1.5 Flash API, HTML5, CSS3, JavaScript.
-- **SEO & Search Technologies:** Meta Title/Description Optimization, OpenGraph Protocol, Twitter Cards, SERP Snippet Preview, Keyword Extraction, Google Search Console Verification.
-- **Cloud & Deployment:** Render Cloud Web Service (`render.yaml`, `Procfile`), Gunicorn, RESTful API.
-
----
-
-## 🛡️ Pre-Flight Security Audit (`/security` Verified)
-
-- **OWASP API Security:** User input strings are strictly escaped before rendering in preview cards to eliminate stored/reflected XSS.
-- **Secret Isolation:** `.env` is strictly protected by `.gitignore`; `.env.example` provides turnkey dummy configuration.
-- **Rate & Error Limits:** Safe handling of upstream Gemini API rate limits with informative HTTP 429 backoff responses.
-
----
-
-## 🚀 Cloud Deployment (Render)
-
-Deploy seamlessly using `render.yaml`:
-```bash
-# In Render Dashboard: New > Blueprint > select repository
-# Build: pip install -r requirements.txt
-# Start: gunicorn app:app --workers 2 --timeout 120
-```
+⭐ **Star this if you found it useful**
