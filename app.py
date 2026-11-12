@@ -160,6 +160,13 @@ def terms_page():
     return render_template("terms.html", base_url=base_url)
 
 
+@app.route("/admin")
+@app.route("/admin/")
+def admin_page():
+    """Render dedicated visual Admin Dashboard for moderating testimonials & issues."""
+    return render_template("admin.html")
+
+
 @app.route("/og-image.png")
 def og_image_png():
     """Serve canonical 1200x630 Open Graph preview image (PNG)."""

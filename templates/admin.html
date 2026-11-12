@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rankora Admin — Testimonials &amp; Issues Dashboard</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* Admin Specific Dashboard Styling */
+    .admin-body {
+      background-color: var(--bg-canvas, #000000);
+      color: var(--text-primary, #E5E7EB);
+      min-height: 100vh;
+      font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+      padding: 32px 20px;
+    }
+
+    .admin-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .admin-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle, #272727);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .admin-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-title {
+      font-family: var(--font-display, inherit);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-white, #FFFFFF);
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .admin-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(20, 184, 166, 0.15);
+      color: var(--accent-teal, #14B8A6);
+      border: 1px solid rgba(20, 184, 166, 0.3);
+    }
+
+    .admin-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary, #9CA3AF);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .admin-back-link:hover {
+      color: var(--text-white, #FFFFFF);
+    }
+
+    /* Secret Authentication Card */
+    .admin-auth-card {
+      background: var(--bg-card, #181818);
+      border: 1px solid var(--border-subtle, #272727);
+      border-radius: var(--radius-md, 10px);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .auth-input-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      max-width: 500px;
+    }
+
+    .auth-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    .auth-status-pill.authed {
+      color: #10B981;
+    }
+
+    .auth-status-pill.unauthed {
+      color: #EF4444;
+    }
+
+    /* Stats Grid */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .admin-stat-card {
+      background: var(--bg-card, #181818);
+      border: 1px solid var(--border-subtle, #272727);
+      border-radius: var(--radius-md, 10px);
+      padding: 20px;
+    }
+
+    .admin-stat-val {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-white, #FFFFFF);
+      line-height: 1;
+      margin-bottom: 6px;
+      font-family: var(--font-display, inherit);
+    }
+
+    .admin-stat-label {
+      font-size: 0.82rem;
+      color: var(--text-secondary, #9CA3AF);
+      font-weight: 500;
+    }
+
+    /* Section Headers */
+    .admin-section {
+      margin-bottom: 40px;
+    }
+
+    .admin-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .admin-section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-white, #FFFFFF);
+      margin: 0;
+    }
+
+    /* Table & Cards */
+    .admin-table-wrap {
+      background: var(--bg-card, #181818);
+      border: 1px solid var(--border-subtle, #272727);
+      border-radius: var(--radius-md, 10px);
+      overflow-x: auto;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .admin-table th {
+      background: var(--bg-input, #1F1F1F);
+      padding: 14px 18px;
+      font-weight: 600;
+      color: var(--text-secondary, #9CA3AF);
+      border-bottom: 1px solid var(--border-subtle, #272727);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .admin-table td {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border-subtle, #272727);
+      vertical-align: top;
+    }
+
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .admin-table tr:hover td {
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    .author-cell {
+      font-weight: 600;
+      color: var(--text-white, #FFFFFF);
+      white-space: nowrap;
+    }
+
+    .msg-cell {
+      max-width: 440px;
+      line-height: 1.5;
+      color: var(--text-primary, #E5E7EB);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .status-badge.approved {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10B981;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .status-badge.pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #F59E0B;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    /* Actions */
+    .admin-actions-cell {
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-action {
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle, #272727);
+      background: var(--bg-input, #1F1F1F);
+      color: var(--text-primary, #E5E7EB);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-action:hover {
+      background: var(--bg-card, #181818);
+      color: var(--text-white, #FFFFFF);
+      border-color: var(--border-hairline, #383838);
+    }
+
+    .btn-action.approve-btn {
+      color: #10B981;
+      border-color: rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .btn-action.approve-btn:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-action.unapprove-btn {
+      color: #F59E0B;
+      border-color: rgba(245, 158, 11, 0.3);
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .btn-action.unapprove-btn:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-action.delete-btn {
+      color: #EF4444;
+      border-color: rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.08);
+    }
+
+    .btn-action.delete-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    .status-select {
+      background: var(--bg-input, #1F1F1F);
+      color: var(--text-primary, #E5E7EB);
+      border: 1px solid var(--border-subtle, #272727);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .admin-empty-state {
+      padding: 36px;
+      text-align: center;
+      color: var(--text-secondary, #9CA3AF);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body class="admin-body">
+  <div class="admin-container">
+    <!-- Navigation Bar -->
+    <header class="admin-nav">
+      <div class="admin-title-row">
+        <h1 class="admin-title">Rankora Admin</h1>
+        <span class="admin-badge">Private Console</span>
+      </div>
+      <a href="/" class="admin-back-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        <span>Back to SEO Studio</span>
+      </a>
+    </header>
+
+    <!-- Secret Key Authentication Card -->
+    <div class="admin-auth-card">
+      <div class="auth-input-group">
+        <label for="admin-secret-input" style="font-size: 0.85rem; font-weight: 600; white-space: nowrap;">Admin Secret:</label>
+        <input type="password" id="admin-secret-input" class="text-input" placeholder="Enter ADMIN_SECRET" style="padding: 8px 12px; font-size: 0.85rem;">
+        <button type="button" id="auth-save-btn" class="btn btn-primary" style="padding: 8px 14px; font-size: 0.82rem;">Connect</button>
+      </div>
+      <div id="auth-status-indicator" class="auth-status-pill unauthed">
+        <span>●</span>
+        <span id="auth-status-text">Validating key...</span>
+      </div>
+    </div>
+
+    <!-- Metrics Summary Grid -->
+    <div class="admin-stats-grid">
+      <div class="admin-stat-card">
+        <div class="admin-stat-val" id="stat-total">0</div>
+        <div class="admin-stat-label">Total Submissions</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-val" style="color: #10B981;" id="stat-testimonials-approved">0</div>
+        <div class="admin-stat-label">Approved Testimonials</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-val" style="color: #F59E0B;" id="stat-testimonials-pending">0</div>
+        <div class="admin-stat-label">Pending Approval</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-val" style="color: #3B82F6;" id="stat-issues-active">0</div>
+        <div class="admin-stat-label">Active Issues (Open / In Progress)</div>
+      </div>
+    </div>
+
+    <!-- Section 1: Testimonials Moderation -->
+    <section class="admin-section">
+      <div class="admin-section-head">
+        <h2 class="admin-section-title">Testimonials Moderation (Approved items appear on homepage)</h2>
+        <button type="button" class="btn-action" onclick="fetchFeedbacks()">↻ Refresh Data</button>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Author</th>
+              <th>Rating</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Submitted</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="testimonials-table-body">
+            <tr>
+              <td colspan="6" class="admin-empty-state">Loading testimonials...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 2: Public Issues & Bug Tracker Moderation -->
+    <section class="admin-section">
+      <div class="admin-section-head">
+        <h2 class="admin-section-title">Public Issues &amp; Roadmap Management</h2>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Reporter</th>
+              <th>Issue Description</th>
+              <th>Current Status</th>
+              <th>Reported</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="issues-table-body">
+            <tr>
+              <td colspan="5" class="admin-empty-state">Loading issues...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Extract secret from URL query param or localStorage or fallback to default
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialSecret = urlParams.get('secret') || localStorage.getItem('rankora_admin_secret') || 'rankora_admin_secret_2026';
+
+    const secretInput = document.getElementById('admin-secret-input');
+    const authSaveBtn = document.getElementById('auth-save-btn');
+    const authStatusIndicator = document.getElementById('auth-status-indicator');
+    const authStatusText = document.getElementById('auth-status-text');
+
+    if (secretInput) secretInput.value = initialSecret;
+
+    function getSecret() {
+      return (secretInput ? secretInput.value.trim() : '') || 'rankora_admin_secret_2026';
+    }
+
+    function formatTime(isoStr) {
+      if (!isoStr) return 'N/A';
+      try {
+        const d = new Date(isoStr);
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      } catch (e) {
+        return isoStr;
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    async function fetchFeedbacks() {
+      const secret = getSecret();
+      try {
+        const res = await fetch('/api/feedback', {
+          headers: { 'ADMIN_SECRET': secret }
+        });
+
+        if (res.status === 401) {
+          authStatusIndicator.className = 'auth-status-pill unauthed';
+          authStatusText.textContent = 'Unauthorized (Check ADMIN_SECRET)';
+          document.getElementById('testimonials-table-body').innerHTML = '<tr><td colspan="6" class="admin-empty-state" style="color: #EF4444;">Access Denied. Please provide a valid ADMIN_SECRET above.</td></tr>';
+          document.getElementById('issues-table-body').innerHTML = '<tr><td colspan="5" class="admin-empty-state" style="color: #EF4444;">Access Denied.</td></tr>';
+          return;
+        }
+
+        const data = await res.json();
+        const list = data.feedbacks || [];
+
+        authStatusIndicator.className = 'auth-status-pill authed';
+        authStatusText.textContent = 'Authenticated ✓';
+        localStorage.setItem('rankora_admin_secret', secret);
+
+        renderDashboard(list);
+      } catch (err) {
+        console.error('Fetch error:', err);
+        authStatusIndicator.className = 'auth-status-pill unauthed';
+        authStatusText.textContent = 'Connection Error';
+      }
+    }
+
+    function renderDashboard(feedbacks) {
+      const testimonials = feedbacks.filter(f => f.type === 'testimonial');
+      const issues = feedbacks.filter(f => f.type === 'issue');
+
+      // Update stats
+      document.getElementById('stat-total').textContent = feedbacks.length;
+      document.getElementById('stat-testimonials-approved').textContent = testimonials.filter(t => t.approved).length;
+      document.getElementById('stat-testimonials-pending').textContent = testimonials.filter(t => !t.approved).length;
+      document.getElementById('stat-issues-active').textContent = issues.filter(i => i.status !== 'resolved').length;
+
+      // Render Testimonials Table
+      const testBody = document.getElementById('testimonials-table-body');
+      if (testimonials.length === 0) {
+        testBody.innerHTML = '<tr><td colspan="6" class="admin-empty-state">No testimonials submitted yet.</td></tr>';
+      } else {
+        testBody.innerHTML = testimonials.map(t => {
+          const stars = '★'.repeat(t.rating || 5);
+          const isApproved = !!t.approved;
+          return `
+            <tr>
+              <td class="author-cell">${escapeHtml(t.name || 'Anonymous')}</td>
+              <td style="color: #F59E0B; letter-spacing: 2px;">${stars}</td>
+              <td class="msg-cell">“${escapeHtml(t.message || '')}”</td>
+              <td>
+                <span class="status-badge ${isApproved ? 'approved' : 'pending'}">
+                  ${isApproved ? 'Approved ✓' : 'Pending Review'}
+                </span>
+              </td>
+              <td style="color: var(--text-secondary);">${formatTime(t.timestamp)}</td>
+              <td>
+                <div class="admin-actions-cell">
+                  <button type="button" class="btn-action ${isApproved ? 'unapprove-btn' : 'approve-btn'}" onclick="toggleApprove('${t.id}', ${!isApproved})">
+                    ${isApproved ? '✕ Unapprove' : '✓ Approve'}
+                  </button>
+                  <button type="button" class="btn-action delete-btn" onclick="deleteFeedback('${t.id}')">
+                    🗑 Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Render Issues Table
+      const issuesBody = document.getElementById('issues-table-body');
+      if (issues.length === 0) {
+        issuesBody.innerHTML = '<tr><td colspan="5" class="admin-empty-state">No issues logged yet.</td></tr>';
+      } else {
+        issuesBody.innerHTML = issues.map(i => {
+          const status = i.status || 'open';
+          return `
+            <tr>
+              <td class="author-cell">${escapeHtml(i.name || 'Anonymous')}</td>
+              <td class="msg-cell">${escapeHtml(i.message || '')}</td>
+              <td>
+                <select class="status-select" onchange="updateStatus('${i.id}', this.value)">
+                  <option value="open" ${status === 'open' ? 'selected' : ''}>Open</option>
+                  <option value="in_progress" ${status === 'in_progress' ? 'selected' : ''}>In Progress</option>
+                  <option value="resolved" ${status === 'resolved' ? 'selected' : ''}>Resolved</option>
+                </select>
+              </td>
+              <td style="color: var(--text-secondary);">${formatTime(i.timestamp)}</td>
+              <td>
+                <div class="admin-actions-cell">
+                  <button type="button" class="btn-action delete-btn" onclick="deleteFeedback('${i.id}')">
+                    🗑 Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
+    async function toggleApprove(id, approved) {
+      const secret = getSecret();
+      try {
+        const res = await fetch(`/api/feedback/${id}/approve`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'ADMIN_SECRET': secret
+          },
+          body: JSON.stringify({ approved: approved })
+        });
+        if (res.ok) {
+          fetchFeedbacks();
+        } else {
+          alert('Failed to update approval: Unauthorized or not found.');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function updateStatus(id, newStatus) {
+      const secret = getSecret();
+      try {
+        const res = await fetch(`/api/feedback/${id}/status`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'ADMIN_SECRET': secret
+          },
+          body: JSON.stringify({ status: newStatus })
+        });
+        if (res.ok) {
+          fetchFeedbacks();
+        } else {
+          alert('Failed to update status.');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function deleteFeedback(id) {
+      if (!confirm('Are you sure you want to delete this item?')) return;
+      const secret = getSecret();
+      try {
+        const res = await fetch(`/api/feedback/${id}`, {
+          method: 'DELETE',
+          headers: { 'ADMIN_SECRET': secret }
+        });
+        if (res.ok) {
+          fetchFeedbacks();
+        } else {
+          alert('Failed to delete item.');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    if (authSaveBtn) {
+      authSaveBtn.addEventListener('click', fetchFeedbacks);
+    }
+
+    // Initial load
+    fetchFeedbacks();
+  </script>
+</body>
+
+</html>
