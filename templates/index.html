@@ -1026,55 +1026,14 @@
     </section>
 
     <!-- 04 — Testimonials, Public Issues Tracker & Inline Feedback -->
-    <section class="reviews-section" id="community-reviews" aria-label="Community Testimonials and Issue Tracker">
+        <section class="reviews-section" id="community-reviews" aria-label="Community Voice and Public Roadmap">
       <div class="section-header">
         <span class="section-tag">04 — COMMUNITY &amp; ROADMAP</span>
-        <h2 class="section-title">Verified Testimonials &amp; Public Issue Tracker</h2>
-        <p class="section-desc">Authentic feedback from developers calibrating search appearance, alongside our real-time community roadmap and issue tracker.</p>
+        <h2 class="section-title">Community Voice &amp; Public Roadmap</h2>
+        <p class="section-desc">Submit your feedback directly, track live feature requests and bugs on our public roadmap, and explore verified builder testimonials.</p>
       </div>
 
-      <!-- Testimonials Horizontal Carousel Block -->
-      <div class="community-block testimonials-block">
-        <div class="community-block-header">
-          <div class="community-block-title-row">
-            <h3 class="community-block-title">What Builders Say</h3>
-            <span class="community-count-pill" id="testimonials-count">0 Reviews</span>
-          </div>
-          <div class="carousel-nav-arrows">
-            <button type="button" class="carousel-arrow" id="testimonials-prev-btn" aria-label="Scroll left">&larr;</button>
-            <button type="button" class="carousel-arrow" id="testimonials-next-btn" aria-label="Scroll right">&rarr;</button>
-          </div>
-        </div>
-
-        <div class="testimonials-scroll-container" id="testimonials-scroll-container">
-          <div class="testimonials-track" id="testimonials-track">
-            <!-- Dynamically populated via vanilla JS from /api/testimonials -->
-            <div class="community-loading-state">Loading verified testimonials...</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Public Issues & Roadmap Block -->
-      <div class="community-block issues-block">
-        <div class="community-block-header">
-          <div class="community-block-title-row">
-            <h3 class="community-block-title">Public Issue &amp; Feature Tracker</h3>
-            <span class="community-count-pill pill-accent" id="issues-count">0 Issues</span>
-          </div>
-          <div class="issues-filter-tabs" id="issues-filter-tabs">
-            <button type="button" class="issue-filter-tab active" data-status="all">All</button>
-            <button type="button" class="issue-filter-tab" data-status="open">Open</button>
-            <button type="button" class="issue-filter-tab" data-status="in_progress">In Progress</button>
-            <button type="button" class="issue-filter-tab" data-status="resolved">Resolved</button>
-          </div>
-        </div>
-
-        <div class="issues-list" id="issues-list">
-          <!-- Dynamically populated via vanilla JS from /api/issues -->
-          <div class="community-loading-state">Loading active issues and feature tracker...</div>
-        </div>
-      </div>
-
+      <!-- 1. Inline Feedback Submission Form (Community Voice & Roadmap) -->
       <!-- Inline Feedback Submission Form -->
       <div class="community-block inline-feedback-block">
         <div class="inline-feedback-header">
@@ -1145,7 +1104,52 @@
           </div>
         </form>
       </div>
-    </section>
+
+      <!-- 2. Public Issues & Feature Tracker -->
+      <!-- Public Issues & Roadmap Block -->
+      <div class="community-block issues-block">
+        <div class="community-block-header">
+          <div class="community-block-title-row">
+            <h3 class="community-block-title">Public Issue &amp; Feature Tracker</h3>
+            <span class="community-count-pill pill-accent" id="issues-count">0 Issues</span>
+          </div>
+          <div class="issues-filter-tabs" id="issues-filter-tabs">
+            <button type="button" class="issue-filter-tab active" data-status="all">All</button>
+            <button type="button" class="issue-filter-tab" data-status="open">Open</button>
+            <button type="button" class="issue-filter-tab" data-status="in_progress">In Progress</button>
+            <button type="button" class="issue-filter-tab" data-status="resolved">Resolved</button>
+          </div>
+        </div>
+
+        <div class="issues-list" id="issues-list">
+          <!-- Dynamically populated via vanilla JS from /api/issues -->
+          <div class="community-loading-state">Loading active issues and feature tracker...</div>
+        </div>
+      </div>
+
+      <!-- 3. Testimonials Horizontal Carousel Block -->
+      <!-- Testimonials Horizontal Carousel Block -->
+      <div class="community-block testimonials-block">
+        <div class="community-block-header">
+          <div class="community-block-title-row">
+            <h3 class="community-block-title">What Builders Say</h3>
+            <span class="community-count-pill" id="testimonials-count">0 Reviews</span>
+          </div>
+          <div class="carousel-nav-arrows">
+            <button type="button" class="carousel-arrow" id="testimonials-prev-btn" aria-label="Scroll left">&larr;</button>
+            <button type="button" class="carousel-arrow" id="testimonials-next-btn" aria-label="Scroll right">&rarr;</button>
+          </div>
+        </div>
+
+        <div class="testimonials-scroll-container" id="testimonials-scroll-container">
+          <div class="testimonials-track" id="testimonials-track">
+            <!-- Dynamically populated via vanilla JS from /api/testimonials -->
+            <div class="community-loading-state">Loading verified testimonials...</div>
+          </div>
+        </div>
+      </div>
+    
+</section>
 
     <!-- 05 — Minimal Modern Footer -->
     <footer class="app-footer">
