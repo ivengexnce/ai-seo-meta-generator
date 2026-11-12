@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio — Rankora AI SEO Workspace</title>
+  <meta name="description"
+    content="AI-powered SEO metadata generator. Generate titles, descriptions, Open Graph tags and preview Google SERP snippets.">
+  <meta name="author" content="Rankora">
+  <meta name="theme-color" content="#0C1015">
+  <link rel="canonical" href="{{ (base_url or 'https://rankoraa.vercel.app').rstrip('/') }}/studio">
+
+  <!-- Google Search Console Verification -->
+  <meta name="google-site-verification"
+    content="{{ gsc_verification or 'bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA' }}">
+
+  <!-- Favicon & Search Engine Icons -->
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='favicon-96x96.png') }}">
+  <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='favicon-192x192.png') }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+
+  <!-- Fonts: Space Grotesk, Inter, JetBrains Mono, Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Three.js (r128) & Anime.js (3.2.1) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=8.0">
+</head>
+
+<body>
+  <!-- 1. Toast container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- 2. App shell div with class "app-shell" -->
+  <div class="app-shell">
+    <!-- 3. STUDIO NAVBAR (simplified top bar) -->
+    <header style="padding: 14px 24px; border-bottom: 1px solid var(--border-subtle); background: var(--bg-card); display:flex; align-items:center; justify-content:space-between; margin-bottom: 28px; border-radius: var(--radius-lg);">
+      <!-- Left: brand logo linking back to "/" -->
+      <a href="/" title="Back to home" aria-label="Back to home" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+        <span class="brand-pill-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M5 17L12 7L19 17" stroke="#8952e0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="12" cy="7" r="2.5" fill="#0C1015" stroke="#2ab4d9" stroke-width="1.8" />
+            <path d="M9 17L12 12.5L15 17" stroke="#00FF90" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="brand-pill-text">rankora<span class="brand-dot">.</span></span>
+      </a>
+
+      <!-- Center: plain text "SEO Metadata Studio" in var(--text-slate), font-size 0.88rem -->
+      <span style="color: var(--text-slate); font-size: 0.88rem; font-weight: 500;">SEO Metadata Studio</span>
+
+      <!-- Right: #toggle-key-btn, link to "/" with class "nav-pill-link", and #share-nav-btn -->
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button id="toggle-key-btn" class="nav-pill-link-btn" type="button" aria-haspopup="dialog" aria-expanded="false" title="Configure custom Gemini API key">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="7.5" cy="15.5" r="5.5"></circle>
+            <path d="m21 2-9.6 9.6"></path>
+            <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
+          </svg>
+          <span id="api-status-label">{{ 'Key Set' if has_api_key else 'API Key' }}</span>
+        </button>
+
+        <a href="/" class="nav-pill-link" style="text-decoration:none;">← Back to home</a>
+
+        <button id="share-nav-btn" class="nav-icon-only-btn" type="button" title="Share Rankora" aria-label="Share">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 4. URL param pre-fill script (inline, before studio grid) -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const params = new URLSearchParams(window.location.search);
+      const topic = params.get('topic');
+      if (topic) {
+        const ta = document.getElementById('page-content');
+        if (ta) {
+          ta.value = topic;
+          ta.dispatchEvent(new Event('input'));
+        }
+      }
+    });
+    </script>
+
+    <!-- 5. STUDIO GRID -->
+    <main id="studio-workspace" class="studio-grid" aria-label="Rankora SEO Studio Workspace">
+      <!-- LEFT PANE: Input Console -->
+      <section class="studio-card input-deck" aria-label="Input Console">
+        <div class="deck-header">
+          <div class="deck-title-row">
+            <h2 class="deck-title">Source Content</h2>
+            <span class="deck-hint">Paste article draft, landing page copy, or product brief</span>
+          </div>
+
+          <div class="sample-tags">
+            <span class="sample-tag-label">Presets:</span>
+            <button type="button" class="sample-tag-btn" data-sample="blog">Blog Post</button>
+            <button type="button" class="sample-tag-btn" data-sample="saas">SaaS Landing</button>
+            <button type="button" class="sample-tag-btn" data-sample="ecommerce">Product</button>
+          </div>
+        </div>
+
+        <form id="generator-form" class="editor-form">
+          <div class="editor-wrap">
+            <textarea id="page-content" name="content"
+              placeholder="Paste your page content, article draft, or product copy here..." rows="14" required
+              aria-label="Web page content"></textarea>
+
+            <div class="editor-statusbar">
+              <span id="char-count" class="status-counter">0 chars · 0 words</span>
+              <button type="button" id="clear-content-btn" class="clear-btn" title="Clear content">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                </svg>
+                Clear
+              </button>
+            </div>
+          </div>
+
+          <div class="secondary-inputs">
+            <div class="field-group">
+              <label for="focus-keywords" class="field-label">Target Keywords (Optional)</label>
+              <input type="text" id="focus-keywords" name="focus_keywords" class="text-input"
+                placeholder="e.g. cloud devops, nextjs seo">
+            </div>
+
+            <div class="field-group">
+              <label for="search-engine-select" class="field-label">Target Engine / Locale</label>
+              <select id="search-engine-select" class="select-input">
+                <option value="google-us">Google Global (English)</option>
+                <option value="google-uk">Google UK (en-GB)</option>
+                <option value="bing">Bing Search</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Primary Submit Action Button -->
+          <div class="action-row">
+            <button type="submit" id="generate-btn" class="submit-btn">
+              <span class="spinner hidden" id="btn-spinner"></span>
+              <svg class="btn-icon" id="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5">
+                <path d="m5 12 7-7 7 7"></path>
+                <path d="M12 19V5"></path>
+              </svg>
+              <span id="btn-text">Generate metadata</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- RIGHT PANE: Studio Output & Previews -->
+      <section class="studio-card studio-output" aria-label="Generated Metadata and Previews">
+        <!-- Readiness Banner: Score Gauge & 5-Pillar Checklist -->
+        <div class="readiness-banner">
+          <div class="score-widget">
+            <div class="gauge-wrap">
+              <svg class="gauge-svg" viewBox="0 0 70 70">
+                <circle class="gauge-track" cx="35" cy="35" r="30"></circle>
+                <circle class="gauge-progress" id="score-progress" cx="35" cy="35" r="30"></circle>
+              </svg>
+              <div class="gauge-center-text">
+                <span class="gauge-score" id="seo-score-num">0</span>
+                <span class="gauge-sub">/100</span>
+              </div>
+            </div>
+            <div class="gauge-info">
+              <h3 class="gauge-title">SEO Readiness Score</h3>
+              <p class="gauge-status" id="score-status-text">Awaiting page content</p>
+            </div>
+          </div>
+
+          <div class="checklist-grid" id="audit-checklist">
+            <div class="checklist-item" id="chk-title">
+              <span class="chk-dot"></span>
+              <span>Title (50–60 chars)</span>
+            </div>
+            <div class="checklist-item" id="chk-desc">
+              <span class="chk-dot"></span>
+              <span>Description (150–160 chars)</span>
+            </div>
+            <div class="checklist-item pass" id="chk-gsc">
+              <span class="chk-dot"></span>
+              <span id="chk-gsc-text">Search Console Verified</span>
+            </div>
+            <div class="checklist-item" id="chk-og">
+              <span class="chk-dot"></span>
+              <span>Open Graph Social Card</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Post-Generation Interactive Feedback Strip -->
+        <div id="post-gen-feedback-strip" class="post-gen-feedback-strip hidden" aria-live="polite">
+          <div class="feedback-strip-info">
+            <span class="feedback-sparkle">✨</span>
+            <span class="feedback-strip-title" id="post-gen-prompt-text">How accurate are these SEO results?</span>
+          </div>
+
+          <div class="feedback-strip-actions" id="post-gen-actions-row">
+            <button type="button" class="feedback-pill-btn" id="post-gen-thumbs-up" title="High quality and accurate">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3">
+                </path>
+              </svg>
+              <span>Accurate</span>
+            </button>
+
+            <button type="button" class="feedback-pill-btn" id="post-gen-thumbs-down" title="Needs improvement">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3">
+                </path>
+              </svg>
+              <span>Needs work</span>
+            </button>
+
+            <button type="button" class="feedback-pill-btn feedback-pill-text" id="post-gen-detailed-btn"
+              title="Leave detailed feedback or suggest an improvement">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <span>Give Feedback</span>
+            </button>
+          </div>
+
+          <div id="post-gen-thank-you" class="feedback-strip-thank-you hidden">
+            <span class="thank-you-msg">✓ Thank you for your feedback!</span>
+            <button type="button" class="share-trigger-link" id="feedback-share-trigger">Share Rankora 🚀</button>
+          </div>
+
+          <button type="button" class="feedback-strip-close" id="post-gen-dismiss-btn"
+            aria-label="Dismiss feedback prompt">&times;</button>
+        </div>
+
+        <!-- Segmented Tab Navigation -->
+        <nav class="tabs-nav" role="tablist" aria-label="Studio views">
+          <button type="button" class="tab-btn active" id="tab-btn-generator" role="tab" aria-selected="true"
+            aria-controls="tab-pane-generator">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="4 7 4 4 20 4 20 7"></polyline>
+              <line x1="9" y1="20" x2="15" y2="20"></line>
+              <line x1="12" y1="4" x2="12" y2="20"></line>
+            </svg>
+            <span>Meta Generator</span>
+          </button>
+
+          <button type="button" class="tab-btn" id="tab-btn-preview" role="tab" aria-selected="false"
+            aria-controls="tab-pane-preview">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <span>Google SERP Preview</span>
+          </button>
+
+          <button type="button" class="tab-btn" id="tab-btn-social" role="tab" aria-selected="false"
+            aria-controls="tab-pane-social">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            <span>Social Metadata</span>
+          </button>
+
+          <button type="button" class="tab-btn" id="tab-btn-export" role="tab" aria-selected="false"
+            aria-controls="tab-pane-export">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            <span>Export Code</span>
+          </button>
+        </nav>
+
+        <!-- TAB 1: Meta Generator (Titles & Descriptions) -->
+        <div id="tab-pane-generator" class="tab-pane active" role="tabpanel">
+          <!-- Meta Title Card -->
+          <div class="meta-field-card">
+            <div class="field-card-header">
+              <div class="field-label-group">
+                <span class="field-type-tag tag-meta">Meta</span>
+                <span class="field-title">Page Title</span>
+              </div>
+              <div class="field-actions">
+                <span id="title-counter" class="badge-counter">0 / 60</span>
+                <button type="button" class="btn-micro copy-btn" data-target="meta-title-output" title="Copy title">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+            <div class="field-card-body">
+              <div id="meta-title-output" class="field-editable" contenteditable="true" spellcheck="false"
+                data-placeholder="Click 'Generate metadata' to craft an optimized page title..."></div>
+              <span class="field-tip">Target: <strong>50–60 characters</strong> to prevent Google ellipsis
+                truncation.</span>
+            </div>
+          </div>
+
+          <!-- Meta Description Card -->
+          <div class="meta-field-card">
+            <div class="field-card-header">
+              <div class="field-label-group">
+                <span class="field-type-tag tag-meta">Meta</span>
+                <span class="field-title">Meta Description</span>
+              </div>
+              <div class="field-actions">
+                <span id="desc-counter" class="badge-counter">0 / 160</span>
+                <button type="button" class="btn-micro copy-btn" data-target="meta-desc-output"
+                  title="Copy description">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+            <div class="field-card-body">
+              <div id="meta-desc-output" class="field-editable" contenteditable="true" spellcheck="false"
+                data-placeholder="Concise summary calibrated for high search click-through rate..."></div>
+              <span class="field-tip">Target: <strong>150–160 characters</strong> to maximize Google search snippet
+                visibility.</span>
+            </div>
+          </div>
+
+          <!-- Semantic Keywords Card -->
+          <div class="meta-field-card">
+            <div class="field-card-header">
+              <div class="field-label-group">
+                <span class="field-type-tag tag-og">Keywords</span>
+                <span class="field-title">Semantic Keyword Ideas</span>
+              </div>
+              <div class="field-actions">
+                <button type="button" class="btn-micro" id="copy-keywords-btn"
+                  title="Copy keywords as comma-separated list">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy All
+                </button>
+              </div>
+            </div>
+            <div class="field-card-body">
+              <div id="keywords-list" class="keywords-wrap">
+                <span class="field-tip">Keywords identified from content will appear as interactive chips here.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: Live SERP Preview -->
+        <div id="tab-pane-preview" class="tab-pane" role="tabpanel">
+          <div class="inspector-card">
+            <h4 class="inspector-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+              Google Search Result Simulator
+            </h4>
+            <div class="google-serp-box">
+              <div class="google-url-row">
+                <div class="google-favicon" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#10B981">
+                    <circle cx="12" cy="12" r="10"></circle>
+                  </svg>
+                </div>
+                <div class="google-breadcrumbs">
+                  <span class="google-sitename">example.com</span>
+                  <span class="google-sep">&rsaquo;</span>
+                  <span class="google-slug" id="serp-slug-preview">article</span>
+                </div>
+              </div>
+              <div class="google-title" id="serp-title-preview">Sample Meta Title Appears Here</div>
+              <div class="google-snippet" id="serp-desc-preview">Sample Meta Description will appear here formatted
+                precisely as Google displays desktop search snippets...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: Social Metadata Previews -->
+        <div id="tab-pane-social" class="tab-pane" role="tabpanel">
+          <div class="inspector-card">
+            <h4 class="inspector-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+              Open Graph Card (Facebook &amp; LinkedIn)
+            </h4>
+            <div class="social-card-preview">
+              <div class="social-img-mock">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <span>1200 &times; 630 Open Graph Image</span>
+              </div>
+              <div class="social-content">
+                <div class="social-domain">EXAMPLE.COM</div>
+                <div class="social-title" id="social-title-preview">Open Graph Title Preview</div>
+                <div class="social-desc" id="social-desc-preview">Open Graph description calibrated for social feeds...
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: Code Export -->
+        <div id="tab-pane-export" class="tab-pane" role="tabpanel">
+          <div class="code-export-box">
+            <div class="code-header">
+              <span class="code-label">HTML &lt;head&gt; Deployment Snippet</span>
+              <button type="button" class="btn-micro" id="copy-html-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy HTML
+              </button>
+            </div>
+            <pre class="code-pre" id="html-code-block">&lt;!-- Generate metadata to inspect full HTML tags --&gt;</pre>
+          </div>
+
+          <div class="code-export-box">
+            <div class="code-header">
+              <span class="code-label">Structured JSON Schema Export</span>
+              <button type="button" class="btn-micro" id="copy-json-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy JSON
+              </button>
+            </div>
+            <pre class="code-pre" id="json-code-block">{ "status": "idle" }</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 6. All four modals — exact copies -->
+
+    <!-- API Key Modal Dialog -->
+    <div id="api-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-box">
+        <div class="modal-head">
+          <div class="modal-title-row">
+            <svg class="modal-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <circle cx="7.5" cy="15.5" r="5.5"></circle>
+              <path d="m21 2-9.6 9.6"></path>
+              <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
+            </svg>
+            <h3 id="modal-title" class="modal-title">Gemini API Settings</h3>
+          </div>
+          <button type="button" id="close-modal-btn" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <p class="modal-desc">
+            Enter your personal Google Gemini API key to run generation requests. Your key is stored solely in your local
+            browser storage and never sent to any third-party servers.
+          </p>
+
+          <div class="field-group">
+            <label for="custom-api-key" class="field-label">Google AI Studio API Key</label>
+            <input type="password" id="custom-api-key" class="text-input" placeholder="AIzaSy..." autocomplete="off">
+            <span class="field-tip">Get a free key at <a href="https://aistudio.google.com" target="_blank"
+                rel="noopener noreferrer" style="color: var(--accent-teal);">aistudio.google.com</a>, or click <strong>Use
+                Demo Mode</strong> below.</span>
+          </div>
+        </div>
+
+        <div class="modal-foot">
+          <button type="button" id="demo-mode-btn" class="foot-btn foot-btn-demo">Use Demo Mode</button>
+          <div class="foot-right">
+            <button type="button" id="clear-key-btn" class="foot-btn foot-btn-secondary">Clear</button>
+            <button type="button" id="save-key-btn" class="foot-btn foot-btn-primary">Save Key</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Policy Modal Dialog -->
+    <div id="privacy-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title">
+      <div class="modal-box">
+        <div class="modal-head">
+          <div class="modal-title-row">
+            <svg class="modal-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <h3 id="privacy-modal-title" class="modal-title">Privacy Policy</h3>
+          </div>
+          <button type="button" id="close-privacy-btn" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+        </div>
+        <div class="modal-body modal-scroll-body">
+          <p class="modal-desc"><strong>Rankora is privacy-first by design.</strong></p>
+          <ul class="policy-list">
+            <li><strong>Zero Tracking / Zero Telemetry:</strong> We do not log, harvest, or sell the text content you
+              paste into the generator.</li>
+            <li><strong>Local Browser Storage:</strong> Custom API keys and UI preferences are stored strictly in your
+              browser's <code>localStorage</code> and never sent to our servers.</li>
+            <li><strong>Direct Model Inference:</strong> Requests are processed either through your configured Google
+              Gemini API endpoint or securely relayed with zero persistent storage.</li>
+            <li><strong>Google Search Console Ownership:</strong> Verification tokens are strictly utilized for standard
+              HTTP verification handshakes.</li>
+          </ul>
+        </div>
+        <div class="modal-foot">
+          <div class="foot-right">
+            <button type="button" id="close-privacy-foot-btn" class="foot-btn foot-btn-primary">Got it</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms of Service Modal Dialog -->
+    <div id="terms-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="terms-modal-title">
+      <div class="modal-box">
+        <div class="modal-head">
+          <div class="modal-title-row">
+            <svg class="modal-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <h3 id="terms-modal-title" class="modal-title">Terms of Service</h3>
+          </div>
+          <button type="button" id="close-terms-btn" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+        </div>
+        <div class="modal-body modal-scroll-body">
+          <p class="modal-desc"><strong>Rankora Open Source Workspace Terms</strong></p>
+          <ul class="policy-list">
+            <li><strong>Service Scope:</strong> Rankora provides AI-assisted SEO metadata suggestions, SERP simulation
+              previews, and Open Graph tag templates for web development.</li>
+            <li><strong>User Responsibility:</strong> Generated metadata should always be reviewed before production
+              deployment to ensure domain compliance and content accuracy.</li>
+            <li><strong>API Usage:</strong> Users connecting their personal Google AI Studio keys must adhere to Google
+              Generative AI terms of service and usage quotas.</li>
+            <li><strong>Open Source License:</strong> Distributed under the MIT License. You are free to inspect, fork,
+              and build upon the codebase on GitHub.</li>
+          </ul>
+        </div>
+        <div class="modal-foot">
+          <div class="foot-right">
+            <button type="button" id="close-terms-foot-btn" class="foot-btn foot-btn-primary">Accept &amp; Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback Modal Dialog -->
+    <div id="feedback-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title">
+      <div class="modal-box">
+        <div class="modal-head">
+          <div class="modal-title-row">
+            <svg class="modal-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <h3 id="feedback-modal-title" class="modal-title">Share Feedback</h3>
+          </div>
+          <button type="button" id="close-feedback-btn" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+        </div>
+
+        <form id="feedback-form">
+          <div class="modal-body">
+            <p class="modal-desc">
+              Found an issue, have a feature idea, or want to share feedback? We read every response to improve Rankora.
+            </p>
+
+            <div class="feedback-type-group">
+              <label class="field-label">Category</label>
+              <div class="sentiment-chips" id="feedback-category-chips">
+                <button type="button" class="sentiment-btn active" data-category="idea">💡 Feature Idea</button>
+                <button type="button" class="sentiment-btn" data-category="bug">🐛 Bug Report</button>
+                <button type="button" class="sentiment-btn" data-category="ux">✨ UX / Design</button>
+                <button type="button" class="sentiment-btn" data-category="general">💬 General</button>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="feedback-name" class="field-label">Your Name or Handle (Optional — sent privately to maintainer)</label>
+              <input type="text" id="feedback-name" class="text-input" placeholder="e.g. Alex, SEO Lead">
+            </div>
+
+            <div class="field-group">
+              <label for="feedback-message" class="field-label">Your Message <span
+                  style="color: var(--accent-teal);">*</span></label>
+              <textarea id="feedback-message" class="text-input" rows="4"
+                placeholder="Tell us what you liked, what's missing, or what should be improved..." required></textarea>
+            </div>
+
+            <div class="field-group">
+              <label for="feedback-email" class="field-label">Email (Optional — if you would like a reply)</label>
+              <input type="email" id="feedback-email" class="text-input" placeholder="name@domain.com">
+            </div>
+          </div>
+
+          <div class="modal-foot">
+            <a href="https://github.com/ivengexnce/ai-seo-meta-generator/issues/new" target="_blank"
+              rel="noopener noreferrer" class="foot-btn foot-btn-demo">
+              <span>Open GitHub Issue</span>
+            </a>
+            <div class="foot-right">
+              <button type="button" id="close-feedback-foot-btn" class="foot-btn foot-btn-secondary">Cancel</button>
+              <button type="submit" id="submit-feedback-btn" class="foot-btn foot-btn-primary">Send Feedback</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 7. Floating feedback pill -->
+    <button type="button" id="floating-feedback-btn" class="floating-feedback-pill" aria-label="Share Feedback"
+      title="Share feedback, feature ideas, or report issues">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span>Feedback</span>
+    </button>
+  <!-- 9. Close app-shell div -->
+  </div>
+
+  <!-- studio.html: Flask route should be @app.route('/studio') 
+       rendering this template. Landing page stays at @app.route('/') -->
+  <!-- 10. Script tag -->
+  <script src="{{ url_for('static', filename='script.js') }}?v=8.0"></script>
+</body>
+
+</html>
