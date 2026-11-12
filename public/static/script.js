@@ -788,12 +788,38 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   const shareUrlInput = document.getElementById('share-url-input');
   const nativeShareBtn = document.getElementById('native-share-btn');
 
+  function getCanonicalShareUrl() {
+    const origin = window.location.origin;
+    if (origin && !origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+      return origin.endsWith('/') ? origin : (origin + '/');
+    }
+    return 'https://rankoraa.vercel.app/';
+  }
+
   function openShare() {
+    const shareUrl = getCanonicalShareUrl();
+    if (shareUrlInput) {
+      shareUrlInput.value = shareUrl;
+    }
+
+    const shareX = document.querySelector('.share-btn-channel.share-x');
+    if (shareX) {
+      shareX.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent('Generate search-ready SEO metadata, preview Google SERP snippets, and craft Open Graph tags with Rankora:')}&url=${encodeURIComponent(shareUrl)}`;
+    }
+    const shareLinkedIn = document.querySelector('.share-btn-channel.share-linkedin');
+    if (shareLinkedIn) {
+      shareLinkedIn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+    }
+    const shareReddit = document.querySelector('.share-btn-channel.share-reddit');
+    if (shareReddit) {
+      shareReddit.href = `https://reddit.com/submit?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent('Rankora — Free AI SEO Metadata Workspace & Google SERP Simulator')}`;
+    }
+
     if (navigator.share && window.innerWidth <= 768) {
       navigator.share({
         title: 'Rankora — AI SEO Intelligence & SERP Simulator',
         text: 'Generate search-ready SEO metadata and preview Google search snippets with AI.',
-        url: window.location.origin || 'https://ai-seo-meta-generator.vercel.app/'
+        url: shareUrl
       }).catch(() => {
         if (shareModal) shareModal.classList.add('open');
       });
@@ -818,22 +844,22 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
   if (copyShareUrlBtn) {
     copyShareUrlBtn.addEventListener('click', () => {
-      const url = shareUrlInput ? shareUrlInput.value : window.location.href;
+      const url = shareUrlInput ? shareUrlInput.value : getCanonicalShareUrl();
       copyToClipboard(url, copyShareUrlBtn, 'Link copied to clipboard!');
     });
   }
 
   if (nativeShareBtn) {
     nativeShareBtn.addEventListener('click', () => {
+      const shareUrl = getCanonicalShareUrl();
       if (navigator.share) {
         navigator.share({
           title: 'Rankora — AI SEO Intelligence & SERP Simulator',
           text: 'Generate search-ready SEO metadata and preview Google search snippets with AI.',
-          url: window.location.origin || 'https://ai-seo-meta-generator.vercel.app/'
+          url: shareUrl
         }).catch(() => {});
       } else {
-        const url = shareUrlInput ? shareUrlInput.value : window.location.href;
-        copyToClipboard(url, nativeShareBtn, 'Link copied to clipboard!');
+        copyToClipboard(shareUrl, nativeShareBtn, 'Link copied to clipboard!');
       }
     });
   }

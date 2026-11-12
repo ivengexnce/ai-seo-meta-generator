@@ -1247,7 +1247,7 @@
         </p>
 
         <div class="share-copy-row">
-          <input type="text" id="share-url-input" class="text-input" value="https://ai-seo-meta-generator.vercel.app/"
+          <input type="text" id="share-url-input" class="text-input" value="{{ base_url or 'https://rankoraa.vercel.app' }}/"
             readonly>
           <button type="button" id="copy-share-url-btn" class="foot-btn foot-btn-primary">
             <span>Copy Link</span>
@@ -1257,7 +1257,7 @@
         <div class="share-channels">
           <span class="share-label">Share directly:</span>
           <div class="share-grid">
-            <a href="https://twitter.com/intent/tweet?text=Generate%20search-ready%20SEO%20metadata%2C%20preview%20Google%20SERP%20snippets%2C%20and%20craft%20Open%20Graph%20tags%20with%20Rankora%3A&url=https%3A%2F%2Fai-seo-meta-generator.vercel.app%2F"
+            <a href="https://twitter.com/intent/tweet?text=Generate%20search-ready%20SEO%20metadata%2C%20preview%20Google%20SERP%20snippets%2C%20and%20craft%20Open%20Graph%20tags%20with%20Rankora%3A&url={{ (base_url or 'https://rankoraa.vercel.app') | urlencode }}%2F"
               target="_blank" rel="noopener noreferrer" class="share-btn-channel share-x">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                 <path
@@ -1266,7 +1266,7 @@
               <span>X (Twitter)</span>
             </a>
 
-            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fai-seo-meta-generator.vercel.app%2F"
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ (base_url or 'https://rankoraa.vercel.app') | urlencode }}%2F"
               target="_blank" rel="noopener noreferrer" class="share-btn-channel share-linkedin">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                 <path
@@ -1275,7 +1275,7 @@
               <span>LinkedIn</span>
             </a>
 
-            <a href="https://reddit.com/submit?url=https%3A%2F%2Fai-seo-meta-generator.vercel.app%2F&title=Rankora%20%E2%80%94%20Free%20AI%20SEO%20Metadata%20Workspace%20%26%20Google%20SERP%20Simulator"
+            <a href="https://reddit.com/submit?url={{ (base_url or 'https://rankoraa.vercel.app') | urlencode }}%2F&title=Rankora%20%E2%80%94%20Free%20AI%20SEO%20Metadata%20Workspace%20%26%20Google%20SERP%20Simulator"
               target="_blank" rel="noopener noreferrer" class="share-btn-channel share-reddit">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                 <path
