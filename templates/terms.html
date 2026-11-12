@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — Rankora AI SEO Workspace</title>
+  <meta name="description"
+    content="Official Terms of Service for Rankora. Read our legal agreement regarding AI metadata generation, acceptable use, liability limitations, and search ranking disclaimers.">
+  <link rel="canonical" href="{{ base_url or 'https://rankoraa.vercel.app' }}/terms">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- Fonts: Space Grotesk, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=6.0">
+
+  <style>
+    .legal-page-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .legal-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 24px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .legal-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-slate);
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .legal-back-btn:hover {
+      color: var(--text-white);
+      background: rgba(30, 41, 59, 0.95);
+      border-color: var(--accent-teal);
+      transform: translateX(-2px);
+    }
+
+    .legal-header {
+      margin-bottom: 48px;
+    }
+
+    .legal-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      background: rgba(20, 184, 166, 0.1);
+      border: 1px solid rgba(20, 184, 166, 0.25);
+      color: var(--accent-teal);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .legal-title {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-white);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .legal-meta {
+      font-size: 0.88rem;
+      color: var(--text-slate);
+    }
+
+    .legal-grid {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .legal-toc {
+      position: sticky;
+      top: 32px;
+      padding: 20px;
+      background: rgba(17, 24, 39, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+
+    .legal-toc-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-white);
+      margin-bottom: 14px;
+    }
+
+    .legal-toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .legal-toc-link {
+      font-size: 0.82rem;
+      color: var(--text-slate);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+      display: block;
+      line-height: 1.4;
+    }
+
+    .legal-toc-link:hover {
+      color: var(--accent-teal);
+    }
+
+    .legal-content {
+      color: var(--text-slate);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .legal-content section {
+      margin-bottom: 40px;
+      scroll-margin-top: 32px;
+    }
+
+    .legal-content h2 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text-white);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .legal-content p {
+      margin-bottom: 16px;
+    }
+
+    .legal-content ul {
+      margin-bottom: 20px;
+      padding-left: 20px;
+    }
+
+    .legal-content li {
+      margin-bottom: 8px;
+    }
+
+    .legal-alert-box {
+      padding: 16px 20px;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: var(--radius-md);
+      margin: 20px 0;
+      color: #FBBF24;
+    }
+
+    .legal-alert-box strong {
+      color: #F59E0B;
+    }
+
+    .legal-danger-box {
+      padding: 16px 20px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: var(--radius-md);
+      margin: 20px 0;
+      color: #F87171;
+    }
+
+    @media (max-width: 840px) {
+      .legal-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .legal-toc {
+        display: none;
+      }
+      .legal-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="legal-page-wrap">
+    <!-- Top Navigation -->
+    <header class="legal-nav-bar">
+      <div class="brand-link">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M5 17L12 7L19 17" stroke="#14B8A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="7" r="2.5" fill="#101827" stroke="#14B8A6" stroke-width="1.5"/>
+            <path d="M9 17L12 12.5L15 17" stroke="#8B5CF6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">rankora<span class="brand-dot">.</span></span>
+      </div>
+
+      <a href="/" class="legal-back-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>Back to Studio</span>
+      </a>
+    </header>
+
+    <div class="legal-header">
+      <span class="legal-pill">User Agreement</span>
+      <h1 class="legal-title">Terms of Service</h1>
+      <p class="legal-meta">Last Updated: November 12, 2026 &bull; Version 2.0</p>
+    </div>
+
+    <div class="legal-grid">
+      <!-- Sticky Table of Contents -->
+      <aside class="legal-toc" aria-label="Table of contents">
+        <div class="legal-toc-title">Terms Overview</div>
+        <ul class="legal-toc-list">
+          <li><a href="#acceptance" class="legal-toc-link">1. Acceptance of Terms</a></li>
+          <li><a href="#scope" class="legal-toc-link">2. Nature of AI Output</a></li>
+          <li><a href="#ranking-disclaimer" class="legal-toc-link">3. No Ranking Guarantee</a></li>
+          <li><a href="#acceptable-use" class="legal-toc-link">4. Acceptable Use Policy</a></li>
+          <li><a href="#byok" class="legal-toc-link">5. Personal API Keys (BYOK)</a></li>
+          <li><a href="#ip" class="legal-toc-link">6. Intellectual Property</a></li>
+          <li><a href="#liability" class="legal-toc-link">7. Limitation of Liability</a></li>
+          <li><a href="#warranties" class="legal-toc-link">8. Disclaimer of Warranties</a></li>
+          <li><a href="#indemnification" class="legal-toc-link">9. Indemnification</a></li>
+          <li><a href="#governing-law" class="legal-toc-link">10. Governing Law</a></li>
+        </ul>
+      </aside>
+
+      <!-- Main Legal Content -->
+      <main class="legal-content">
+        <section id="acceptance">
+          <h2>1. Acceptance of Terms</h2>
+          <p>
+            By accessing or using the Rankora website, services, APIs, or software tools (collectively, the "Service"),
+            you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not
+            agree to these terms, you must discontinue using the Service immediately.
+          </p>
+          <p>You affirm that you are at least 18 years of age or possess legal parental or guardian consent to enter into these Terms.</p>
+        </section>
+
+        <section id="scope">
+          <h2>2. Description of Service &amp; Nature of AI Output</h2>
+          <p>
+            Rankora is an automated development workspace designed to assist in generating meta titles, meta descriptions,
+            Open Graph social cards, and Google SERP snippet previews using artificial intelligence models (including Google Gemini AI).
+          </p>
+          <div class="legal-alert-box">
+            <strong>Important Notice Regarding AI Hallucinations:</strong> Output generated by Rankora is synthesized using probabilistic machine learning models. Generated metadata may contain errors, incomplete facts, or inaccuracies. Output does not constitute professional legal, marketing, or financial advice. You are solely responsible for reviewing and verifying all generated metadata before publishing it to your live websites.
+          </div>
+        </section>
+
+        <section id="ranking-disclaimer">
+          <h2>3. Strict No Guarantee of Search Engine Ranking</h2>
+          <p>
+            Search Engine Optimization (SEO) algorithms operated by Google, Bing, and other search engines evaluate hundreds of dynamic ranking signals, including domain authority, backlink quality, page speed, content originality, and algorithmic updates (such as Google Core Updates, Helpful Content Updates, and SpamBrain).
+          </p>
+          <div class="legal-danger-box">
+            <strong>Strict Ranking Disclaimer:</strong> Rankora makes NO warranty, guarantee, or representation that your webpage will achieve a top ranking, appear on page one of Google, maintain existing rankings, or experience any increase in organic search traffic or conversions. Rankora is not responsible for any algorithmic penalty, ranking drop, or de-indexing resulting from your content or metadata choices.
+          </div>
+        </section>
+
+        <section id="acceptable-use">
+          <h2>4. Acceptable Use Policy</h2>
+          <p>You agree not to misuse the Service. Specifically, you shall NOT:</p>
+          <ul>
+            <li>Use the Service to generate metadata for deceptive, misleading, fraudulent, phishing, or malware distribution websites.</li>
+            <li>Use Rankora to engineer black-hat SEO tactics, doorway pages, keyword stuffing, or automated spam networks.</li>
+            <li>Attempt to reverse engineer, decompile, or extract the underlying model weights or infrastructure.</li>
+            <li>Perform denial-of-service (DoS) attacks, automated bulk scraping, or circumvent platform rate limits.</li>
+            <li>Submit content that infringes upon third-party intellectual property, privacy, or publicity rights.</li>
+          </ul>
+        </section>
+
+        <section id="byok">
+          <h2>5. Bring Your Own Key (BYOK) &amp; Google API Terms</h2>
+          <p>
+            If you connect a custom Google AI Studio API key to Rankora:
+          </p>
+          <ul>
+            <li>You remain solely responsible for maintaining the confidentiality of your key and complying with Google Generative AI Terms of Service and applicable billing plans.</li>
+            <li>Rankora does not monitor, manage, or refund charges incurred on your third-party Google Cloud account.</li>
+          </ul>
+        </section>
+
+        <section id="ip">
+          <h2>6. Intellectual Property Rights</h2>
+          <p>
+            <strong>Your Content &amp; Generated Output:</strong> You retain complete ownership of the source text you input into Rankora. To the maximum extent permitted by applicable law, all copyright and commercial rights in the metadata generated for your content are assigned to you for unrestricted commercial deployment.
+          </p>
+          <p>
+            <strong>Platform Code:</strong> The Rankora open-source codebase is licensed under the MIT License. The "Rankora" brand name, logos, and UI artwork remain the intellectual property of Meet Maru.
+          </p>
+        </section>
+
+        <section id="liability">
+          <h2>7. Limitation of Liability</h2>
+          <p>
+            To the maximum extent permitted by applicable law, in no event shall Rankora, its creator (Meet Maru), contributors,
+            or infrastructure partners be liable for any indirect, incidental, special, consequential, or punitive damages,
+            including but not limited to:
+          </p>
+          <ul>
+            <li>Loss of organic search traffic, rankings, or visibility.</li>
+            <li>Loss of revenue, profits, business contracts, or goodwill.</li>
+            <li>Search engine penalties, algorithmic downgrades, or indexation removal.</li>
+            <li>System outages, data loss, or server unavailability.</li>
+          </ul>
+          <p>
+            <strong>Aggregate Liability Cap:</strong> In all circumstances, our maximum aggregate liability to you for any and all claims arising out of or related to the Service is strictly capped at zero dollars ($0.00 USD).
+          </p>
+        </section>
+
+        <section id="warranties">
+          <h2>8. Disclaimer of Warranties</h2>
+          <p>
+            THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, OR UNINTERRUPTED AVAILABILITY.
+          </p>
+        </section>
+
+        <section id="indemnification">
+          <h2>9. Indemnification</h2>
+          <p>
+            You agree to defend, indemnify, and hold harmless Rankora, Meet Maru, and associated contributors from and against any claims, liabilities, damages, losses, and expenses (including reasonable legal fees) arising from your breach of these Terms, your misuse of the Service, or any third-party claim that metadata published on your domain infringes any law or regulation.
+          </p>
+        </section>
+
+        <section id="governing-law">
+          <h2>10. Governing Law &amp; Dispute Resolution</h2>
+          <p>
+            These Terms shall be governed by and construed in accordance with applicable laws. In the event of any controversy or claim, you agree to attempt informal resolution by contacting the project maintainer via official GitHub channels prior to commencing any formal legal proceedings.
+          </p>
+        </section>
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer style="margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem; color: var(--text-slate); flex-wrap: wrap; gap: 16px;">
+      <div>&copy; 2026 Rankora by Meet Maru. All rights reserved.</div>
+      <div style="display: flex; gap: 20px;">
+        <a href="/privacy" style="color: var(--text-slate); text-decoration: none;">Privacy Policy</a>
+        <a href="/" style="color: var(--accent-teal); text-decoration: none;">Studio Workspace</a>
+      </div>
+    </footer>
+  </div>
+</body>
+
+</html>

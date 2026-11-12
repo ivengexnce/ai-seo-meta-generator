@@ -69,17 +69,17 @@
     "url": "{{ base_url or 'https://rankoraa.vercel.app' }}/",
     "description": "AI-powered SEO metadata generator and live Google SERP simulator.",
     "softwareVersion": "2.4",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "{{ feedback_stats.average_rating if feedback_stats else '4.9' }}",
-      "reviewCount": "{{ feedback_stats.total_reviews if feedback_stats else '128' }}",
-      "bestRating": "5",
-      "worstRating": "1"
-    },
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
+    }{% if feedback_stats and feedback_stats.has_reviews and feedbacks %},
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "{{ feedback_stats.average_rating }}",
+      "reviewCount": "{{ feedback_stats.total_reviews }}",
+      "bestRating": "5",
+      "worstRating": "1"
     },
     "review": [
       {% for fb in (feedbacks or [])[:5] %}
@@ -91,7 +91,7 @@
         },
         "reviewRating": {
           "@type": "Rating",
-          "ratingValue": "{{ fb.rating }}",
+          "ratingValue": "{{ fb.rating or 5 }}",
           "bestRating": "5",
           "worstRating": "1"
         },
@@ -100,6 +100,7 @@
       }{% if not loop.last %},{% endif %}
       {% endfor %}
     ]
+    {% endif %}
   }
   </script>
 
@@ -904,85 +905,34 @@
       </div>
     </section>
 
-    <!-- 04 — Community Reviews and Social Proof (SEO Rich Snippets) -->
-    <section class="reviews-section" id="community-reviews" aria-label="Community Reviews and Social Proof">
+    <!-- 04 — Feedback & Community Roadmap -->
+    <section class="reviews-section" id="community-reviews" aria-label="Feedback and Roadmap">
       <div class="section-header">
-        <span class="section-tag">04 — COMMUNITY REVIEWS &amp; SOCIAL PROOF</span>
-        <h2 class="section-title">Trusted by Developers, SEOs &amp; Creators</h2>
-        <p class="section-desc">Real feedback from builders calibrating search metadata, eliminating snippet truncation, and boosting click-through rates.</p>
+        <span class="section-tag">04 — FEEDBACK &amp; ROADMAP</span>
+        <h2 class="section-title">Help Shape Rankora's Roadmap</h2>
+        <p class="section-desc">Rankora is actively developed with direct input from creators, developers, and SEO practitioners. All feedback is reviewed directly by the maintainer.</p>
       </div>
 
-      <!-- Live Aggregate Rating Banner -->
-      <div class="reviews-rating-banner">
-        <div class="rating-banner-stat">
-          <div class="rating-score-row">
-            <span class="big-score">{{ feedback_stats.average_rating if feedback_stats else '4.9' }}</span>
-            <div class="rating-stars-col">
-              <div class="gold-stars" aria-label="5 out of 5 stars">★★★★★</div>
-              <span class="rating-count-text">Based on {{ feedback_stats.total_reviews if feedback_stats else '128' }}+ verified ratings</span>
-            </div>
+      <div class="feedback-honest-card">
+        <div class="feedback-honest-content">
+          <div class="feedback-honest-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <div class="feedback-honest-text">
+            <h3 class="feedback-honest-heading">Private, Direct Developer Feedback</h3>
+            <p class="feedback-honest-desc">Have a feature suggestion, spotted an inaccurate SERP simulation, or need support for a new CMS framework? Submissions are sent directly to the administrator inbox and never fabricated.</p>
           </div>
         </div>
-
-        <div class="rating-banner-stat stat-divider">
-          <span class="big-score">{{ feedback_stats.satisfaction_rate if feedback_stats else '98.4%' }}</span>
-          <span class="stat-subtext">Satisfaction &amp; Accuracy Rate</span>
-        </div>
-
-        <div class="rating-banner-stat stat-divider">
-          <span class="big-score">10,000+</span>
-          <span class="stat-subtext">Snippets Calibrated Without Truncation</span>
-        </div>
-
-        <div class="rating-banner-action">
+        <div class="feedback-honest-action">
           <button type="button" class="btn btn-outline-teal review-cta-btn" id="reviews-share-feedback-btn">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
-            <span>Share Feedback / Review</span>
+            <span>Send Feedback to Admin</span>
           </button>
         </div>
-      </div>
-
-      <!-- Filter Chips -->
-      <div class="review-filter-chips" id="review-filters">
-        <button type="button" class="review-filter-chip active" data-filter="all">All Reviews ({{ feedbacks|length if feedbacks else 6 }})</button>
-        <button type="button" class="review-filter-chip" data-filter="accuracy">Accuracy &amp; SERP</button>
-        <button type="button" class="review-filter-chip" data-filter="ux">Social &amp; UX</button>
-        <button type="button" class="review-filter-chip" data-filter="idea">Feature Feedback</button>
-      </div>
-
-      <!-- Reviews Grid -->
-      <div class="reviews-grid" id="community-reviews-grid">
-        {% for fb in (feedbacks or []) %}
-        <div class="review-card" data-category="{{ fb.category or 'general' }}">
-          <div class="review-card-head">
-            <div class="reviewer-avatar">{{ fb.avatar_initials or 'VC' }}</div>
-            <div class="reviewer-meta">
-              <div class="reviewer-name-row">
-                <span class="reviewer-name">{{ fb.name }}</span>
-                {% if fb.verified %}
-                <span class="verified-badge" title="Verified Creator">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                  </svg>
-                  Verified
-                </span>
-                {% endif %}
-              </div>
-              <span class="reviewer-role">{{ fb.role }}</span>
-            </div>
-            <div class="review-card-stars" aria-label="{{ fb.rating }} stars">
-              {% for _ in range(fb.rating or 5) %}★{% endfor %}
-            </div>
-          </div>
-          <div class="review-tag-row">
-            <span class="review-tag-pill">{{ fb.tag or 'Accurate Metadata' }}</span>
-            <span class="review-date">{{ fb.date }}</span>
-          </div>
-          <p class="review-body">“{{ fb.message }}”</p>
-        </div>
-        {% endfor %}
       </div>
     </section>
 
@@ -1022,7 +972,7 @@
                   points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
                 </polygon>
               </svg>
-              <span>Gemini 3.8 Flash</span>
+              <span>Gemini 3.5 Flash</span>
             </span>
           </div>
         </div>
@@ -1034,7 +984,7 @@
             <a href="#tab-pane-preview" class="footer-link" id="footer-serp-link">SERP Simulator</a>
             <a href="#how-it-works" class="footer-link">Workflow</a>
             <a href="#features" class="footer-link">Features &amp; FAQ</a>
-            <a href="#community-reviews" class="footer-link">Community Reviews</a>
+            <a href="#community-reviews" class="footer-link">Feedback &amp; Roadmap</a>
           </div>
 
           <div class="footer-col">
@@ -1070,8 +1020,18 @@
 
           <div class="footer-col">
             <span class="footer-col-title">Legal &amp; Privacy</span>
-            <button type="button" id="open-privacy-btn" class="footer-link-btn">Privacy Policy</button>
-            <button type="button" id="open-terms-btn" class="footer-link-btn">Terms of Service</button>
+            <a href="/privacy" class="footer-link">Privacy Policy</a>
+            <a href="/terms" class="footer-link">Terms of Service</a>
+            <button type="button" id="footer-feedback-btn" class="footer-link-btn">Share Feedback</button>
+            <button type="button" id="footer-share-btn" class="footer-link-btn">Share Workspace</button>
+            <a href="https://github.com/ivengexnce/ai-seo-meta-generator" target="_blank" rel="noopener noreferrer"
+              class="footer-link external-link">
+              <span>GitHub Repository</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M7 17L17 7M17 7H7M17 7V17" />
+              </svg>
+            </a>
+          </div>
             <button type="button" id="footer-feedback-btn" class="footer-link-btn">Share Feedback</button>
             <button type="button" id="footer-share-btn" class="footer-link-btn">Share Workspace</button>
             <a href="https://github.com/ivengexnce/ai-seo-meta-generator" target="_blank" rel="noopener noreferrer"
@@ -1339,7 +1299,7 @@
           </div>
 
           <div class="field-group">
-            <label for="feedback-name" class="field-label">Your Name or Handle (Optional — displayed on Community Wall)</label>
+            <label for="feedback-name" class="field-label">Your Name or Handle (Optional — sent privately to maintainer)</label>
             <input type="text" id="feedback-name" class="text-input" placeholder="e.g. Alex, SEO Lead">
           </div>
 

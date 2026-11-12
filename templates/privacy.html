@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Rankora AI SEO Workspace</title>
+  <meta name="description"
+    content="Official Privacy Policy for Rankora. Learn how we protect your privacy with zero-telemetry, client-side storage, and secure AI inference.">
+  <link rel="canonical" href="{{ base_url or 'https://rankoraa.vercel.app' }}/privacy">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- Fonts: Space Grotesk, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=6.0">
+
+  <style>
+    .legal-page-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .legal-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 24px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .legal-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-slate);
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .legal-back-btn:hover {
+      color: var(--text-white);
+      background: rgba(30, 41, 59, 0.95);
+      border-color: var(--accent-teal);
+      transform: translateX(-2px);
+    }
+
+    .legal-header {
+      margin-bottom: 48px;
+    }
+
+    .legal-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      background: rgba(20, 184, 166, 0.1);
+      border: 1px solid rgba(20, 184, 166, 0.25);
+      color: var(--accent-teal);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .legal-title {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-white);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .legal-meta {
+      font-size: 0.88rem;
+      color: var(--text-slate);
+    }
+
+    .legal-grid {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .legal-toc {
+      position: sticky;
+      top: 32px;
+      padding: 20px;
+      background: rgba(17, 24, 39, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+
+    .legal-toc-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-white);
+      margin-bottom: 14px;
+    }
+
+    .legal-toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .legal-toc-link {
+      font-size: 0.82rem;
+      color: var(--text-slate);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+      display: block;
+      line-height: 1.4;
+    }
+
+    .legal-toc-link:hover {
+      color: var(--accent-teal);
+    }
+
+    .legal-content {
+      color: var(--text-slate);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .legal-content section {
+      margin-bottom: 40px;
+      scroll-margin-top: 32px;
+    }
+
+    .legal-content h2 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text-white);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .legal-content p {
+      margin-bottom: 16px;
+    }
+
+    .legal-content ul {
+      margin-bottom: 20px;
+      padding-left: 20px;
+    }
+
+    .legal-content li {
+      margin-bottom: 8px;
+    }
+
+    .legal-highlight-box {
+      padding: 16px 20px;
+      background: rgba(20, 184, 166, 0.06);
+      border: 1px solid rgba(20, 184, 166, 0.2);
+      border-radius: var(--radius-md);
+      margin: 20px 0;
+    }
+
+    .legal-highlight-box strong {
+      color: var(--accent-teal);
+    }
+
+    @media (max-width: 840px) {
+      .legal-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .legal-toc {
+        display: none;
+      }
+      .legal-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="legal-page-wrap">
+    <!-- Top Navigation -->
+    <header class="legal-nav-bar">
+      <div class="brand-link">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M5 17L12 7L19 17" stroke="#14B8A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="7" r="2.5" fill="#101827" stroke="#14B8A6" stroke-width="1.5"/>
+            <path d="M9 17L12 12.5L15 17" stroke="#8B5CF6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">rankora<span class="brand-dot">.</span></span>
+      </div>
+
+      <a href="/" class="legal-back-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>Back to Studio</span>
+      </a>
+    </header>
+
+    <div class="legal-header">
+      <span class="legal-pill">Transparency &amp; Trust</span>
+      <h1 class="legal-title">Privacy Policy</h1>
+      <p class="legal-meta">Effective Date: November 12, 2026 &bull; Version 2.0</p>
+    </div>
+
+    <div class="legal-grid">
+      <!-- Sticky Table of Contents -->
+      <aside class="legal-toc" aria-label="Table of contents">
+        <div class="legal-toc-title">On this page</div>
+        <ul class="legal-toc-list">
+          <li><a href="#philosophy" class="legal-toc-link">1. Privacy Philosophy</a></li>
+          <li><a href="#data-not-collected" class="legal-toc-link">2. What We Do NOT Collect</a></li>
+          <li><a href="#inference-data" class="legal-toc-link">3. AI Text Processing</a></li>
+          <li><a href="#local-storage" class="legal-toc-link">4. Local Browser Storage</a></li>
+          <li><a href="#feedback-data" class="legal-toc-link">5. Feedback &amp; Submissions</a></li>
+          <li><a href="#subprocessors" class="legal-toc-link">6. Third-Party Services</a></li>
+          <li><a href="#user-rights" class="legal-toc-link">7. GDPR &amp; CCPA Rights</a></li>
+          <li><a href="#contact" class="legal-toc-link">8. Contact &amp; Inquiries</a></li>
+        </ul>
+      </aside>
+
+      <!-- Main Legal Content -->
+      <main class="legal-content">
+        <section id="philosophy">
+          <h2>1. Privacy-First Philosophy</h2>
+          <p>
+            Rankora was built from the ground up on a fundamental commitment: <strong>your content belongs to you</strong>.
+            We believe you should be able to calibrate search metadata, test Google SERP snippets, and preview Open Graph tags
+            without being tracked, profiled, or forced to create an account.
+          </p>
+          <div class="legal-highlight-box">
+            <strong>Key Guarantee:</strong> Rankora does not require user registration, does not deploy tracking pixels or behavioral cookies, and never monetizes or sells your data.
+          </div>
+        </section>
+
+        <section id="data-not-collected">
+          <h2>2. What We Do NOT Collect</h2>
+          <p>To be completely transparent, we want to clarify what we never harvest:</p>
+          <ul>
+            <li><strong>No Content Harvesting:</strong> We do not log, catalog, or build datasets from the webpage content or marketing copy you paste into the generator console.</li>
+            <li><strong>No Ad Trackers:</strong> We do not use Google AdSense, Meta Pixel, Hotjar, or any third-party behavioral analytics scripts.</li>
+            <li><strong>No Personal Identifiers:</strong> We do not ask for your phone number, billing address, or credit card information.</li>
+          </ul>
+        </section>
+
+        <section id="inference-data">
+          <h2>3. Real-Time AI Inference Processing</h2>
+          <p>
+            When you submit text to generate metadata via the <code>/generate</code> endpoint:
+          </p>
+          <ul>
+            <li>Your submitted text is transmitted via secure, encrypted TLS (HTTPS) directly to Google Gemini API servers.</li>
+            <li>The content is processed transiently in volatile server memory solely to synthesize titles, descriptions, and keyword suggestions.</li>
+            <li>Once the JSON response is delivered back to your browser, the text is immediately discarded from memory. It is never stored on disk or used to train public machine learning models.</li>
+          </ul>
+        </section>
+
+        <section id="local-storage">
+          <h2>4. Client-Side Browser Storage (`localStorage`)</h2>
+          <p>
+            Rankora operates with a Bring-Your-Own-Key (BYOK) model and zero server-side user accounts. All stateful preferences are stored exclusively on your device inside your browser's <code>localStorage</code>:
+          </p>
+          <ul>
+            <li><code>gemini_api_key</code>: Your optional Google AI Studio API key. It never touches Rankora backend databases and is transmitted directly in client request headers.</li>
+            <li><code>rankora_user_feedback</code>: A local cache of feedback actions you have taken.</li>
+          </ul>
+          <p>You can purge this data at any time directly through your browser's "Clear Site Data" settings.</p>
+        </section>
+
+        <section id="feedback-data">
+          <h2>5. Feedback &amp; Voluntary Communications</h2>
+          <p>
+            If you choose to submit feedback or report a bug through our studio or feedback dialogs:
+          </p>
+          <ul>
+            <li>Your message, optional category, and any handle you provide are logged to our internal feedback repository so that our development team can review suggestions and address technical issues.</li>
+            <li>If you voluntarily provide an email address, it is used strictly to reply to your inquiry and is never shared with third parties or used for promotional spam.</li>
+            <li>Personal feedback logs are strictly access-controlled and never publicly broadcast.</li>
+          </ul>
+        </section>
+
+        <section id="subprocessors">
+          <h2>6. Third-Party Sub-Processors</h2>
+          <p>Rankora relies on reputable, enterprise-grade infrastructure providers:</p>
+          <ul>
+            <li><strong>Google Cloud &amp; Google Gemini API:</strong> AI inference processing (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style="color: var(--accent-teal);">Google Privacy Policy</a>).</li>
+            <li><strong>Vercel &amp; Render:</strong> Edge application delivery, serverless hosting, and DNS management.</li>
+          </ul>
+        </section>
+
+        <section id="user-rights">
+          <h2>7. GDPR &amp; CCPA Compliance</h2>
+          <p>
+            In accordance with the European General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA), you retain full rights over your data:
+          </p>
+          <ul>
+            <li><strong>Right to Deletion:</strong> Because all personal settings reside in your browser's local storage, clearing your browser cache immediately deletes your local profile.</li>
+            <li><strong>Right to Inquire:</strong> You can contact the maintainer at any time to request the inspection or deletion of any feedback you voluntarily submitted with your email address.</li>
+            <li><strong>No Sale of Personal Data:</strong> We do not sell personal data under CCPA or any international data privacy regime.</li>
+          </ul>
+        </section>
+
+        <section id="contact">
+          <h2>8. Contact &amp; Questions</h2>
+          <p>
+            If you have any questions or feedback regarding this Privacy Policy, please open an issue or reach out via our official GitHub repository:
+          </p>
+          <p>
+            <a href="https://github.com/ivengexnce/ai-seo-meta-generator" target="_blank" rel="noopener noreferrer" style="color: var(--accent-teal); font-weight: 600;">
+              GitHub: ivengexnce/ai-seo-meta-generator &rarr;
+            </a>
+          </p>
+        </section>
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer style="margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem; color: var(--text-slate); flex-wrap: wrap; gap: 16px;">
+      <div>&copy; 2026 Rankora by Meet Maru. All rights reserved.</div>
+      <div style="display: flex; gap: 20px;">
+        <a href="/terms" style="color: var(--text-slate); text-decoration: none;">Terms of Service</a>
+        <a href="/" style="color: var(--accent-teal); text-decoration: none;">Studio Workspace</a>
+      </div>
+    </footer>
+  </div>
+</body>
+
+</html>

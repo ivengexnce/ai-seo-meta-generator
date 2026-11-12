@@ -34,19 +34,19 @@ app = Flask(
 )
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-# Models to try in priority order
+# Models to try in priority order (gemini-3.5-flash-lite is fastest with generous free-tier limits)
 MODERN_MODELS = [
-    "gemini-3.8-flash",
     "gemini-3.5-flash-lite",
-    "gemini-2.5-flash",
+    "gemini-3.1-flash-lite",
+    "gemini-flash-lite-latest",
+    "gemini-3.8-flash",
 ]
 
 LEGACY_MODELS = [
-    "gemini-3.8-flash",
-    "gemini-3.5-flash",
     "gemini-3.5-flash-lite",
-    "gemini-flash-latest",
-    "gemini-2.5-flash",
+    "gemini-3.1-flash-lite",
+    "gemini-flash-lite-latest",
+    "gemini-3.8-flash",
 ]
 
 
@@ -73,86 +73,14 @@ def clean_json_response(raw_text: str) -> dict:
 
 FEEDBACK_FILE = os.path.join(BASE_DIR, "data", "feedbacks.json")
 
-DEFAULT_FEEDBACKS = [
-    {
-        "id": "fb_1",
-        "name": "Aman Sharma",
-        "role": "Technical SEO Lead",
-        "avatar_initials": "AS",
-        "rating": 5,
-        "category": "accuracy",
-        "tag": "Accurate Metadata",
-        "message": "Rankora completely eliminated our title truncation issues on Google. Being able to see the exact 600px desktop and mobile snippet preview before pushing to production saved our team hours of back-and-forth.",
-        "verified": True,
-        "date": "2026-11-10",
-    },
-    {
-        "id": "fb_2",
-        "name": "Sarah Lin",
-        "role": "Indie SaaS Founder",
-        "avatar_initials": "SL",
-        "rating": 5,
-        "category": "ux",
-        "tag": "Open Graph Cards",
-        "message": "The Open Graph and Twitter Card generation is a lifesaver. When I share my product on X and LinkedIn, the cards look 10x better and our organic click-through rate jumped noticeably.",
-        "verified": True,
-        "date": "2026-11-08",
-    },
-    {
-        "id": "fb_3",
-        "name": "David Miller",
-        "role": "Full-Stack Developer",
-        "avatar_initials": "DM",
-        "rating": 5,
-        "category": "idea",
-        "tag": "Developer Experience",
-        "message": "One-click copy for clean HTML tags, JSON-LD, and GSC site verification tokens. It's rare to find an AI tool that actually respects technical character bounds instead of hallucinating 90-character titles.",
-        "verified": True,
-        "date": "2026-11-06",
-    },
-    {
-        "id": "fb_4",
-        "name": "Elena Rostova",
-        "role": "E-Commerce SEO Specialist",
-        "avatar_initials": "ER",
-        "rating": 5,
-        "category": "accuracy",
-        "tag": "SERP Simulator",
-        "message": "The keyword extraction and Google SERP simulator let us optimize hundreds of product category pages in minutes. The 150-160 char descriptions fit Google mobile snippets like a glove.",
-        "verified": True,
-        "date": "2026-11-04",
-    },
-    {
-        "id": "fb_5",
-        "name": "Karan Patel",
-        "role": "Growth Marketer",
-        "avatar_initials": "KP",
-        "rating": 5,
-        "category": "accuracy",
-        "tag": "Content Optimization",
-        "message": "Rankora gives me perfectly calibrated descriptions between 150-160 chars every single time. The post-generation feedback and live readiness meter make optimization effortless.",
-        "verified": True,
-        "date": "2026-11-02",
-    },
-    {
-        "id": "fb_6",
-        "name": "Alex Rivera",
-        "role": "Next.js & Frontend Engineer",
-        "avatar_initials": "AR",
-        "rating": 5,
-        "category": "ux",
-        "tag": "Code Export",
-        "message": "Integrated Rankora into our content workflow. The clean exported code blocks, JSON-LD schemas, and instant validation make it the best metadata workspace hands down.",
-        "verified": True,
-        "date": "2026-10-29",
-    },
-]
+# Authentic feedback storage only — no fabricated testimonials or fake accounts
+DEFAULT_FEEDBACKS = []
 
 _FEEDBACKS_CACHE = None
 
 
 def load_feedbacks():
-    """Load community feedbacks from disk or fallback to initial defaults."""
+    """Load community feedbacks from disk."""
     global _FEEDBACKS_CACHE
     if _FEEDBACKS_CACHE is not None:
         return _FEEDBACKS_CACHE
@@ -161,7 +89,7 @@ def load_feedbacks():
         if os.path.isfile(FEEDBACK_FILE):
             with open(FEEDBACK_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                if isinstance(data, list) and len(data) > 0:
+                if isinstance(data, list):
                     _FEEDBACKS_CACHE = data
                     return _FEEDBACKS_CACHE
     except Exception as e:
@@ -186,18 +114,40 @@ def save_feedbacks_to_disk(feedbacks_list):
 
 
 def compute_feedback_stats(feedbacks_list):
-    """Calculate aggregate review metrics for Schema.org and display."""
-    total_custom = len(feedbacks_list)
-    total_count = 122 + total_custom
+    """Calculate aggregate review metrics strictly from authentic user entries."""
+    if not feedbacks_list:
+        return {
+            "average_rating": "5.0",
+            "total_reviews": 0,
+            "satisfaction_rate": "100%",
+            "has_reviews": False,
+        }
+
+    total = len(feedbacks_list)
+    ratings = [
+        fb.get("rating", 5)
+        for fb in feedbacks_list
+        if isinstance(fb.get("rating"), (int, float))
+    ]
+    avg = round(sum(ratings) / len(ratings), 1) if ratings else 5.0
+    positive = len([r for r in ratings if r >= 4])
+    sat_rate = f"{round((positive / total) * 100)}%" if total > 0 else "100%"
+
     return {
-        "average_rating": "4.9",
-        "total_reviews": total_count,
-        "satisfaction_rate": "98.4%",
-        "rating_breakdown": {
-            "5_star": "96%",
-            "4_star": "4%",
-        },
+        "average_rating": f"{avg:.1f}",
+        "total_reviews": total,
+        "satisfaction_rate": sat_rate,
+        "has_reviews": True,
     }
+
+
+def resolve_canonical_base_url():
+    """Dynamically resolve canonical base URL for social cards, legal pages, and SEO tags."""
+    proto = request.headers.get("X-Forwarded-Proto", request.scheme)
+    host = request.headers.get("X-Forwarded-Host", request.host)
+    if not host or "127.0.0.1" in host or "localhost" in host:
+        return os.getenv("CANONICAL_URL", "https://rankoraa.vercel.app")
+    return f"{proto}://{host}".rstrip("/")
 
 
 @app.route("/")
@@ -208,14 +158,7 @@ def index():
         "GOOGLE_SITE_VERIFICATION", "bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA"
     ).strip() or "bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA"
 
-    # Dynamically resolve canonical base URL (supports rankoraa.vercel.app and custom domains)
-    proto = request.headers.get("X-Forwarded-Proto", request.scheme)
-    host = request.headers.get("X-Forwarded-Host", request.host)
-    if not host or "127.0.0.1" in host or "localhost" in host:
-        base_url = os.getenv("CANONICAL_URL", "https://rankoraa.vercel.app")
-    else:
-        base_url = f"{proto}://{host}".rstrip("/")
-
+    base_url = resolve_canonical_base_url()
     feedbacks = load_feedbacks()
     feedback_stats = compute_feedback_stats(feedbacks)
 
@@ -227,6 +170,20 @@ def index():
         feedbacks=feedbacks,
         feedback_stats=feedback_stats,
     )
+
+
+@app.route("/privacy")
+def privacy_page():
+    """Render dedicated, serious Privacy Policy document."""
+    base_url = resolve_canonical_base_url()
+    return render_template("privacy.html", base_url=base_url)
+
+
+@app.route("/terms")
+def terms_page():
+    """Render dedicated, legally protective Terms of Service document."""
+    base_url = resolve_canonical_base_url()
+    return render_template("terms.html", base_url=base_url)
 
 
 @app.route("/og-image.png")
@@ -315,10 +272,27 @@ def health():
 
 @app.route("/api/feedback", methods=["GET", "POST"])
 def feedback_api():
-    """Receive or retrieve community feedbacks, ratings, and stats."""
+    """Receive user feedback or allow admin retrieval."""
     feedbacks = load_feedbacks()
 
     if request.method == "GET":
+        # Feedback is locked from public retrieval to protect user privacy
+        admin_key = request.args.get("key") or request.headers.get("X-Admin-Key")
+        expected_key = os.getenv("ADMIN_FEEDBACK_KEY", "rankora_admin_secret_2026")
+
+        if admin_key != expected_key:
+            return (
+                jsonify(
+                    {
+                        "status": "locked",
+                        "message": "User feedback is private and locked for administrative review only. You can submit feedback anytime via POST.",
+                        "can_submit": True,
+                    }
+                ),
+                200,
+            )
+
+        # Authenticated Admin access
         stats = compute_feedback_stats(feedbacks)
         return (
             jsonify(
@@ -332,27 +306,45 @@ def feedback_api():
             200,
         )
 
+    # POST: Write-only feedback submission
     data = request.get_json(silent=True) or {}
     message = data.get("message", "").strip()
     category = data.get("category", "feedback").strip()
     raw_rating = data.get("rating", "positive")
-    numeric_rating = 5 if raw_rating in ("positive", 5, "5") else 4
-    author_name = data.get("name", "").strip() or "Verified Creator"
-    author_role = data.get("role", "").strip() or "SEO Practitioner"
+
+    # Accurate rating mapping without forcing 5-stars
+    if isinstance(raw_rating, int) and 1 <= raw_rating <= 5:
+        numeric_rating = raw_rating
+    elif raw_rating in ("accurate", "positive"):
+        numeric_rating = 5
+    elif raw_rating in ("needs_work", "negative"):
+        numeric_rating = 3
+    else:
+        try:
+            numeric_rating = max(1, min(5, int(raw_rating)))
+        except (ValueError, TypeError):
+            numeric_rating = 5
+
+    raw_name = data.get("name", "").strip()
+    author_name = raw_name if raw_name else "Anonymous User"
+
+    raw_role = data.get("role", "").strip()
+    author_role = raw_role if raw_role else ""
+
     email = data.get("email", "").strip()
 
     if not message:
         return jsonify({"error": "Feedback message cannot be empty."}), 400
 
     parts = author_name.split()
-    initials = (parts[0][0] + (parts[1][0] if len(parts) > 1 else "")).upper() if parts else "VC"
+    initials = (parts[0][0] + (parts[1][0] if len(parts) > 1 else "")).upper() if parts and author_name != "Anonymous User" else "U"
 
     category_labels = {
-        "accuracy": "Accurate Metadata",
+        "accuracy": "Accuracy & SERP",
         "idea": "Feature Request",
         "ux": "UX / Experience",
         "bug": "Bug Report",
-        "general": "Community Feedback",
+        "general": "General Feedback",
     }
 
     new_entry = {
@@ -364,7 +356,8 @@ def feedback_api():
         "category": category,
         "tag": category_labels.get(category, category.title()),
         "message": message,
-        "verified": True,
+        "email": email,
+        "verified": False,
         "date": datetime.date.today().strftime("%Y-%m-%d"),
     }
 
@@ -375,25 +368,36 @@ def feedback_api():
         jsonify(
             {
                 "status": "success",
-                "message": "Thank you! Your feedback has been received and added to our community wall.",
-                "feedback": new_entry,
-                "stats": compute_feedback_stats(feedbacks),
+                "message": "Thank you! Your feedback has been securely received by the team.",
             }
         ),
         200,
     )
 
 
-@app.route("/feedback")
 @app.route("/admin/feedback")
 def view_feedback_dashboard():
-    """Dedicated endpoint for viewing community feedbacks and metrics."""
+    """Dedicated private admin dashboard for viewing all submitted feedback."""
+    admin_key = request.args.get("key") or request.headers.get("X-Admin-Key")
+    expected_key = os.getenv("ADMIN_FEEDBACK_KEY", "rankora_admin_secret_2026")
+
+    if admin_key != expected_key:
+        return (
+            jsonify(
+                {
+                    "error": "Unauthorized",
+                    "hint": "Pass ?key=<ADMIN_FEEDBACK_KEY> to view admin feedback dashboard.",
+                }
+            ),
+            401,
+        )
+
     feedbacks = load_feedbacks()
     stats = compute_feedback_stats(feedbacks)
     return (
         jsonify(
             {
-                "workspace": "Rankora Community Feedback Log",
+                "workspace": "Rankora Private Admin Feedback Log",
                 "stats": stats,
                 "count": len(feedbacks),
                 "feedbacks": feedbacks,
