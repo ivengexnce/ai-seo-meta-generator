@@ -1,15 +1,5 @@
 [
   {
-    "id": "59c2a49d-33ea-4a61-99b0-4e748c384652",
-    "name": "DevTester",
-    "message": "Add dark mode toggle for code export preview block.",
-    "type": "issue",
-    "status": "in_progress",
-    "approved": true,
-    "rating": 4,
-    "timestamp": "2026-11-12T13:10:29.617593+00:00"
-  },
-  {
     "id": "9f90243d-9b47-4d45-a858-d283c015e42d",
     "name": "Alex Rivera",
     "message": "Rankora is amazingly fast with the new flash-lite model. Accurate SERP snippets on point!",

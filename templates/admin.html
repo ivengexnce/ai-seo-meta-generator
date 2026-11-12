@@ -7,29 +7,64 @@
   <title>Rankora Admin — Testimonials &amp; Issues Dashboard</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v='8.2') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <style>
-    /* Admin Specific Dashboard Styling */
-    .admin-body {
-      background-color: var(--bg-canvas, #000000);
-      color: var(--text-primary, #E5E7EB);
+    /* ==========================================================================
+       Rankora Admin Dashboard — High Contrast Dark Carbon / Vivid Violet Theme
+       ========================================================================== */
+    :root {
+      --admin-bg-canvas: #0C1015;
+      --admin-bg-card: #131922;
+      --admin-bg-surface: #18202d;
+      --admin-bg-input: #0d131d;
+      --admin-border-subtle: rgba(255, 255, 255, 0.08);
+      --admin-border-accent: rgba(137, 82, 224, 0.35);
+      --admin-accent-purple: #8952e0;
+      --admin-accent-purple-light: #9461e3;
+      --admin-accent-cyan: #2ab4d9;
+      --admin-accent-lime: #00FF90;
+      --admin-text-white: #FFFFFF;
+      --admin-text-primary: #E2E8F0;
+      --admin-text-secondary: #94A3B8;
+      --admin-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --admin-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body.admin-body {
+      background-color: var(--admin-bg-canvas) !important;
+      color: var(--admin-text-primary) !important;
       min-height: 100vh;
-      font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-      padding: 32px 20px;
+      font-family: var(--admin-font) !important;
+      padding: 32px 24px;
+      line-height: 1.5;
     }
 
     .admin-container {
-      max-width: 1200px;
+      max-width: 1240px;
       margin: 0 auto;
     }
 
+    /* --------------------------------------------------------------------------
+       Admin Navigation Header
+       -------------------------------------------------------------------------- */
     .admin-nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
       padding-bottom: 20px;
-      border-bottom: 1px solid var(--border-subtle, #272727);
+      border-bottom: 1px solid var(--admin-border-subtle);
       flex-wrap: wrap;
       gap: 16px;
     }
@@ -37,116 +72,368 @@
     .admin-title-row {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
     .admin-title {
-      font-family: var(--font-display, inherit);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text-white, #FFFFFF);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--admin-text-white);
       margin: 0;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-title-glow {
+      color: var(--admin-accent-purple-light);
+      text-shadow: 0 0 20px rgba(137, 82, 224, 0.4);
     }
 
     .admin-badge {
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.72rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 3px 8px;
-      border-radius: 4px;
-      background: rgba(16, 185, 129, 0.15);
-      color: var(--accent-teal, #10B981);
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: rgba(0, 255, 144, 0.12);
+      color: var(--admin-accent-lime);
+      border: 1px solid rgba(0, 255, 144, 0.35);
+      box-shadow: 0 0 12px rgba(0, 255, 144, 0.15);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .admin-badge::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--admin-accent-lime);
+      box-shadow: 0 0 6px var(--admin-accent-lime);
     }
 
     .admin-back-link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      color: var(--text-secondary, #9CA3AF);
+      gap: 8px;
+      color: var(--admin-text-secondary);
       text-decoration: none;
       font-size: 0.88rem;
-      font-weight: 500;
-      transition: color 0.15s ease;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--admin-border-subtle);
+      transition: all 0.2s ease;
     }
 
     .admin-back-link:hover {
-      color: var(--text-white, #FFFFFF);
+      color: var(--admin-text-white);
+      background: rgba(137, 82, 224, 0.1);
+      border-color: rgba(137, 82, 224, 0.4);
+      transform: translateX(-2px);
     }
 
-    /* Secret Authentication Card */
+    /* --------------------------------------------------------------------------
+       Admin Authentication Card (Ultra High Contrast & Prominent CTA)
+       -------------------------------------------------------------------------- */
     .admin-auth-card {
-      background: var(--bg-card, #181818);
-      border: 1px solid var(--border-subtle, #272727);
-      border-radius: var(--radius-md, 10px);
-      padding: 20px 24px;
-      margin-bottom: 32px;
+      background: linear-gradient(145deg, #161e2a 0%, #101620 100%) !important;
+      border: 1.5px solid var(--admin-border-accent) !important;
+      border-radius: 14px !important;
+      padding: 22px 28px !important;
+      margin-bottom: 32px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      flex-wrap: wrap !important;
+      gap: 20px !important;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(137, 82, 224, 0.08) !important;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .admin-auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #8952e0, #2ab4d9, #00FF90);
+    }
+
+    .auth-card-left {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      min-width: 300px;
+      max-width: 680px;
+    }
+
+    .auth-label-row {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
+      gap: 8px;
+    }
+
+    .auth-icon-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: rgba(137, 82, 224, 0.2);
+      color: var(--admin-accent-purple-light);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .auth-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--admin-text-white);
+      letter-spacing: 0.01em;
     }
 
     .auth-input-group {
       display: flex;
       align-items: center;
       gap: 12px;
-      flex: 1;
-      max-width: 500px;
+      width: 100%;
+      flex-wrap: wrap;
     }
 
+    .admin-secret-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    #admin-secret-input {
+      width: 100% !important;
+      background: var(--admin-bg-input) !important;
+      border: 1.5px solid #2a3649 !important;
+      color: #FFFFFF !important;
+      font-family: var(--admin-mono) !important;
+      font-size: 0.92rem !important;
+      padding: 10px 42px 10px 14px !important;
+      border-radius: 8px !important;
+      outline: none !important;
+      transition: all 0.2s ease !important;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    #admin-secret-input::placeholder {
+      color: #64748B !important;
+      font-family: var(--admin-font) !important;
+      font-size: 0.84rem !important;
+    }
+
+    #admin-secret-input:focus {
+      border-color: var(--admin-accent-purple) !important;
+      box-shadow: 0 0 0 3px rgba(137, 82, 224, 0.25), 0 0 16px rgba(137, 82, 224, 0.2) !important;
+      background: #111827 !important;
+    }
+
+    #toggle-secret-btn {
+      position: absolute;
+      right: 10px;
+      background: transparent;
+      border: none;
+      color: #94A3B8;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: color 0.15s ease;
+    }
+
+    #toggle-secret-btn:hover {
+      color: #FFFFFF;
+    }
+
+    /* THE ULTRA-VISIBLE CONNECT BUTTON */
+    #auth-save-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      background: linear-gradient(135deg, #8952e0 0%, #9461e3 100%) !important;
+      color: #FFFFFF !important;
+      font-family: var(--admin-font) !important;
+      font-size: 0.88rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.02em !important;
+      padding: 10px 22px !important;
+      border-radius: 8px !important;
+      border: 1px solid #a879f5 !important;
+      box-shadow: 0 4px 18px rgba(137, 82, 224, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.18) inset !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      white-space: nowrap !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    #auth-save-btn:hover {
+      background: linear-gradient(135deg, #9962f5 0%, #7c3aed 100%) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 24px rgba(137, 82, 224, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.3) inset !important;
+      border-color: #c4a1ff !important;
+    }
+
+    #auth-save-btn:active {
+      transform: translateY(0) !important;
+      box-shadow: 0 2px 10px rgba(137, 82, 224, 0.4) !important;
+    }
+
+    .auth-helper-hint {
+      font-size: 0.76rem;
+      color: var(--admin-text-secondary);
+      line-height: 1.4;
+    }
+
+    .auth-helper-hint code {
+      font-family: var(--admin-mono);
+      color: var(--admin-accent-cyan);
+      background: rgba(42, 180, 217, 0.1);
+      padding: 1px 5px;
+      border-radius: 4px;
+      border: 1px solid rgba(42, 180, 217, 0.25);
+    }
+
+    .auth-card-right {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Authentication Status Pill */
     .auth-status-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 9999px;
       font-size: 0.82rem;
-      font-weight: 500;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .auth-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
     }
 
     .auth-status-pill.authed {
-      color: #10B981;
+      background: rgba(0, 255, 144, 0.12) !important;
+      color: var(--admin-accent-lime) !important;
+      border: 1px solid rgba(0, 255, 144, 0.35) !important;
+      box-shadow: 0 0 16px rgba(0, 255, 144, 0.2) !important;
+    }
+
+    .auth-status-pill.authed .auth-status-dot {
+      background: var(--admin-accent-lime);
+      box-shadow: 0 0 8px var(--admin-accent-lime);
+      animation: statusPulse 2s infinite ease-in-out;
     }
 
     .auth-status-pill.unauthed {
-      color: #EF4444;
+      background: rgba(239, 68, 68, 0.12) !important;
+      color: #F87171 !important;
+      border: 1px solid rgba(239, 68, 68, 0.35) !important;
     }
 
-    /* Stats Grid */
+    .auth-status-pill.unauthed .auth-status-dot {
+      background: #EF4444;
+      box-shadow: 0 0 6px #EF4444;
+    }
+
+    .auth-status-pill.loading {
+      background: rgba(42, 180, 217, 0.12) !important;
+      color: var(--admin-accent-cyan) !important;
+      border: 1px solid rgba(42, 180, 217, 0.35) !important;
+    }
+
+    .auth-status-pill.loading .auth-status-dot {
+      background: var(--admin-accent-cyan);
+      box-shadow: 0 0 6px var(--admin-accent-cyan);
+      animation: statusPulse 1s infinite ease-in-out;
+    }
+
+    @keyframes statusPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.85);
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       Metrics Summary Grid
+       -------------------------------------------------------------------------- */
     .admin-stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
-      margin-bottom: 32px;
+      margin-bottom: 36px;
     }
 
     .admin-stat-card {
-      background: var(--bg-card, #181818);
-      border: 1px solid var(--border-subtle, #272727);
-      border-radius: var(--radius-md, 10px);
+      background: var(--admin-bg-card);
+      border: 1px solid var(--admin-border-subtle);
+      border-radius: 12px;
       padding: 20px;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .admin-stat-card:hover {
+      border-color: var(--admin-border-accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
 
     .admin-stat-val {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--text-white, #FFFFFF);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--admin-text-white);
       line-height: 1;
-      margin-bottom: 6px;
-      font-family: var(--font-display, inherit);
+      margin-bottom: 8px;
+      letter-spacing: -0.03em;
     }
 
     .admin-stat-label {
       font-size: 0.82rem;
-      color: var(--text-secondary, #9CA3AF);
-      font-weight: 500;
+      color: var(--admin-text-secondary);
+      font-weight: 600;
+      letter-spacing: 0.02em;
     }
 
-    /* Section Headers */
+    /* --------------------------------------------------------------------------
+       Sections & Tables
+       -------------------------------------------------------------------------- */
     .admin-section {
-      margin-bottom: 40px;
+      margin-bottom: 44px;
     }
 
     .admin-section-head {
@@ -159,18 +446,54 @@
     }
 
     .admin-section-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--text-white, #FFFFFF);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--admin-text-white);
       margin: 0;
+      letter-spacing: -0.015em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    /* Table & Cards */
+    .refresh-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 7px !important;
+      padding: 8px 16px !important;
+      font-size: 0.82rem !important;
+      font-weight: 600 !important;
+      border-radius: 7px !important;
+      border: 1px solid rgba(42, 180, 217, 0.4) !important;
+      background: rgba(42, 180, 217, 0.08) !important;
+      color: var(--admin-accent-cyan) !important;
+      cursor: pointer !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .refresh-btn:hover {
+      background: rgba(42, 180, 217, 0.2) !important;
+      border-color: var(--admin-accent-cyan) !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 14px rgba(42, 180, 217, 0.3) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .refresh-btn svg {
+      transition: transform 0.4s ease;
+    }
+
+    .refresh-btn:hover svg {
+      transform: rotate(180deg);
+    }
+
+    /* Table Styles */
     .admin-table-wrap {
-      background: var(--bg-card, #181818);
-      border: 1px solid var(--border-subtle, #272727);
-      border-radius: var(--radius-md, 10px);
+      background: var(--admin-bg-card);
+      border: 1px solid var(--admin-border-subtle);
+      border-radius: 12px;
       overflow-x: auto;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
     }
 
     .admin-table {
@@ -181,19 +504,19 @@
     }
 
     .admin-table th {
-      background: var(--bg-input, #1F1F1F);
+      background: #161e2b;
       padding: 14px 18px;
-      font-weight: 600;
-      color: var(--text-secondary, #9CA3AF);
-      border-bottom: 1px solid var(--border-subtle, #272727);
-      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--admin-text-secondary);
+      border-bottom: 1px solid var(--admin-border-subtle);
+      font-size: 0.74rem;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
     }
 
     .admin-table td {
       padding: 16px 18px;
-      border-bottom: 1px solid var(--border-subtle, #272727);
+      border-bottom: 1px solid var(--admin-border-subtle);
       vertical-align: top;
     }
 
@@ -202,46 +525,46 @@
     }
 
     .admin-table tr:hover td {
-      background: rgba(255, 255, 255, 0.015);
+      background: rgba(137, 82, 224, 0.03);
     }
 
     .author-cell {
-      font-weight: 600;
-      color: var(--text-white, #FFFFFF);
+      font-weight: 700;
+      color: var(--admin-text-white);
       white-space: nowrap;
     }
 
     .msg-cell {
-      max-width: 440px;
-      line-height: 1.5;
-      color: var(--text-primary, #E5E7EB);
+      max-width: 460px;
+      line-height: 1.55;
+      color: var(--admin-text-primary);
     }
 
     .status-badge {
       display: inline-flex;
       align-items: center;
-      padding: 3px 8px;
+      padding: 4px 10px;
       font-size: 0.72rem;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-radius: 4px;
+      letter-spacing: 0.06em;
+      border-radius: 6px;
       white-space: nowrap;
     }
 
     .status-badge.approved {
-      background: rgba(16, 185, 129, 0.15);
-      color: #10B981;
-      border: 1px solid rgba(16, 185, 129, 0.35);
+      background: rgba(0, 255, 144, 0.12);
+      color: var(--admin-accent-lime);
+      border: 1px solid rgba(0, 255, 144, 0.35);
     }
 
     .status-badge.pending {
-      background: rgba(245, 158, 11, 0.15);
+      background: rgba(245, 158, 11, 0.12);
       color: #F59E0B;
       border: 1px solid rgba(245, 158, 11, 0.35);
     }
 
-    /* Actions */
+    /* Action Buttons */
     .admin-actions-cell {
       white-space: nowrap;
       display: flex;
@@ -250,83 +573,123 @@
     }
 
     .btn-action {
-      padding: 6px 12px;
+      padding: 6px 14px;
       font-size: 0.78rem;
-      font-weight: 600;
-      border-radius: 4px;
-      border: 1px solid var(--border-subtle, #272727);
-      background: var(--bg-input, #1F1F1F);
-      color: var(--text-primary, #E5E7EB);
+      font-weight: 700;
+      border-radius: 6px;
+      border: 1px solid var(--admin-border-subtle);
+      background: var(--admin-bg-surface);
+      color: var(--admin-text-primary);
       cursor: pointer;
       transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .btn-action:hover {
-      background: var(--bg-card, #181818);
-      color: var(--text-white, #FFFFFF);
-      border-color: var(--border-hairline, #383838);
+      background: #202b3c;
+      color: var(--admin-text-white);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     .btn-action.approve-btn {
-      color: #10B981;
-      border-color: rgba(16, 185, 129, 0.3);
-      background: rgba(16, 185, 129, 0.08);
+      color: var(--admin-accent-lime);
+      border-color: rgba(0, 255, 144, 0.35);
+      background: rgba(0, 255, 144, 0.08);
     }
 
     .btn-action.approve-btn:hover {
-      background: rgba(16, 185, 129, 0.2);
+      background: rgba(0, 255, 144, 0.2);
+      border-color: var(--admin-accent-lime);
+      color: #FFFFFF;
     }
 
     .btn-action.unapprove-btn {
       color: #F59E0B;
-      border-color: rgba(245, 158, 11, 0.3);
+      border-color: rgba(245, 158, 11, 0.35);
       background: rgba(245, 158, 11, 0.08);
     }
 
     .btn-action.unapprove-btn:hover {
       background: rgba(245, 158, 11, 0.2);
+      border-color: #F59E0B;
+      color: #FFFFFF;
     }
 
     .btn-action.delete-btn {
       color: #EF4444;
-      border-color: rgba(239, 68, 68, 0.3);
+      border-color: rgba(239, 68, 68, 0.35);
       background: rgba(239, 68, 68, 0.08);
     }
 
     .btn-action.delete-btn:hover {
       background: rgba(239, 68, 68, 0.2);
+      border-color: #EF4444;
+      color: #FFFFFF;
     }
 
     .status-select {
-      background: var(--bg-input, #1F1F1F);
-      color: var(--text-primary, #E5E7EB);
-      border: 1px solid var(--border-subtle, #272727);
-      border-radius: 4px;
+      background: var(--admin-bg-surface);
+      color: var(--admin-text-primary);
+      border: 1px solid #2a3649;
+      border-radius: 6px;
       padding: 6px 10px;
-      font-size: 0.78rem;
-      font-weight: 500;
+      font-size: 0.8rem;
+      font-weight: 600;
       cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .status-select:focus {
+      border-color: var(--admin-accent-purple);
     }
 
     .admin-empty-state {
-      padding: 36px;
+      padding: 40px;
       text-align: center;
-      color: var(--text-secondary, #9CA3AF);
-      font-size: 0.9rem;
+      color: var(--admin-text-secondary);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 768px) {
+      .admin-auth-card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .auth-card-right {
+        justify-content: flex-start;
+      }
+
+      .auth-input-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      #auth-save-btn {
+        width: 100% !important;
+      }
     }
   </style>
 </head>
 
 <body class="admin-body">
   <div class="admin-container">
+
     <!-- Navigation Bar -->
     <header class="admin-nav">
       <div class="admin-title-row">
-        <h1 class="admin-title">Rankora Admin</h1>
+        <h1 class="admin-title">
+          <span>Rankora Admin</span>
+          <span class="admin-title-glow">⚡</span>
+        </h1>
         <span class="admin-badge">Private Console</span>
       </div>
       <a href="/" class="admin-back-link">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
         <span>Back to SEO Studio</span>
@@ -335,14 +698,48 @@
 
     <!-- Secret Key Authentication Card -->
     <div class="admin-auth-card">
-      <div class="auth-input-group">
-        <label for="admin-secret-input" style="font-size: 0.85rem; font-weight: 600; white-space: nowrap;">Admin Secret:</label>
-        <input type="password" id="admin-secret-input" class="text-input" placeholder="Enter ADMIN_SECRET" style="padding: 8px 12px; font-size: 0.85rem;">
-        <button type="button" id="auth-save-btn" class="btn btn-primary" style="padding: 8px 14px; font-size: 0.82rem;">Connect</button>
+      <div class="auth-card-left">
+        <div class="auth-label-row">
+          <span class="auth-icon-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </span>
+          <label for="admin-secret-input" class="auth-label">Admin Console Access</label>
+        </div>
+
+        <div class="auth-input-group">
+          <div class="admin-secret-wrap">
+            <input type="password" id="admin-secret-input" placeholder="Enter ADMIN_SECRET (e.g. meetmaru@1953)"
+              autocomplete="current-password" spellcheck="false">
+            <button type="button" id="toggle-secret-btn" title="Show / Hide Secret Key"
+              aria-label="Toggle password visibility">
+              <svg id="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <button type="button" id="auth-save-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            <span id="auth-btn-text">Enter</span>
+          </button>
+        </div>
       </div>
-      <div id="auth-status-indicator" class="auth-status-pill unauthed">
-        <span>●</span>
-        <span id="auth-status-text">Validating key...</span>
+
+      <div class="auth-card-right">
+        <div id="auth-status-indicator" class="auth-status-pill unauthed">
+          <span class="auth-status-dot"></span>
+          <span id="auth-status-text">Validating key...</span>
+        </div>
       </div>
     </div>
 
@@ -353,7 +750,7 @@
         <div class="admin-stat-label">Total Submissions</div>
       </div>
       <div class="admin-stat-card">
-        <div class="admin-stat-val" style="color: #10B981;" id="stat-testimonials-approved">0</div>
+        <div class="admin-stat-val" style="color: var(--admin-accent-lime);" id="stat-testimonials-approved">0</div>
         <div class="admin-stat-label">Approved Testimonials</div>
       </div>
       <div class="admin-stat-card">
@@ -361,7 +758,7 @@
         <div class="admin-stat-label">Pending Approval</div>
       </div>
       <div class="admin-stat-card">
-        <div class="admin-stat-val" style="color: #3B82F6;" id="stat-issues-active">0</div>
+        <div class="admin-stat-val" style="color: var(--admin-accent-purple-light);" id="stat-issues-active">0</div>
         <div class="admin-stat-label">Active Issues (Open / In Progress)</div>
       </div>
     </div>
@@ -369,8 +766,19 @@
     <!-- Section 1: Testimonials Moderation -->
     <section class="admin-section">
       <div class="admin-section-head">
-        <h2 class="admin-section-title">Testimonials Moderation (Approved items appear on homepage)</h2>
-        <button type="button" class="btn-action" onclick="fetchFeedbacks()">↻ Refresh Data</button>
+        <h2 class="admin-section-title">
+          <span>Testimonials Moderation</span>
+          <span style="font-size: 0.8rem; font-weight: 500; color: var(--admin-text-secondary);">(Approved items appear
+            on homepage)</span>
+        </h2>
+        <button type="button" class="refresh-btn" onclick="fetchFeedbacks()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+          <span>Refresh Data</span>
+        </button>
       </div>
 
       <div class="admin-table-wrap">
@@ -422,23 +830,48 @@
   </div>
 
   <script>
-    // Extract secret from URL query param or localStorage or input
+    // Extract secret from URL query param, localStorage, or fallback to known .env secret
     const urlParams = new URLSearchParams(window.location.search);
-    const initialSecret = urlParams.get('secret') || localStorage.getItem('rankora_admin_secret') || 'rankora_admin_secret_2026';
+    const storedSecret = localStorage.getItem('rankora_admin_secret');
+    const querySecret = urlParams.get('secret');
+
+    // Default to stored, query param, or meetmaru@1953
+    const initialSecret = querySecret || storedSecret || 'meetmaru@1953';
 
     const secretInput = document.getElementById('admin-secret-input');
     const authSaveBtn = document.getElementById('auth-save-btn');
+    const authBtnText = document.getElementById('auth-btn-text');
     const authStatusIndicator = document.getElementById('auth-status-indicator');
     const authStatusText = document.getElementById('auth-status-text');
+    const toggleSecretBtn = document.getElementById('toggle-secret-btn');
 
     if (secretInput) {
       secretInput.value = initialSecret;
     }
 
+    // Toggle Secret Visibility
+    if (toggleSecretBtn && secretInput) {
+      toggleSecretBtn.addEventListener('click', () => {
+        const isPassword = secretInput.type === 'password';
+        secretInput.type = isPassword ? 'text' : 'password';
+        toggleSecretBtn.innerHTML = isPassword ? `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        ` : `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        `;
+      });
+    }
+
     function getSecret() {
       const fromInput = secretInput ? secretInput.value.trim() : '';
       const fromStorage = localStorage.getItem('rankora_admin_secret') || '';
-      return fromInput || fromStorage || 'rankora_admin_secret_2026';
+      return fromInput || fromStorage || 'meetmaru@1953';
     }
 
     function getAdminHeaders(extraHeaders = {}) {
@@ -470,7 +903,9 @@
 
     async function loadFeedback() {
       const secret = getSecret();
+      if (authStatusIndicator) authStatusIndicator.className = 'auth-status-pill loading';
       if (authStatusText) authStatusText.textContent = 'Authenticating...';
+      if (authBtnText) authBtnText.textContent = 'Connecting...';
 
       try {
         const res = await fetch('/api/feedback', {
@@ -480,24 +915,41 @@
         if (res.status === 401) {
           if (authStatusIndicator) authStatusIndicator.className = 'auth-status-pill unauthed';
           if (authStatusText) authStatusText.textContent = 'Unauthorized (Check ADMIN_SECRET)';
-          document.getElementById('testimonials-table-body').innerHTML = '<tr><td colspan="6" class="admin-empty-state" style="color: #EF4444;">Access Denied. Please provide a valid ADMIN_SECRET above and click Connect.</td></tr>';
-          document.getElementById('issues-table-body').innerHTML = '<tr><td colspan="5" class="admin-empty-state" style="color: #EF4444;">Access Denied.</td></tr>';
+          if (authBtnText) authBtnText.textContent = 'Connect Console';
+          document.getElementById('testimonials-table-body').innerHTML = `
+            <tr>
+              <td colspan="6" class="admin-empty-state" style="color: #F87171;">
+                <strong>Access Denied (401 Unauthorized)</strong><br>
+                Please verify your secret in the input field above (matches <code>ADMIN_SECRET</code> in your <code>.env</code>) and click <strong>Connect Console</strong>.
+              </td>
+            </tr>`;
+          document.getElementById('issues-table-body').innerHTML = `
+            <tr>
+              <td colspan="5" class="admin-empty-state" style="color: #F87171;">Access Denied.</td>
+            </tr>`;
           return;
         }
 
         const data = await res.json();
         const list = data.feedbacks || [];
 
-        // Save validated secret to localStorage
+        // Save successfully validated secret to localStorage
         localStorage.setItem('rankora_admin_secret', secret);
         if (authStatusIndicator) authStatusIndicator.className = 'auth-status-pill authed';
-        if (authStatusText) authStatusText.textContent = 'Authenticated ✓';
+        if (authStatusText) authStatusText.textContent = 'Authenticated ✓ (Active Session)';
+        if (authBtnText) {
+          authBtnText.textContent = 'Connected ✓';
+          setTimeout(() => {
+            if (authBtnText) authBtnText.textContent = 'Connect Console';
+          }, 1500);
+        }
 
         renderDashboard(list);
       } catch (err) {
         console.error('Fetch error:', err);
         if (authStatusIndicator) authStatusIndicator.className = 'auth-status-pill unauthed';
         if (authStatusText) authStatusText.textContent = 'Connection Error';
+        if (authBtnText) authBtnText.textContent = 'Connect Console';
       }
     }
 
@@ -533,7 +985,7 @@
                   ${isApproved ? 'Approved ✓' : 'Pending Review'}
                 </span>
               </td>
-              <td style="color: var(--text-secondary);">${formatTime(t.timestamp)}</td>
+              <td style="color: var(--admin-text-secondary);">${formatTime(t.timestamp)}</td>
               <td>
                 <div class="admin-actions-cell">
                   <button type="button" class="btn-action ${isApproved ? 'unapprove-btn' : 'approve-btn'}" onclick="toggleApprove('${t.id}', ${!isApproved})">
@@ -567,7 +1019,7 @@
                   <option value="resolved" ${status === 'resolved' ? 'selected' : ''}>Resolved</option>
                 </select>
               </td>
-              <td style="color: var(--text-secondary);">${formatTime(i.timestamp)}</td>
+              <td style="color: var(--admin-text-secondary);">${formatTime(i.timestamp)}</td>
               <td>
                 <div class="admin-actions-cell">
                   <button type="button" class="btn-action delete-btn" onclick="deleteFeedback('${i.id}')">
@@ -632,12 +1084,12 @@
       }
     }
 
-    // Connect Button Handler
+    // Connect Button Click Handler
     if (authSaveBtn) {
       authSaveBtn.addEventListener('click', () => {
         const secret = secretInput ? secretInput.value.trim() : '';
         if (!secret) {
-          alert('Please enter an Admin Secret to connect.');
+          alert('Please enter your ADMIN_SECRET to connect.');
           return;
         }
         localStorage.setItem('rankora_admin_secret', secret);
@@ -661,4 +1113,3 @@
 </body>
 
 </html>
-
