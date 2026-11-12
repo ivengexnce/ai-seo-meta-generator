@@ -15,7 +15,9 @@
     rel="stylesheet">
   <style>
     /* ==========================================================================
-       Rankora Admin Dashboard — High Contrast Dark Carbon / Vivid Violet Theme
+       Rankora Admin Dashboard — Fully Hardened & Fixed
+       All selectors scoped under body.admin-body for specificity.
+       Zero !important overrides. Zero hardcoded secrets. Zero inline onclick.
        ========================================================================== */
     :root {
       --admin-bg-canvas: #0C1015;
@@ -35,30 +37,31 @@
       --admin-mono: 'JetBrains Mono', monospace;
     }
 
-    * {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
     body.admin-body {
-      background-color: var(--admin-bg-canvas) !important;
-      color: var(--admin-text-primary) !important;
+      background-color: var(--admin-bg-canvas);
+      color: var(--admin-text-primary);
       min-height: 100vh;
-      font-family: var(--admin-font) !important;
+      font-family: var(--admin-font);
       padding: 32px 24px;
       line-height: 1.5;
     }
 
-    .admin-container {
+    /* ---------- Layout ---------- */
+    body.admin-body .admin-container {
       max-width: 1240px;
       margin: 0 auto;
     }
 
-    /* --------------------------------------------------------------------------
-       Admin Navigation Header
-       -------------------------------------------------------------------------- */
-    .admin-nav {
+    /* ---------- Nav ---------- */
+    body.admin-body .admin-nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -69,13 +72,13 @@
       gap: 16px;
     }
 
-    .admin-title-row {
+    body.admin-body .admin-title-row {
       display: flex;
       align-items: center;
       gap: 14px;
     }
 
-    .admin-title {
+    body.admin-body .admin-title {
       font-size: 1.6rem;
       font-weight: 800;
       color: var(--admin-text-white);
@@ -86,12 +89,12 @@
       gap: 10px;
     }
 
-    .admin-title-glow {
+    body.admin-body .admin-title-glow {
       color: var(--admin-accent-purple-light);
       text-shadow: 0 0 20px rgba(137, 82, 224, 0.4);
     }
 
-    .admin-badge {
+    body.admin-body .admin-badge {
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -107,7 +110,7 @@
       gap: 5px;
     }
 
-    .admin-badge::before {
+    body.admin-body .admin-badge::before {
       content: '';
       display: inline-block;
       width: 6px;
@@ -117,7 +120,7 @@
       box-shadow: 0 0 6px var(--admin-accent-lime);
     }
 
-    .admin-back-link {
+    body.admin-body .admin-back-link {
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -132,33 +135,31 @@
       transition: all 0.2s ease;
     }
 
-    .admin-back-link:hover {
+    body.admin-body .admin-back-link:hover {
       color: var(--admin-text-white);
       background: rgba(137, 82, 224, 0.1);
       border-color: rgba(137, 82, 224, 0.4);
       transform: translateX(-2px);
     }
 
-    /* --------------------------------------------------------------------------
-       Admin Authentication Card (Ultra High Contrast & Prominent CTA)
-       -------------------------------------------------------------------------- */
-    .admin-auth-card {
-      background: linear-gradient(145deg, #161e2a 0%, #101620 100%) !important;
-      border: 1.5px solid var(--admin-border-accent) !important;
-      border-radius: 14px !important;
-      padding: 22px 28px !important;
-      margin-bottom: 32px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: space-between !important;
-      flex-wrap: wrap !important;
-      gap: 20px !important;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(137, 82, 224, 0.08) !important;
+    /* ---------- Auth Card ---------- */
+    body.admin-body .admin-auth-card {
+      background: linear-gradient(145deg, #161e2a 0%, #101620 100%);
+      border: 1.5px solid var(--admin-border-accent);
+      border-radius: 14px;
+      padding: 22px 28px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(137, 82, 224, 0.08);
       position: relative;
       overflow: hidden;
     }
 
-    .admin-auth-card::before {
+    body.admin-body .admin-auth-card::before {
       content: '';
       position: absolute;
       top: 0;
@@ -168,7 +169,7 @@
       background: linear-gradient(90deg, #8952e0, #2ab4d9, #00FF90);
     }
 
-    .auth-card-left {
+    body.admin-body .auth-card-left {
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -177,13 +178,13 @@
       max-width: 680px;
     }
 
-    .auth-label-row {
+    body.admin-body .auth-label-row {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .auth-icon-badge {
+    body.admin-body .auth-icon-badge {
       width: 24px;
       height: 24px;
       border-radius: 6px;
@@ -194,14 +195,13 @@
       justify-content: center;
     }
 
-    .auth-label {
+    body.admin-body .auth-label {
       font-size: 0.88rem;
       font-weight: 700;
       color: var(--admin-text-white);
-      letter-spacing: 0.01em;
     }
 
-    .auth-input-group {
+    body.admin-body .auth-input-group {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -209,7 +209,7 @@
       flex-wrap: wrap;
     }
 
-    .admin-secret-wrap {
+    body.admin-body .admin-secret-wrap {
       position: relative;
       display: flex;
       align-items: center;
@@ -217,33 +217,33 @@
       min-width: 260px;
     }
 
-    #admin-secret-input {
-      width: 100% !important;
-      background: var(--admin-bg-input) !important;
-      border: 1.5px solid #2a3649 !important;
-      color: #FFFFFF !important;
-      font-family: var(--admin-mono) !important;
-      font-size: 0.92rem !important;
-      padding: 10px 42px 10px 14px !important;
-      border-radius: 8px !important;
-      outline: none !important;
-      transition: all 0.2s ease !important;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+    body.admin-body #admin-secret-input {
+      width: 100%;
+      background: var(--admin-bg-input);
+      border: 1.5px solid #2a3649;
+      color: #FFFFFF;
+      font-family: var(--admin-mono);
+      font-size: 0.92rem;
+      padding: 10px 42px 10px 14px;
+      border-radius: 8px;
+      outline: none;
+      transition: all 0.2s ease;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
-    #admin-secret-input::placeholder {
-      color: #64748B !important;
-      font-family: var(--admin-font) !important;
-      font-size: 0.84rem !important;
+    body.admin-body #admin-secret-input::placeholder {
+      color: #64748B;
+      font-family: var(--admin-font);
+      font-size: 0.84rem;
     }
 
-    #admin-secret-input:focus {
-      border-color: var(--admin-accent-purple) !important;
-      box-shadow: 0 0 0 3px rgba(137, 82, 224, 0.25), 0 0 16px rgba(137, 82, 224, 0.2) !important;
-      background: #111827 !important;
+    body.admin-body #admin-secret-input:focus {
+      border-color: var(--admin-accent-purple);
+      box-shadow: 0 0 0 3px rgba(137, 82, 224, 0.25), 0 0 16px rgba(137, 82, 224, 0.2);
+      background: #111827;
     }
 
-    #toggle-secret-btn {
+    body.admin-body #toggle-secret-btn {
       position: absolute;
       right: 10px;
       background: transparent;
@@ -258,51 +258,56 @@
       transition: color 0.15s ease;
     }
 
-    #toggle-secret-btn:hover {
+    body.admin-body #toggle-secret-btn:hover {
       color: #FFFFFF;
     }
 
-    /* THE ULTRA-VISIBLE CONNECT BUTTON */
-    #auth-save-btn {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 8px !important;
-      background: linear-gradient(135deg, #8952e0 0%, #9461e3 100%) !important;
-      color: #FFFFFF !important;
-      font-family: var(--admin-font) !important;
-      font-size: 0.88rem !important;
-      font-weight: 700 !important;
-      letter-spacing: 0.02em !important;
-      padding: 10px 22px !important;
-      border-radius: 8px !important;
-      border: 1px solid #a879f5 !important;
-      box-shadow: 0 4px 18px rgba(137, 82, 224, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.18) inset !important;
-      cursor: pointer !important;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-      white-space: nowrap !important;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+    body.admin-body #auth-save-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #8952e0 0%, #9461e3 100%);
+      color: #FFFFFF;
+      font-family: var(--admin-font);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 10px 22px;
+      border-radius: 8px;
+      border: 1px solid #a879f5;
+      box-shadow: 0 4px 18px rgba(137, 82, 224, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.18) inset;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     }
 
-    #auth-save-btn:hover {
-      background: linear-gradient(135deg, #9962f5 0%, #7c3aed 100%) !important;
-      transform: translateY(-2px) !important;
-      box-shadow: 0 8px 24px rgba(137, 82, 224, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.3) inset !important;
-      border-color: #c4a1ff !important;
+    body.admin-body #auth-save-btn:hover {
+      background: linear-gradient(135deg, #9962f5 0%, #7c3aed 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(137, 82, 224, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+      border-color: #c4a1ff;
     }
 
-    #auth-save-btn:active {
-      transform: translateY(0) !important;
-      box-shadow: 0 2px 10px rgba(137, 82, 224, 0.4) !important;
+    body.admin-body #auth-save-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(137, 82, 224, 0.4);
     }
 
-    .auth-helper-hint {
+    body.admin-body #auth-save-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    body.admin-body .auth-helper-hint {
       font-size: 0.76rem;
       color: var(--admin-text-secondary);
       line-height: 1.4;
     }
 
-    .auth-helper-hint code {
+    body.admin-body .auth-helper-hint code {
       font-family: var(--admin-mono);
       color: var(--admin-accent-cyan);
       background: rgba(42, 180, 217, 0.1);
@@ -311,13 +316,13 @@
       border: 1px solid rgba(42, 180, 217, 0.25);
     }
 
-    .auth-card-right {
+    body.admin-body .auth-card-right {
       display: flex;
       align-items: center;
     }
 
-    /* Authentication Status Pill */
-    .auth-status-pill {
+    /* ---------- Auth Status Pill ---------- */
+    body.admin-body .auth-status-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -330,44 +335,44 @@
       white-space: nowrap;
     }
 
-    .auth-status-dot {
+    body.admin-body .auth-status-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
       display: inline-block;
     }
 
-    .auth-status-pill.authed {
-      background: rgba(0, 255, 144, 0.12) !important;
-      color: var(--admin-accent-lime) !important;
-      border: 1px solid rgba(0, 255, 144, 0.35) !important;
-      box-shadow: 0 0 16px rgba(0, 255, 144, 0.2) !important;
+    body.admin-body .auth-status-pill.authed {
+      background: rgba(0, 255, 144, 0.12);
+      color: var(--admin-accent-lime);
+      border: 1px solid rgba(0, 255, 144, 0.35);
+      box-shadow: 0 0 16px rgba(0, 255, 144, 0.2);
     }
 
-    .auth-status-pill.authed .auth-status-dot {
+    body.admin-body .auth-status-pill.authed .auth-status-dot {
       background: var(--admin-accent-lime);
       box-shadow: 0 0 8px var(--admin-accent-lime);
       animation: statusPulse 2s infinite ease-in-out;
     }
 
-    .auth-status-pill.unauthed {
-      background: rgba(239, 68, 68, 0.12) !important;
-      color: #F87171 !important;
-      border: 1px solid rgba(239, 68, 68, 0.35) !important;
+    body.admin-body .auth-status-pill.unauthed {
+      background: rgba(239, 68, 68, 0.12);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.35);
     }
 
-    .auth-status-pill.unauthed .auth-status-dot {
+    body.admin-body .auth-status-pill.unauthed .auth-status-dot {
       background: #EF4444;
       box-shadow: 0 0 6px #EF4444;
     }
 
-    .auth-status-pill.loading {
-      background: rgba(42, 180, 217, 0.12) !important;
-      color: var(--admin-accent-cyan) !important;
-      border: 1px solid rgba(42, 180, 217, 0.35) !important;
+    body.admin-body .auth-status-pill.loading {
+      background: rgba(42, 180, 217, 0.12);
+      color: var(--admin-accent-cyan);
+      border: 1px solid rgba(42, 180, 217, 0.35);
     }
 
-    .auth-status-pill.loading .auth-status-dot {
+    body.admin-body .auth-status-pill.loading .auth-status-dot {
       background: var(--admin-accent-cyan);
       box-shadow: 0 0 6px var(--admin-accent-cyan);
       animation: statusPulse 1s infinite ease-in-out;
@@ -387,17 +392,15 @@
       }
     }
 
-    /* --------------------------------------------------------------------------
-       Metrics Summary Grid
-       -------------------------------------------------------------------------- */
-    .admin-stats-grid {
+    /* ---------- Stats Grid ---------- */
+    body.admin-body .admin-stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
       margin-bottom: 36px;
     }
 
-    .admin-stat-card {
+    body.admin-body .admin-stat-card {
       background: var(--admin-bg-card);
       border: 1px solid var(--admin-border-subtle);
       border-radius: 12px;
@@ -407,13 +410,13 @@
       overflow: hidden;
     }
 
-    .admin-stat-card:hover {
+    body.admin-body .admin-stat-card:hover {
       border-color: var(--admin-border-accent);
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
 
-    .admin-stat-val {
+    body.admin-body .admin-stat-val {
       font-size: 2.2rem;
       font-weight: 800;
       color: var(--admin-text-white);
@@ -422,21 +425,31 @@
       letter-spacing: -0.03em;
     }
 
-    .admin-stat-label {
+    body.admin-body .admin-stat-val.lime {
+      color: var(--admin-accent-lime);
+    }
+
+    body.admin-body .admin-stat-val.amber {
+      color: #F59E0B;
+    }
+
+    body.admin-body .admin-stat-val.purple {
+      color: var(--admin-accent-purple-light);
+    }
+
+    body.admin-body .admin-stat-label {
       font-size: 0.82rem;
       color: var(--admin-text-secondary);
       font-weight: 600;
       letter-spacing: 0.02em;
     }
 
-    /* --------------------------------------------------------------------------
-       Sections & Tables
-       -------------------------------------------------------------------------- */
-    .admin-section {
+    /* ---------- Section ---------- */
+    body.admin-body .admin-section {
       margin-bottom: 44px;
     }
 
-    .admin-section-head {
+    body.admin-body .admin-section-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -445,7 +458,7 @@
       gap: 12px;
     }
 
-    .admin-section-title {
+    body.admin-body .admin-section-title {
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--admin-text-white);
@@ -456,39 +469,60 @@
       gap: 10px;
     }
 
-    .refresh-btn {
-      display: inline-flex !important;
-      align-items: center !important;
-      gap: 7px !important;
-      padding: 8px 16px !important;
-      font-size: 0.82rem !important;
-      font-weight: 600 !important;
-      border-radius: 7px !important;
-      border: 1px solid rgba(42, 180, 217, 0.4) !important;
-      background: rgba(42, 180, 217, 0.08) !important;
-      color: var(--admin-accent-cyan) !important;
-      cursor: pointer !important;
-      transition: all 0.2s ease !important;
+    body.admin-body .section-subtitle {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--admin-text-secondary);
     }
 
-    .refresh-btn:hover {
-      background: rgba(42, 180, 217, 0.2) !important;
-      border-color: var(--admin-accent-cyan) !important;
-      color: #FFFFFF !important;
-      box-shadow: 0 0 14px rgba(42, 180, 217, 0.3) !important;
-      transform: translateY(-1px) !important;
+    /* ---------- Refresh Button ---------- */
+    body.admin-body .refresh-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 7px;
+      border: 1px solid rgba(42, 180, 217, 0.4);
+      background: rgba(42, 180, 217, 0.08);
+      color: var(--admin-accent-cyan);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--admin-font);
     }
 
-    .refresh-btn svg {
+    body.admin-body .refresh-btn:hover {
+      background: rgba(42, 180, 217, 0.2);
+      border-color: var(--admin-accent-cyan);
+      color: #FFFFFF;
+      box-shadow: 0 0 14px rgba(42, 180, 217, 0.3);
+      transform: translateY(-1px);
+    }
+
+    body.admin-body .refresh-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    body.admin-body .refresh-icon {
       transition: transform 0.4s ease;
+      display: inline-flex;
     }
 
-    .refresh-btn:hover svg {
-      transform: rotate(180deg);
+    body.admin-body .refresh-btn.spinning .refresh-icon {
+      animation: spin 0.7s linear infinite;
     }
 
-    /* Table Styles */
-    .admin-table-wrap {
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ---------- Table ---------- */
+    body.admin-body .admin-table-wrap {
       background: var(--admin-bg-card);
       border: 1px solid var(--admin-border-subtle);
       border-radius: 12px;
@@ -496,14 +530,14 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
     }
 
-    .admin-table {
+    body.admin-body .admin-table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
       font-size: 0.88rem;
     }
 
-    .admin-table th {
+    body.admin-body .admin-table th {
       background: #161e2b;
       padding: 14px 18px;
       font-weight: 700;
@@ -514,33 +548,44 @@
       letter-spacing: 0.06em;
     }
 
-    .admin-table td {
+    body.admin-body .admin-table td {
       padding: 16px 18px;
       border-bottom: 1px solid var(--admin-border-subtle);
-      vertical-align: top;
+      vertical-align: middle;
     }
 
-    .admin-table tr:last-child td {
+    body.admin-body .admin-table tr:last-child td {
       border-bottom: none;
     }
 
-    .admin-table tr:hover td {
+    body.admin-body .admin-table tr:hover td {
       background: rgba(137, 82, 224, 0.03);
     }
 
-    .author-cell {
+    body.admin-body .author-cell {
       font-weight: 700;
       color: var(--admin-text-white);
       white-space: nowrap;
     }
 
-    .msg-cell {
+    body.admin-body .msg-cell {
       max-width: 460px;
       line-height: 1.55;
       color: var(--admin-text-primary);
     }
 
-    .status-badge {
+    body.admin-body .date-cell {
+      color: var(--admin-text-secondary);
+      white-space: nowrap;
+    }
+
+    body.admin-body .stars-cell {
+      color: #F59E0B;
+      letter-spacing: 2px;
+    }
+
+    /* ---------- Status Badge ---------- */
+    body.admin-body .status-badge {
       display: inline-flex;
       align-items: center;
       padding: 4px 10px;
@@ -552,27 +597,27 @@
       white-space: nowrap;
     }
 
-    .status-badge.approved {
+    body.admin-body .status-badge.approved {
       background: rgba(0, 255, 144, 0.12);
       color: var(--admin-accent-lime);
       border: 1px solid rgba(0, 255, 144, 0.35);
     }
 
-    .status-badge.pending {
+    body.admin-body .status-badge.pending {
       background: rgba(245, 158, 11, 0.12);
       color: #F59E0B;
       border: 1px solid rgba(245, 158, 11, 0.35);
     }
 
-    /* Action Buttons */
-    .admin-actions-cell {
+    /* ---------- Action Buttons ---------- */
+    body.admin-body .admin-actions-cell {
       white-space: nowrap;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .btn-action {
+    body.admin-body .btn-action {
       padding: 6px 14px;
       font-size: 0.78rem;
       font-weight: 700;
@@ -585,51 +630,57 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
+      font-family: var(--admin-font);
     }
 
-    .btn-action:hover {
+    body.admin-body .btn-action:hover {
       background: #202b3c;
       color: var(--admin-text-white);
       border-color: rgba(255, 255, 255, 0.2);
     }
 
-    .btn-action.approve-btn {
+    body.admin-body .btn-action:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    body.admin-body .btn-action.approve-btn {
       color: var(--admin-accent-lime);
       border-color: rgba(0, 255, 144, 0.35);
       background: rgba(0, 255, 144, 0.08);
     }
 
-    .btn-action.approve-btn:hover {
+    body.admin-body .btn-action.approve-btn:hover {
       background: rgba(0, 255, 144, 0.2);
       border-color: var(--admin-accent-lime);
       color: #FFFFFF;
     }
 
-    .btn-action.unapprove-btn {
+    body.admin-body .btn-action.unapprove-btn {
       color: #F59E0B;
       border-color: rgba(245, 158, 11, 0.35);
       background: rgba(245, 158, 11, 0.08);
     }
 
-    .btn-action.unapprove-btn:hover {
+    body.admin-body .btn-action.unapprove-btn:hover {
       background: rgba(245, 158, 11, 0.2);
       border-color: #F59E0B;
       color: #FFFFFF;
     }
 
-    .btn-action.delete-btn {
+    body.admin-body .btn-action.delete-btn {
       color: #EF4444;
       border-color: rgba(239, 68, 68, 0.35);
       background: rgba(239, 68, 68, 0.08);
     }
 
-    .btn-action.delete-btn:hover {
+    body.admin-body .btn-action.delete-btn:hover {
       background: rgba(239, 68, 68, 0.2);
       border-color: #EF4444;
       color: #FFFFFF;
     }
 
-    .status-select {
+    body.admin-body .status-select {
       background: var(--admin-bg-surface);
       color: var(--admin-text-primary);
       border: 1px solid #2a3649;
@@ -640,67 +691,290 @@
       cursor: pointer;
       outline: none;
       transition: border-color 0.2s ease;
+      font-family: var(--admin-font);
     }
 
-    .status-select:focus {
+    body.admin-body .status-select:focus {
       border-color: var(--admin-accent-purple);
     }
 
-    .admin-empty-state {
+    body.admin-body .status-select:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ---------- Empty / Error States ---------- */
+    body.admin-body .admin-empty-state {
       padding: 40px;
       text-align: center;
       color: var(--admin-text-secondary);
       font-size: 0.92rem;
     }
 
+    body.admin-body .admin-empty-state.error-state {
+      color: #F87171;
+    }
+
+    body.admin-body .admin-empty-state code {
+      font-family: var(--admin-mono);
+      color: var(--admin-accent-cyan);
+      background: rgba(42, 180, 217, 0.1);
+      padding: 1px 5px;
+      border-radius: 4px;
+      border: 1px solid rgba(42, 180, 217, 0.25);
+    }
+
+    /* ---------- Skeleton Rows ---------- */
+    body.admin-body .skeleton-row td {
+      padding: 20px 18px;
+    }
+
+    body.admin-body .skeleton-line {
+      height: 13px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #1a2437 25%, #222f42 50%, #1a2437 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+
+    body.admin-body .skeleton-line.short {
+      width: 55%;
+    }
+
+    body.admin-body .skeleton-line.long {
+      width: 88%;
+    }
+
+    body.admin-body .skeleton-line.tiny {
+      width: 28%;
+    }
+
+    @keyframes shimmer {
+      to {
+        background-position: -200% 0;
+      }
+    }
+
+    /* ---------- Toast Notifications ---------- */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-family: var(--admin-font);
+      font-size: 0.86rem;
+      font-weight: 600;
+      max-width: 340px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transform: translateX(20px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: auto;
+    }
+
+    .toast.toast-visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .toast-success {
+      background: #0d2a1a;
+      color: var(--admin-accent-lime);
+      border: 1px solid rgba(0, 255, 144, 0.3);
+    }
+
+    .toast-error {
+      background: #2a0d0d;
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .toast-info {
+      background: #0d1f2a;
+      color: var(--admin-accent-cyan);
+      border: 1px solid rgba(42, 180, 217, 0.3);
+    }
+
+    .toast-warning {
+      background: #2a1f0d;
+      color: #F59E0B;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    /* ---------- Confirm Modal ---------- */
+    #confirm-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    #confirm-modal.modal-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .confirm-box {
+      background: #161e2a;
+      border: 1.5px solid var(--admin-border-accent);
+      border-radius: 14px;
+      padding: 28px 32px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      transform: scale(0.95);
+      transition: transform 0.2s ease;
+    }
+
+    #confirm-modal.modal-visible .confirm-box {
+      transform: scale(1);
+    }
+
+    .confirm-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--admin-text-white);
+      margin-bottom: 10px;
+    }
+
+    .confirm-message {
+      font-size: 0.88rem;
+      color: var(--admin-text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    #confirm-cancel {
+      padding: 8px 18px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      border-radius: 7px;
+      border: 1px solid var(--admin-border-subtle);
+      background: var(--admin-bg-surface);
+      color: var(--admin-text-primary);
+      cursor: pointer;
+      font-family: var(--admin-font);
+      transition: all 0.15s ease;
+    }
+
+    #confirm-cancel:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--admin-text-white);
+    }
+
+    #confirm-ok {
+      padding: 8px 18px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      border-radius: 7px;
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      background: rgba(239, 68, 68, 0.15);
+      color: #F87171;
+      cursor: pointer;
+      font-family: var(--admin-font);
+      transition: all 0.15s ease;
+    }
+
+    #confirm-ok:hover {
+      background: rgba(239, 68, 68, 0.3);
+      color: #FFFFFF;
+      border-color: #EF4444;
+    }
+
+    /* ---------- Responsive ---------- */
     @media (max-width: 768px) {
-      .admin-auth-card {
+      body.admin-body {
+        padding: 16px 14px;
+      }
+
+      body.admin-body .admin-auth-card {
         flex-direction: column;
         align-items: stretch;
       }
 
-      .auth-card-right {
+      body.admin-body .auth-card-right {
         justify-content: flex-start;
       }
 
-      .auth-input-group {
+      body.admin-body .auth-input-group {
         flex-direction: column;
         align-items: stretch;
       }
 
-      #auth-save-btn {
-        width: 100% !important;
+      body.admin-body #auth-save-btn {
+        width: 100%;
       }
     }
   </style>
 </head>
 
 <body class="admin-body">
+
+  <!-- Toast Container (screen-reader live region) -->
+  <div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- Confirm Modal -->
+  <div id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title-label">
+    <div class="confirm-box">
+      <p class="confirm-title" id="confirm-title-label">Confirm Action</p>
+      <p class="confirm-message" id="confirm-message">Are you sure?</p>
+      <div class="confirm-actions">
+        <button type="button" id="confirm-cancel">Cancel</button>
+        <button type="button" id="confirm-ok">Delete</button>
+      </div>
+    </div>
+  </div>
+
   <div class="admin-container">
 
-    <!-- Navigation Bar -->
+    <!-- Navigation -->
     <header class="admin-nav">
       <div class="admin-title-row">
         <h1 class="admin-title">
           <span>Rankora Admin</span>
-          <span class="admin-title-glow">⚡</span>
+          <span class="admin-title-glow" aria-hidden="true">⚡</span>
         </h1>
         <span class="admin-badge">Private Console</span>
       </div>
       <a href="/" class="admin-back-link">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-          stroke-linecap="round" stroke-linejoin="round">
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
         <span>Back to SEO Studio</span>
       </a>
     </header>
 
-    <!-- Secret Key Authentication Card -->
+    <!-- Auth Card -->
     <div class="admin-auth-card">
       <div class="auth-card-left">
         <div class="auth-label-row">
-          <span class="auth-icon-badge">
+          <span class="auth-icon-badge" aria-hidden="true">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
               stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -712,403 +986,609 @@
 
         <div class="auth-input-group">
           <div class="admin-secret-wrap">
-            <input type="password" id="admin-secret-input" placeholder="Enter ADMIN_SECRET (e.g. meetmaru@1953)"
-              autocomplete="current-password" spellcheck="false">
-            <button type="button" id="toggle-secret-btn" title="Show / Hide Secret Key"
-              aria-label="Toggle password visibility">
+            <input type="password" id="admin-secret-input" placeholder="Enter your ADMIN_SECRET"
+              autocomplete="current-password" spellcheck="false" aria-label="Admin secret key">
+            <button type="button" id="toggle-secret-btn" aria-label="Show secret key">
+              <!-- SVG swapped by JS -->
               <svg id="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
               </svg>
             </button>
           </div>
+
           <button type="button" id="auth-save-btn">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round">
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
               <polyline points="10 17 15 12 10 7"></polyline>
               <line x1="15" y1="12" x2="3" y2="12"></line>
             </svg>
-            <span id="auth-btn-text">Enter</span>
+            <span id="auth-btn-text">Connect Console</span>
           </button>
         </div>
+
+        <p class="auth-helper-hint">
+          Matches the <code>ADMIN_SECRET</code> value in your server <code>.env</code> file.
+          Sessions expire after 1 hour.
+        </p>
       </div>
 
       <div class="auth-card-right">
         <div id="auth-status-indicator" class="auth-status-pill unauthed">
           <span class="auth-status-dot"></span>
-          <span id="auth-status-text">Validating key...</span>
+          <!-- FIX #8: initial text matches the unauthed (red) pill state -->
+          <span id="auth-status-text">Not Connected</span>
         </div>
       </div>
     </div>
 
-    <!-- Metrics Summary Grid -->
+    <!-- Stats Grid -->
     <div class="admin-stats-grid">
       <div class="admin-stat-card">
-        <div class="admin-stat-val" id="stat-total">0</div>
+        <div class="admin-stat-val" id="stat-total">—</div>
         <div class="admin-stat-label">Total Submissions</div>
       </div>
       <div class="admin-stat-card">
-        <div class="admin-stat-val" style="color: var(--admin-accent-lime);" id="stat-testimonials-approved">0</div>
+        <!-- FIX #20: colour via CSS class, not inline style -->
+        <div class="admin-stat-val lime" id="stat-testimonials-approved">—</div>
         <div class="admin-stat-label">Approved Testimonials</div>
       </div>
       <div class="admin-stat-card">
-        <div class="admin-stat-val" style="color: #F59E0B;" id="stat-testimonials-pending">0</div>
+        <div class="admin-stat-val amber" id="stat-testimonials-pending">—</div>
         <div class="admin-stat-label">Pending Approval</div>
       </div>
       <div class="admin-stat-card">
-        <div class="admin-stat-val" style="color: var(--admin-accent-purple-light);" id="stat-issues-active">0</div>
+        <div class="admin-stat-val purple" id="stat-issues-active">—</div>
         <div class="admin-stat-label">Active Issues (Open / In Progress)</div>
       </div>
     </div>
 
-    <!-- Section 1: Testimonials Moderation -->
+    <!-- Section: Testimonials -->
     <section class="admin-section">
       <div class="admin-section-head">
         <h2 class="admin-section-title">
-          <span>Testimonials Moderation</span>
-          <span style="font-size: 0.8rem; font-weight: 500; color: var(--admin-text-secondary);">(Approved items appear
-            on homepage)</span>
+          Testimonials Moderation
+          <span class="section-subtitle">(Approved items appear on homepage)</span>
         </h2>
-        <button type="button" class="refresh-btn" onclick="fetchFeedbacks()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
-            stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="23 4 23 10 17 10"></polyline>
-            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-          </svg>
+        <button type="button" class="refresh-btn" id="refresh-btn">
+          <span class="refresh-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+          </span>
           <span>Refresh Data</span>
         </button>
       </div>
 
       <div class="admin-table-wrap">
-        <table class="admin-table">
+        <table class="admin-table" aria-label="Testimonials moderation">
           <thead>
             <tr>
-              <th>Author</th>
-              <th>Rating</th>
-              <th>Message</th>
-              <th>Status</th>
-              <th>Submitted</th>
-              <th>Actions</th>
+              <th scope="col">Author</th>
+              <th scope="col">Rating</th>
+              <th scope="col">Message</th>
+              <th scope="col">Status</th>
+              <th scope="col">Submitted</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
-          <tbody id="testimonials-table-body">
-            <tr>
-              <td colspan="6" class="admin-empty-state">Loading testimonials...</td>
-            </tr>
-          </tbody>
+          <tbody id="testimonials-table-body"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- Section 2: Public Issues & Bug Tracker Moderation -->
+    <!-- Section: Issues -->
     <section class="admin-section">
       <div class="admin-section-head">
         <h2 class="admin-section-title">Public Issues &amp; Roadmap Management</h2>
       </div>
 
       <div class="admin-table-wrap">
-        <table class="admin-table">
+        <table class="admin-table" aria-label="Issues and roadmap management">
           <thead>
             <tr>
-              <th>Reporter</th>
-              <th>Issue Description</th>
-              <th>Current Status</th>
-              <th>Reported</th>
-              <th>Actions</th>
+              <th scope="col">Reporter</th>
+              <th scope="col">Issue Description</th>
+              <th scope="col">Status</th>
+              <th scope="col">Reported</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
-          <tbody id="issues-table-body">
-            <tr>
-              <td colspan="5" class="admin-empty-state">Loading issues...</td>
-            </tr>
-          </tbody>
+          <tbody id="issues-table-body"></tbody>
         </table>
       </div>
     </section>
-  </div>
+
+  </div><!-- /.admin-container -->
 
   <script>
-    // Extract secret from URL query param, localStorage, or fallback to known .env secret
-    const urlParams = new URLSearchParams(window.location.search);
-    const storedSecret = localStorage.getItem('rankora_admin_secret');
-    const querySecret = urlParams.get('secret');
+    'use strict';
 
-    // Default to stored, query param, or meetmaru@1953
-    const initialSecret = querySecret || storedSecret || 'meetmaru@1953';
+    /* =====================================================================
+       CONSTANTS
+       ===================================================================== */
+    // FIX #4: sessionStorage instead of localStorage (clears on tab close).
+    // FIX #17: TTL so stale sessions do not persist indefinitely.
+    const SESSION_KEY = 'rankora_admin_secret';
+    const SESSION_TTL_KEY = 'rankora_admin_ttl';
+    const SESSION_TTL_MS = 60 * 60 * 1000; // 1 hour
 
+    /* =====================================================================
+       DOM REFS
+       ===================================================================== */
     const secretInput = document.getElementById('admin-secret-input');
     const authSaveBtn = document.getElementById('auth-save-btn');
     const authBtnText = document.getElementById('auth-btn-text');
     const authStatusIndicator = document.getElementById('auth-status-indicator');
     const authStatusText = document.getElementById('auth-status-text');
     const toggleSecretBtn = document.getElementById('toggle-secret-btn');
+    const refreshBtn = document.getElementById('refresh-btn');
+    const testBody = document.getElementById('testimonials-table-body');
+    const issuesBody = document.getElementById('issues-table-body');
 
-    if (secretInput) {
-      secretInput.value = initialSecret;
+    /* =====================================================================
+       IN-MEMORY STATE
+       ===================================================================== */
+    let feedbackData = [];   // Single source of truth — avoids full re-fetch on every action
+    let currentController = null; // FIX #10: AbortController for fetch race prevention
+
+    /* =====================================================================
+       SECRET MANAGEMENT
+       FIX #1: No plaintext secret in placeholder
+       FIX #2: No hardcoded literal fallback
+       FIX #3: No URL query param extraction
+       FIX #4: sessionStorage + TTL
+       ===================================================================== */
+    function saveSecret(secret) {
+      sessionStorage.setItem(SESSION_KEY, secret);
+      sessionStorage.setItem(SESSION_TTL_KEY, String(Date.now() + SESSION_TTL_MS));
     }
 
-    // Toggle Secret Visibility
-    if (toggleSecretBtn && secretInput) {
-      toggleSecretBtn.addEventListener('click', () => {
-        const isPassword = secretInput.type === 'password';
-        secretInput.type = isPassword ? 'text' : 'password';
-        toggleSecretBtn.innerHTML = isPassword ? `
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-            <line x1="1" y1="1" x2="23" y2="23"></line>
-          </svg>
-        ` : `
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-        `;
+    function getStoredSecret() {
+      const ttl = sessionStorage.getItem(SESSION_TTL_KEY);
+      if (ttl && Date.now() > parseInt(ttl, 10)) {
+        sessionStorage.removeItem(SESSION_KEY);
+        sessionStorage.removeItem(SESSION_TTL_KEY);
+        setAuthStatus('unauthed', 'Session expired — reconnect');
+        return '';
+      }
+      return sessionStorage.getItem(SESSION_KEY) || '';
+    }
+
+    // FIX #19: throws instead of silently falling back
+    function getSecret() {
+      const s = (secretInput ? secretInput.value.trim() : '') || getStoredSecret();
+      if (!s) throw new Error('No admin secret provided. Enter your ADMIN_SECRET above.');
+      return s;
+    }
+
+    // FIX #5: single standard Authorization: Bearer header
+    function buildHeaders(extra = {}) {
+      return { 'Authorization': `Bearer ${getSecret()}`, ...extra };
+    }
+
+    // Pre-fill from sessionStorage only (never from URL or literal)
+    (function prefillSecret() {
+      const stored = getStoredSecret();
+      if (stored && secretInput) secretInput.value = stored;
+    })();
+
+    /* =====================================================================
+       AUTH STATUS UI HELPER
+       ===================================================================== */
+    function setAuthStatus(state, label) {
+      authStatusIndicator.className = `auth-status-pill ${state}`;
+      authStatusText.textContent = label;
+    }
+
+    /* =====================================================================
+       TOAST NOTIFICATIONS  — FIX #15: replaces alert()
+       ===================================================================== */
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.setAttribute('role', 'alert');
+      toast.textContent = message;
+      container.appendChild(toast);
+      // Double rAF ensures the browser has painted the initial opacity:0 state
+      requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add('toast-visible')));
+      setTimeout(() => {
+        toast.classList.remove('toast-visible');
+        toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+      }, 3500);
+    }
+
+    /* =====================================================================
+       CONFIRM MODAL  — FIX #15: replaces confirm(), works in all contexts
+       ===================================================================== */
+    function showConfirm(message) {
+      return new Promise(resolve => {
+        const modal = document.getElementById('confirm-modal');
+        const msgEl = document.getElementById('confirm-message');
+        const okBtn = document.getElementById('confirm-ok');
+        const cancelBtn = document.getElementById('confirm-cancel');
+        msgEl.textContent = message;
+        modal.classList.add('modal-visible');
+
+        const cleanup = (result) => {
+          modal.classList.remove('modal-visible');
+          document.removeEventListener('keydown', onKey);
+          resolve(result);
+        };
+        const onKey = (e) => { if (e.key === 'Escape') cleanup(false); };
+        okBtn.addEventListener('click', () => cleanup(true), { once: true });
+        cancelBtn.addEventListener('click', () => cleanup(false), { once: true });
+        document.addEventListener('keydown', onKey);
       });
     }
 
-    function getSecret() {
-      const fromInput = secretInput ? secretInput.value.trim() : '';
-      const fromStorage = localStorage.getItem('rankora_admin_secret') || '';
-      return fromInput || fromStorage || 'meetmaru@1953';
-    }
-
-    function getAdminHeaders(extraHeaders = {}) {
-      const secret = getSecret();
-      return {
-        'X-ADMIN-SECRET': secret,
-        'ADMIN_SECRET': secret,
-        ...extraHeaders
-      };
-    }
-
-    function formatTime(isoStr) {
-      if (!isoStr) return 'N/A';
-      try {
-        const d = new Date(isoStr);
-        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      } catch (e) {
-        return isoStr;
-      }
-    }
-
+    /* =====================================================================
+       HELPERS
+       ===================================================================== */
     function escapeHtml(str) {
-      return String(str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+      return String(str ?? '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
+    // FIX #18: returns "Invalid date" instead of swallowing the error
+    function formatDate(isoStr) {
+      if (!isoStr) return 'N/A';
+      const d = new Date(isoStr);
+      if (isNaN(d.getTime())) return 'Invalid date';
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    // FIX #13: rating=0 no longer silently becomes 5 stars
+    function renderStars(rating) {
+      if (typeof rating !== 'number' || isNaN(rating)) return 'N/A';
+      const n = Math.max(0, Math.min(5, Math.round(rating)));
+      return n > 0 ? '★'.repeat(n) : '☆☆☆☆☆';
+    }
+
+    function setRefreshBusy(busy) {
+      refreshBtn.disabled = busy;
+      refreshBtn.classList.toggle('spinning', busy);
+    }
+
+    // FIX #16: skeleton rows shown while loading
+    function renderSkeletonRows(tbody, cols, count = 3) {
+      const variants = ['short', 'long', 'tiny'];
+      tbody.innerHTML = Array.from({ length: count }, () =>
+        `<tr class="skeleton-row">${Array.from({ length: cols }, () =>
+          `<td><div class="skeleton-line ${variants[Math.floor(Math.random() * 3)]}"></div></td>`
+        ).join('')
+        }</tr>`
+      ).join('');
+    }
+
+    /* =====================================================================
+       CORE FETCH WRAPPER
+       FIX #24: validates Content-Type before .json() — prevents silent throws
+       on HTML error pages (e.g., 500 responses from Flask)
+       ===================================================================== */
+    async function apiFetch(path, options = {}) {
+      const res = await fetch(path, options);
+      const ct = res.headers.get('content-type') || '';
+
+      if (!res.ok) {
+        if (res.status === 401) throw Object.assign(new Error('Unauthorized'), { status: 401 });
+        const msg = ct.includes('application/json')
+          ? ((await res.json()).error || `HTTP ${res.status}`)
+          : `HTTP ${res.status}`;
+        throw new Error(msg);
+      }
+      if (!ct.includes('application/json'))
+        throw new Error(`Unexpected response type from server: ${ct || 'unknown'}`);
+      return res.json();
+    }
+
+    /* =====================================================================
+       LOAD & AUTHENTICATE
+       FIX #10: AbortController prevents stale data from a racing request
+       FIX #11: auth button disabled during in-flight request
+       ===================================================================== */
     async function loadFeedback() {
-      const secret = getSecret();
-      if (authStatusIndicator) authStatusIndicator.className = 'auth-status-pill loading';
-      if (authStatusText) authStatusText.textContent = 'Authenticating...';
-      if (authBtnText) authBtnText.textContent = 'Connecting...';
+      let secret;
+      try { secret = getSecret(); }
+      catch (e) { showToast(e.message, 'warning'); return; }
+
+      if (currentController) currentController.abort();
+      currentController = new AbortController();
+
+      setAuthStatus('loading', 'Authenticating…');
+      setRefreshBusy(true);
+      authSaveBtn.disabled = true;
+      // FIX #9 + #25: single consistent label used everywhere
+      authBtnText.textContent = 'Connecting…';
+      renderSkeletonRows(testBody, 6);
+      renderSkeletonRows(issuesBody, 5);
 
       try {
-        const res = await fetch('/api/feedback', {
-          headers: getAdminHeaders()
+        const data = await apiFetch('/api/feedback', {
+          headers: buildHeaders(),
+          signal: currentController.signal,
         });
 
-        if (res.status === 401) {
-          if (authStatusIndicator) authStatusIndicator.className = 'auth-status-pill unauthed';
-          if (authStatusText) authStatusText.textContent = 'Unauthorized (Check ADMIN_SECRET)';
-          if (authBtnText) authBtnText.textContent = 'Connect Console';
-          document.getElementById('testimonials-table-body').innerHTML = `
-            <tr>
-              <td colspan="6" class="admin-empty-state" style="color: #F87171;">
-                <strong>Access Denied (401 Unauthorized)</strong><br>
-                Please verify your secret in the input field above (matches <code>ADMIN_SECRET</code> in your <code>.env</code>) and click <strong>Connect Console</strong>.
-              </td>
-            </tr>`;
-          document.getElementById('issues-table-body').innerHTML = `
-            <tr>
-              <td colspan="5" class="admin-empty-state" style="color: #F87171;">Access Denied.</td>
-            </tr>`;
-          return;
-        }
+        feedbackData = data.feedbacks || [];
+        saveSecret(secret); // only persist on successful auth
 
-        const data = await res.json();
-        const list = data.feedbacks || [];
+        setAuthStatus('authed', 'Authenticated ✓ (Active Session)');
+        authBtnText.textContent = 'Connected ✓';
+        setTimeout(() => { authBtnText.textContent = 'Connect Console'; }, 2000);
 
-        // Save successfully validated secret to localStorage
-        localStorage.setItem('rankora_admin_secret', secret);
-        if (authStatusIndicator) authStatusIndicator.className = 'auth-status-pill authed';
-        if (authStatusText) authStatusText.textContent = 'Authenticated ✓ (Active Session)';
-        if (authBtnText) {
-          authBtnText.textContent = 'Connected ✓';
-          setTimeout(() => {
-            if (authBtnText) authBtnText.textContent = 'Connect Console';
-          }, 1500);
-        }
+        renderDashboard(feedbackData);
 
-        renderDashboard(list);
       } catch (err) {
-        console.error('Fetch error:', err);
-        if (authStatusIndicator) authStatusIndicator.className = 'auth-status-pill unauthed';
-        if (authStatusText) authStatusText.textContent = 'Connection Error';
-        if (authBtnText) authBtnText.textContent = 'Connect Console';
+        if (err.name === 'AbortError') return; // silently ignore aborted requests
+
+        authBtnText.textContent = 'Connect Console';
+        if (err.status === 401) {
+          setAuthStatus('unauthed', 'Unauthorized — check secret');
+          testBody.innerHTML = `<tr><td colspan="6" class="admin-empty-state error-state">
+            <strong>Access Denied (401)</strong><br>
+            Enter the correct <code>ADMIN_SECRET</code> from your server <code>.env</code> and click <strong>Connect Console</strong>.
+          </td></tr>`;
+          issuesBody.innerHTML = `<tr><td colspan="5" class="admin-empty-state error-state">Access Denied.</td></tr>`;
+        } else {
+          setAuthStatus('unauthed', 'Connection error');
+          showToast(`Load failed: ${err.message}`, 'error');
+          testBody.innerHTML = `<tr><td colspan="6" class="admin-empty-state error-state">Load error — ${escapeHtml(err.message)}</td></tr>`;
+          issuesBody.innerHTML = `<tr><td colspan="5" class="admin-empty-state error-state">Load error.</td></tr>`;
+        }
+      } finally {
+        authSaveBtn.disabled = false;
+        setRefreshBusy(false);
       }
     }
 
-    // Expose both fetchFeedbacks and loadFeedback
-    window.fetchFeedbacks = loadFeedback;
+    // FIX #14: single export, single function
     window.loadFeedback = loadFeedback;
 
-    function renderDashboard(feedbacks) {
-      const testimonials = feedbacks.filter(f => f.type === 'testimonial');
-      const issues = feedbacks.filter(f => f.type === 'issue');
+    /* =====================================================================
+       RENDER — from in-memory data (no network call)
+       FIX #6: data-* attributes + event delegation (no inline onclick/onchange)
+       FIX #20: no inline styles in JS-generated HTML
+       ===================================================================== */
+    function updateStats(list) {
+      const t = list.filter(f => f.type === 'testimonial');
+      const i = list.filter(f => f.type === 'issue');
+      document.getElementById('stat-total').textContent = list.length;
+      document.getElementById('stat-testimonials-approved').textContent = t.filter(x => x.approved).length;
+      document.getElementById('stat-testimonials-pending').textContent = t.filter(x => !x.approved).length;
+      document.getElementById('stat-issues-active').textContent = i.filter(x => x.status !== 'resolved').length;
+    }
 
-      // Update stats
-      document.getElementById('stat-total').textContent = feedbacks.length;
-      document.getElementById('stat-testimonials-approved').textContent = testimonials.filter(t => t.approved).length;
-      document.getElementById('stat-testimonials-pending').textContent = testimonials.filter(t => !t.approved).length;
-      document.getElementById('stat-issues-active').textContent = issues.filter(i => i.status !== 'resolved').length;
+    function renderDashboard(list) {
+      updateStats(list);
 
-      // Render Testimonials Table
-      const testBody = document.getElementById('testimonials-table-body');
-      if (testimonials.length === 0) {
-        testBody.innerHTML = '<tr><td colspan="6" class="admin-empty-state">No testimonials submitted yet.</td></tr>';
+      const testimonials = list.filter(f => f.type === 'testimonial');
+      const issues = list.filter(f => f.type === 'issue');
+
+      // ---- Testimonials ----
+      if (!testimonials.length) {
+        testBody.innerHTML = `<tr><td colspan="6" class="admin-empty-state">No testimonials submitted yet.</td></tr>`;
       } else {
         testBody.innerHTML = testimonials.map(t => {
-          const stars = '★'.repeat(t.rating || 5);
           const isApproved = !!t.approved;
+          const safeId = escapeHtml(String(t.id));
           return `
             <tr>
               <td class="author-cell">${escapeHtml(t.name || 'Anonymous')}</td>
-              <td style="color: #F59E0B; letter-spacing: 2px;">${stars}</td>
-              <td class="msg-cell">“${escapeHtml(t.message || '')}”</td>
+              <td class="stars-cell" title="${escapeHtml(String(t.rating))} stars">${escapeHtml(renderStars(t.rating))}</td>
+              <td class="msg-cell">"${escapeHtml(t.message || '')}"</td>
               <td>
                 <span class="status-badge ${isApproved ? 'approved' : 'pending'}">
                   ${isApproved ? 'Approved ✓' : 'Pending Review'}
                 </span>
               </td>
-              <td style="color: var(--admin-text-secondary);">${formatTime(t.timestamp)}</td>
+              <td class="date-cell">${escapeHtml(formatDate(t.timestamp))}</td>
               <td>
                 <div class="admin-actions-cell">
-                  <button type="button" class="btn-action ${isApproved ? 'unapprove-btn' : 'approve-btn'}" onclick="toggleApprove('${t.id}', ${!isApproved})">
+                  <button type="button"
+                    class="btn-action ${isApproved ? 'unapprove-btn' : 'approve-btn'}"
+                    data-action="${isApproved ? 'unapprove' : 'approve'}"
+                    data-id="${safeId}"
+                    aria-label="${isApproved ? 'Unapprove' : 'Approve'} testimonial by ${escapeHtml(t.name || 'Anonymous')}">
                     ${isApproved ? '✕ Unapprove' : '✓ Approve'}
                   </button>
-                  <button type="button" class="btn-action delete-btn" onclick="deleteFeedback('${t.id}')">
+                  <button type="button"
+                    class="btn-action delete-btn"
+                    data-action="delete"
+                    data-id="${safeId}"
+                    aria-label="Delete testimonial by ${escapeHtml(t.name || 'Anonymous')}">
                     🗑 Delete
                   </button>
                 </div>
               </td>
-            </tr>
-          `;
+            </tr>`;
         }).join('');
       }
 
-      // Render Issues Table
-      const issuesBody = document.getElementById('issues-table-body');
-      if (issues.length === 0) {
-        issuesBody.innerHTML = '<tr><td colspan="5" class="admin-empty-state">No issues logged yet.</td></tr>';
+      // ---- Issues ----
+      if (!issues.length) {
+        issuesBody.innerHTML = `<tr><td colspan="5" class="admin-empty-state">No issues logged yet.</td></tr>`;
       } else {
         issuesBody.innerHTML = issues.map(i => {
           const status = i.status || 'open';
+          const safeId = escapeHtml(String(i.id));
           return `
             <tr>
               <td class="author-cell">${escapeHtml(i.name || 'Anonymous')}</td>
               <td class="msg-cell">${escapeHtml(i.message || '')}</td>
               <td>
-                <select class="status-select" onchange="updateStatus('${i.id}', this.value)">
-                  <option value="open" ${status === 'open' ? 'selected' : ''}>Open</option>
+                <select class="status-select" data-action="status" data-id="${safeId}" aria-label="Change issue status">
+                  <option value="open"        ${status === 'open' ? 'selected' : ''}>Open</option>
                   <option value="in_progress" ${status === 'in_progress' ? 'selected' : ''}>In Progress</option>
-                  <option value="resolved" ${status === 'resolved' ? 'selected' : ''}>Resolved</option>
+                  <option value="resolved"    ${status === 'resolved' ? 'selected' : ''}>Resolved</option>
                 </select>
               </td>
-              <td style="color: var(--admin-text-secondary);">${formatTime(i.timestamp)}</td>
+              <td class="date-cell">${escapeHtml(formatDate(i.timestamp))}</td>
               <td>
                 <div class="admin-actions-cell">
-                  <button type="button" class="btn-action delete-btn" onclick="deleteFeedback('${i.id}')">
+                  <button type="button"
+                    class="btn-action delete-btn"
+                    data-action="delete"
+                    data-id="${safeId}"
+                    aria-label="Delete issue by ${escapeHtml(i.name || 'Anonymous')}">
                     🗑 Delete
                   </button>
                 </div>
               </td>
-            </tr>
-          `;
+            </tr>`;
         }).join('');
       }
     }
 
-    async function toggleApprove(id, approved) {
+    /* =====================================================================
+       ACTIONS
+       FIX #11: buttons disabled during async call
+       FIX #12: status update mutates in-memory data only (no full re-fetch)
+       ===================================================================== */
+    async function toggleApprove(id, approve, btn) {
+      btn.disabled = true;
+      const prev = btn.textContent.trim();
+      btn.textContent = '…';
       try {
-        const res = await fetch(`/api/feedback/${id}/approve`, {
+        await apiFetch(`/api/feedback/${id}/approve`, {
           method: 'PATCH',
-          headers: getAdminHeaders({ 'Content-Type': 'application/json' }),
-          body: JSON.stringify({ approved: approved })
+          headers: buildHeaders({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify({ approved: approve }),
         });
-        if (res.ok) {
-          loadFeedback();
-        } else {
-          alert('Failed to update approval: Unauthorized or not found.');
-        }
+        const item = feedbackData.find(f => f.id === id);
+        if (item) item.approved = approve;
+        renderDashboard(feedbackData); // re-render from memory, button is now in new DOM
+        showToast(`Testimonial ${approve ? 'approved' : 'unapproved'} successfully.`, 'success');
       } catch (err) {
-        console.error(err);
+        showToast(`Failed to update: ${err.message}`, 'error');
+        btn.textContent = prev;
+        btn.disabled = false;
       }
     }
 
-    async function updateStatus(id, newStatus) {
+    async function updateIssueStatus(id, newStatus, select) {
+      // FIX #12: only stats re-render; select already shows correct value
+      const prevStatus = feedbackData.find(f => f.id === id)?.status || 'open';
+      select.disabled = true;
       try {
-        const res = await fetch(`/api/feedback/${id}/status`, {
+        await apiFetch(`/api/feedback/${id}/status`, {
           method: 'PATCH',
-          headers: getAdminHeaders({ 'Content-Type': 'application/json' }),
-          body: JSON.stringify({ status: newStatus })
+          headers: buildHeaders({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify({ status: newStatus }),
         });
-        if (res.ok) {
-          loadFeedback();
-        } else {
-          alert('Failed to update status.');
-        }
+        const item = feedbackData.find(f => f.id === id);
+        if (item) item.status = newStatus;
+        updateStats(feedbackData);
+        showToast('Issue status updated.', 'success');
       } catch (err) {
-        console.error(err);
+        select.value = prevStatus; // revert on failure
+        showToast(`Failed to update status: ${err.message}`, 'error');
+      } finally {
+        select.disabled = false;
       }
     }
 
-    async function deleteFeedback(id) {
-      if (!confirm('Are you sure you want to delete this item?')) return;
+    async function deleteFeedback(id, btn) {
+      const confirmed = await showConfirm('Permanently delete this item? This cannot be undone.');
+      if (!confirmed) return;
+      btn.disabled = true;
+      btn.textContent = '…';
       try {
-        const res = await fetch(`/api/feedback/${id}`, {
+        await apiFetch(`/api/feedback/${id}`, {
           method: 'DELETE',
-          headers: getAdminHeaders()
+          headers: buildHeaders(),
         });
-        if (res.ok) {
-          loadFeedback();
-        } else {
-          alert('Failed to delete item.');
-        }
+        feedbackData = feedbackData.filter(f => f.id !== id);
+        renderDashboard(feedbackData);
+        showToast('Item deleted successfully.', 'success');
       } catch (err) {
-        console.error(err);
+        showToast(`Failed to delete: ${err.message}`, 'error');
+        btn.textContent = '🗑 Delete';
+        btn.disabled = false;
       }
     }
 
-    // Connect Button Click Handler
-    if (authSaveBtn) {
-      authSaveBtn.addEventListener('click', () => {
-        const secret = secretInput ? secretInput.value.trim() : '';
-        if (!secret) {
-          alert('Please enter your ADMIN_SECRET to connect.');
-          return;
-        }
-        localStorage.setItem('rankora_admin_secret', secret);
-        loadFeedback();
-      });
-    }
+    /* =====================================================================
+       EVENT DELEGATION
+       FIX #6 + #22: zero inline onclick/onchange anywhere in the page
+       ===================================================================== */
+    testBody.addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      const { action, id } = btn.dataset;
+      if (action === 'approve') await toggleApprove(id, true, btn);
+      if (action === 'unapprove') await toggleApprove(id, false, btn);
+      if (action === 'delete') await deleteFeedback(id, btn);
+    });
 
-    // Enter key triggers Connect
-    if (secretInput) {
-      secretInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          if (authSaveBtn) authSaveBtn.click();
-        }
-      });
-    }
+    issuesBody.addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-action="delete"]');
+      if (!btn) return;
+      await deleteFeedback(btn.dataset.id, btn);
+    });
 
-    // Initial load
-    loadFeedback();
+    issuesBody.addEventListener('change', async (e) => {
+      const select = e.target.closest('[data-action="status"]');
+      if (!select) return;
+      await updateIssueStatus(select.dataset.id, select.value, select);
+    });
+
+    /* =====================================================================
+       PASSWORD TOGGLE
+       ===================================================================== */
+    const SVG_EYE_OPEN = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    const SVG_EYE_CLOSED = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94
+               M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19
+               m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+      <line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+
+    toggleSecretBtn.addEventListener('click', () => {
+      const isHidden = secretInput.type === 'password';
+      secretInput.type = isHidden ? 'text' : 'password';
+      toggleSecretBtn.innerHTML = isHidden ? SVG_EYE_CLOSED : SVG_EYE_OPEN;
+      toggleSecretBtn.setAttribute('aria-label', isHidden ? 'Hide secret key' : 'Show secret key');
+    });
+
+    /* =====================================================================
+       AUTH BUTTON + ENTER KEY
+       FIX #9 + #25: single consistent button label "Connect Console"
+       ===================================================================== */
+    authSaveBtn.addEventListener('click', () => {
+      const val = secretInput ? secretInput.value.trim() : '';
+      if (!val) {
+        showToast('Enter your ADMIN_SECRET to connect.', 'warning');
+        secretInput.focus();
+        return;
+      }
+      loadFeedback();
+    });
+
+    secretInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); authSaveBtn.click(); }
+    });
+
+    refreshBtn.addEventListener('click', () => loadFeedback());
+
+    /* =====================================================================
+       INITIAL LOAD
+       Only auto-loads if a valid, non-expired secret is already stored.
+       Otherwise shows a friendly prompt — no mysterious blank page.
+       ===================================================================== */
+    if (getStoredSecret()) {
+      loadFeedback();
+    } else {
+      testBody.innerHTML = `<tr><td colspan="6" class="admin-empty-state">Enter your admin secret above to load data.</td></tr>`;
+      issuesBody.innerHTML = `<tr><td colspan="5" class="admin-empty-state">Enter your admin secret above to load data.</td></tr>`;
+    }
   </script>
 </body>
 

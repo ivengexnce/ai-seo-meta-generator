@@ -1479,7 +1479,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
 
   // =========================================================================
-  // Three.js Interactive 3D Hero SEO Constellation Canvas
+  // Three.js Interactive 3D Hero Kinetic Sculpture (OneText-Inspired Aesthetic)
   // =========================================================================
   function initHeroThreeCanvas() {
     const canvas = document.getElementById('hero-three-canvas');
@@ -1490,8 +1490,10 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(55, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.z = 6.8;
+    const w = container.clientWidth || 560;
+    const h = container.clientHeight || 520;
+    const camera = new THREE.PerspectiveCamera(46, w / h, 0.1, 1000);
+    camera.position.set(0, 0, 7.6);
 
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
@@ -1499,87 +1501,176 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       antialias: true,
       powerPreference: 'high-performance'
     });
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(w, h);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // 1. Central Core Wireframe Icosahedron (Vivid Purple #8952e0)
-    const coreGeo = new THREE.IcosahedronGeometry(1.85, 1);
-    const coreMat = new THREE.MeshBasicMaterial({
-      color: 0x8952e0,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.38
-    });
-    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    scene.add(coreMesh);
+    // Studio Lighting setup matching the reference
+    const ambientLight = new THREE.AmbientLight(0x0a1424, 1.4);
+    scene.add(ambientLight);
 
-    // 2. Inner Glowing Core Sphere
-    const innerGeo = new THREE.IcosahedronGeometry(0.9, 0);
-    const innerMat = new THREE.MeshBasicMaterial({
-      color: 0x9461e3,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.65
-    });
-    const innerMesh = new THREE.Mesh(innerGeo, innerMat);
-    scene.add(innerMesh);
+    const keyDirLight = new THREE.DirectionalLight(0x2563eb, 2.6);
+    keyDirLight.position.set(6, 8, 7);
+    scene.add(keyDirLight);
 
-    // 3. Orbiting Torus Ring (Electric Cyan #2ab4d9)
-    const ringGeo = new THREE.TorusGeometry(3.1, 0.016, 16, 120);
-    const ringMat = new THREE.MeshBasicMaterial({
+    const amberPointLight = new THREE.PointLight(0xf59e0b, 2.8, 16);
+    amberPointLight.position.set(-2, 0.8, 3.2);
+    scene.add(amberPointLight);
+
+    const cyanFillLight = new THREE.PointLight(0x2ab4d9, 2.2, 14);
+    cyanFillLight.position.set(2.8, -2.2, 3.5);
+    scene.add(cyanFillLight);
+
+    // Root kinetic group for mouse parallax
+    const kineticRig = new THREE.Group();
+    scene.add(kineticRig);
+
+    // --- 1. Materials ---
+    const chromeMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      metalness: 0.95,
+      roughness: 0.08
+    });
+    const blueMat = new THREE.MeshStandardMaterial({
+      color: 0x1d4ed8,
+      metalness: 0.5,
+      roughness: 0.22
+    });
+    const redMat = new THREE.MeshStandardMaterial({
+      color: 0xd92d20,
+      metalness: 0.4,
+      roughness: 0.2
+    });
+    const amberMat = new THREE.MeshStandardMaterial({
+      color: 0xf59e0b,
+      metalness: 0.6,
+      roughness: 0.18
+    });
+    const cyanMat = new THREE.MeshStandardMaterial({
       color: 0x2ab4d9,
-      transparent: true,
-      opacity: 0.45
+      metalness: 0.6,
+      roughness: 0.15
     });
-    const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-    ringMesh.rotation.x = Math.PI / 2.7;
-    ringMesh.rotation.y = Math.PI / 5;
-    scene.add(ringMesh);
 
-    // 4. Orbiting Meta Nodes (Lime #00FF90 and Cyan #2ab4d9)
-    const nodeGeo = new THREE.OctahedronGeometry(0.14, 0);
-    const nodeMatCyan = new THREE.MeshBasicMaterial({ color: 0x2ab4d9 });
-    const nodeMatLime = new THREE.MeshBasicMaterial({ color: 0x00FF90 });
-    const nodes = [];
-    const nodeCount = 5;
+    // --- 2. Upper Cobalt Blue Curved Roller Track ---
+    const archGeo = new THREE.TorusGeometry(2.1, 0.11, 24, 72, Math.PI * 0.92);
+    const archMesh = new THREE.Mesh(archGeo, blueMat);
+    archMesh.position.set(-0.3, 1.1, -0.2);
+    archMesh.rotation.z = Math.PI * 0.52;
+    kineticRig.add(archMesh);
 
-    for (let i = 0; i < nodeCount; i++) {
-      const node = new THREE.Mesh(nodeGeo, i % 2 === 0 ? nodeMatCyan : nodeMatLime);
-      scene.add(node);
-      nodes.push({
-        mesh: node,
-        angle: (i * (Math.PI * 2)) / nodeCount,
-        speed: 0.008 + (i * 0.002),
-        radius: 3.1
-      });
+    // --- 3. Central Rotating Spoked Wheel Mechanism ---
+    const wheelGroup = new THREE.Group();
+    wheelGroup.position.set(-0.8, 1.2, 0.2);
+
+    const rimGeo = new THREE.TorusGeometry(1.35, 0.075, 20, 72);
+    const rimMesh = new THREE.Mesh(rimGeo, blueMat);
+    wheelGroup.add(rimMesh);
+
+    const hubGeo = new THREE.CylinderGeometry(0.25, 0.25, 0.4, 24);
+    const hubMesh = new THREE.Mesh(hubGeo, chromeMat);
+    hubMesh.rotation.x = Math.PI / 2;
+    wheelGroup.add(hubMesh);
+
+    // 6 Spokes
+    const spokeGeo = new THREE.CylinderGeometry(0.03, 0.03, 2.65, 12);
+    for (let i = 0; i < 3; i++) {
+      const spoke = new THREE.Mesh(spokeGeo, chromeMat);
+      spoke.rotation.z = (i * Math.PI) / 3;
+      wheelGroup.add(spoke);
     }
+    kineticRig.add(wheelGroup);
 
-    // 5. Constellation Particles Field
-    const particleCount = 110;
-    const particleGeo = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const particleSpeeds = [];
+    // --- 4. Flowing S-Curve Chute (Cherry Red Tube) ---
+    const chuteSpline = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-1.8, 2.0, 0.2),
+      new THREE.Vector3(-0.4, 1.4, 0.5),
+      new THREE.Vector3(0.9, 0.7, 0.3),
+      new THREE.Vector3(1.7, -0.4, 0.6),
+      new THREE.Vector3(1.1, -1.5, 0.2),
+      new THREE.Vector3(-0.1, -1.9, -0.1),
+      new THREE.Vector3(-1.0, -1.4, 0.3)
+    ], true);
 
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 16;
-      positions[i + 1] = (Math.random() - 0.5) * 10;
-      positions[i + 2] = (Math.random() - 0.5) * 8;
-      particleSpeeds.push({
-        vx: (Math.random() - 0.5) * 0.004,
-        vy: (Math.random() - 0.5) * 0.004,
-        vz: (Math.random() - 0.5) * 0.004
-      });
+    const chuteGeo = new THREE.TubeGeometry(chuteSpline, 90, 0.15, 16, true);
+    const chuteMesh = new THREE.Mesh(chuteGeo, redMat);
+    kineticRig.add(chuteMesh);
+
+    // Parallel Chrome Guide Rail
+    const railSpline = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-1.8, 2.2, 0.3),
+      new THREE.Vector3(-0.4, 1.6, 0.6),
+      new THREE.Vector3(0.9, 0.9, 0.4),
+      new THREE.Vector3(1.9, -0.2, 0.7),
+      new THREE.Vector3(1.3, -1.3, 0.3),
+      new THREE.Vector3(0.1, -1.7, 0.0),
+      new THREE.Vector3(-0.8, -1.2, 0.4)
+    ], true);
+    const railGeo = new THREE.TubeGeometry(railSpline, 90, 0.03, 10, true);
+    const railMesh = new THREE.Mesh(railGeo, chromeMat);
+    kineticRig.add(railMesh);
+
+    // --- 5. Horizontal Amber Track Beam ---
+    const beamGeo = new THREE.BoxGeometry(2.6, 0.12, 0.22);
+    const beamMesh = new THREE.Mesh(beamGeo, amberMat);
+    beamMesh.position.set(0.6, 1.6, 0.35);
+    beamMesh.rotation.z = -0.05;
+    kineticRig.add(beamMesh);
+
+    // --- 6. Vertical Stepped Stage Cylinder Tokens ---
+    const pillarGroup = new THREE.Group();
+    pillarGroup.position.set(-0.9, -0.4, 0.3);
+
+    const rodGeo = new THREE.CylinderGeometry(0.04, 0.04, 2.2, 16);
+    const rodMesh = new THREE.Mesh(rodGeo, chromeMat);
+    pillarGroup.add(rodMesh);
+
+    const tokenGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.18, 24);
+    const stepColors = [amberMat, redMat, blueMat, cyanMat];
+    for (let i = 0; i < 4; i++) {
+      const token = new THREE.Mesh(tokenGeo, stepColors[i]);
+      token.position.y = -0.6 + i * 0.42;
+      pillarGroup.add(token);
     }
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    kineticRig.add(pillarGroup);
 
-    const particleMat = new THREE.PointsMaterial({
-      color: 0x9461e3,
-      size: 0.075,
-      transparent: true,
-      opacity: 0.75
-    });
-    const particles = new THREE.Points(particleGeo, particleMat);
-    scene.add(particles);
+    // --- 7. Chrome Helical Spring at the Base ---
+    const helixPoints = [];
+    const turns = 4.2;
+    const springRadius = 0.58;
+    const springHeight = 1.35;
+    const steps = 80;
+
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const angle = t * Math.PI * 2 * turns;
+      const x = Math.cos(angle) * springRadius;
+      const z = Math.sin(angle) * springRadius;
+      const y = (t - 0.5) * springHeight;
+      helixPoints.push(new THREE.Vector3(x, y, z));
+    }
+    const helixCurve = new THREE.CatmullRomCurve3(helixPoints);
+    const springGeo = new THREE.TubeGeometry(helixCurve, 72, 0.055, 12, false);
+    const springMesh = new THREE.Mesh(springGeo, chromeMat);
+    springMesh.position.set(-0.9, -2.1, 0.3);
+    kineticRig.add(springMesh);
+
+    // --- 8. Animated Kinetic Spheres (Rolling Marbles) ---
+    const sphereGeo = new THREE.SphereGeometry(0.18, 32, 32);
+    const marbleChrome = new THREE.Mesh(sphereGeo, chromeMat);
+    const marbleAmber = new THREE.Mesh(new THREE.SphereGeometry(0.15, 24, 24), amberMat);
+    const marbleCyan = new THREE.Mesh(new THREE.SphereGeometry(0.16, 24, 24), cyanMat);
+    const marbleSmall = new THREE.Mesh(new THREE.SphereGeometry(0.12, 20, 20), chromeMat);
+
+    kineticRig.add(marbleChrome);
+    kineticRig.add(marbleAmber);
+    kineticRig.add(marbleCyan);
+    kineticRig.add(marbleSmall);
+
+    // Kinetic spheres tracking params
+    let t1 = 0.0;
+    let t2 = 0.33;
+    let t3 = 0.66;
+    let t4 = 0.85;
 
     // Mouse Tracking with smooth lerp
     let mouseX = 0;
@@ -1591,8 +1682,8 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       const rect = container.getBoundingClientRect();
       const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
       const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-      targetX = ((clientX - rect.left) / container.clientWidth - 0.5) * 2.2;
-      targetY = ((clientY - rect.top) / container.clientHeight - 0.5) * -1.8;
+      targetX = ((clientX - rect.left) / container.clientWidth - 0.5) * 1.8;
+      targetY = ((clientY - rect.top) / container.clientHeight - 0.5) * -1.4;
     }
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
@@ -1601,11 +1692,11 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     // Handle Window Resize
     function onResize() {
       if (!container) return;
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-      camera.aspect = w / h;
+      const nw = container.clientWidth;
+      const nh = container.clientHeight;
+      camera.aspect = nw / nh;
       camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
+      renderer.setSize(nw, nh);
     }
     window.addEventListener('resize', onResize);
 
@@ -1625,46 +1716,34 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       if (!isVisible) return;
 
       if (!prefersReducedMotion) {
+        // Smooth mouse parallax
         mouseX += (targetX - mouseX) * 0.05;
         mouseY += (targetY - mouseY) * 0.05;
 
-        camera.position.x = mouseX * 2.2;
-        camera.position.y = mouseY * 1.6;
-        camera.lookAt(scene.position);
+        kineticRig.rotation.y = mouseX * 0.42;
+        kineticRig.rotation.x = -mouseY * 0.28;
 
-        coreMesh.rotation.y += 0.003;
-        coreMesh.rotation.x += 0.0018;
+        // Continuous wheel rotation
+        wheelGroup.rotation.z += 0.006;
 
-        innerMesh.rotation.y -= 0.005;
-        innerMesh.rotation.z += 0.003;
+        // Animate rolling marbles along the chute spline
+        t1 = (t1 + 0.0035) % 1.0;
+        t2 = (t2 + 0.0038) % 1.0;
+        t3 = (t3 + 0.0042) % 1.0;
+        t4 = (t4 + 0.0032) % 1.0;
 
-        ringMesh.rotation.z += 0.0025;
+        const p1 = chuteSpline.getPointAt(t1);
+        const p2 = chuteSpline.getPointAt(t2);
+        const p3 = chuteSpline.getPointAt(t3);
+        const p4 = railSpline.getPointAt(t4);
 
-        // Orbit nodes
-        nodes.forEach(n => {
-          n.angle += n.speed;
-          n.mesh.position.x = Math.cos(n.angle) * n.radius;
-          n.mesh.position.y = Math.sin(n.angle) * n.radius * Math.sin(ringMesh.rotation.x);
-          n.mesh.position.z = Math.sin(n.angle) * n.radius * Math.cos(ringMesh.rotation.x);
-          n.mesh.rotation.x += 0.02;
-          n.mesh.rotation.y += 0.02;
-        });
+        marbleChrome.position.copy(p1);
+        marbleAmber.position.copy(p2);
+        marbleCyan.position.copy(p3);
+        marbleSmall.position.copy(p4);
 
-        // Drift particles
-        const posAttr = particleGeo.attributes.position;
-        const arr = posAttr.array;
-        for (let i = 0; i < particleCount; i++) {
-          const sp = particleSpeeds[i];
-          arr[i * 3] += sp.vx;
-          arr[i * 3 + 1] += sp.vy;
-          arr[i * 3 + 2] += sp.vz;
-
-          if (arr[i * 3] > 8) arr[i * 3] = -8;
-          if (arr[i * 3] < -8) arr[i * 3] = 8;
-          if (arr[i * 3 + 1] > 5) arr[i * 3 + 1] = -5;
-          if (arr[i * 3 + 1] < -5) arr[i * 3 + 1] = 5;
-        }
-        posAttr.needsUpdate = true;
+        // Subtle breathing bounce on spring
+        springMesh.scale.y = 1.0 + Math.sin(Date.now() * 0.003) * 0.06;
       }
 
       renderer.render(scene, camera);
@@ -1674,6 +1753,43 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   }
 
   // =========================================================================
+  // Handle Hero Quick Input Form (Auto-Scroll & Fill Studio)
+  // =========================================================================
+  window.handleHeroQuickSubmit = function() {
+    const quickInput = document.getElementById('hero-quick-input');
+    const val = quickInput ? quickInput.value.trim() : '';
+    const textarea = document.getElementById('page-content');
+    const titleInput = document.getElementById('page-title');
+    const workspace = document.getElementById('studio-workspace');
+
+    if (val) {
+      if (textarea) {
+        textarea.value = val;
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      if (titleInput && !titleInput.value) {
+        const cleanTitle = val.replace(/^https?:\/\//i, '').split('/')[0] || val;
+        titleInput.value = cleanTitle;
+        titleInput.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    }
+
+    if (workspace) {
+      workspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (val) {
+        setTimeout(() => {
+          const genBtn = document.getElementById('generate-btn');
+          if (genBtn && !genBtn.disabled) {
+            genBtn.click();
+          }
+        }, 650);
+      } else if (textarea) {
+        setTimeout(() => textarea.focus(), 500);
+      }
+    }
+  };
+
+  // =========================================================================
   // Anime.js Choreographed Animations & Micro-Interactions
   // =========================================================================
   function initAnimeVisuals() {
@@ -1681,7 +1797,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
     // 1. Staggered Hero Entrance
     anime({
-      targets: '.hero-section .anime-reveal',
+      targets: '.hero-stage-section .anime-reveal',
       translateY: [24, 0],
       opacity: [0, 1],
       delay: anime.stagger(110, { start: 180 }),

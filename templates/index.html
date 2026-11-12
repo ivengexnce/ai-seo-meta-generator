@@ -50,11 +50,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
 
-  <!-- Fonts: Space Grotesk, Inter, JetBrains Mono -->
+  <!-- Fonts: Space Grotesk, Inter, JetBrains Mono, Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet">
 
     <!-- Three.js (r128) & Anime.js (3.2.1) -->
@@ -189,116 +189,173 @@
   <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
   <div class="app-shell">
-    <!-- 01 — Top Navbar -->
-    <header class="top-nav">
-      <div class="nav-left">
-        <a href="/" class="brand-link" aria-label="Rankora Home">
-          <div class="brand-mark" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M5 17L12 7L19 17" stroke="#10B981" stroke-width="2.5" stroke-linecap="round"
-                stroke-linejoin="round" />
-              <circle cx="12" cy="7" r="2.5" fill="#101827" stroke="#10B981" stroke-width="1.5" />
-              <path d="M9 17L12 12.5L15 17" stroke="#8B5CF6" stroke-width="1.8" stroke-linecap="round"
-                stroke-linejoin="round" />
-            </svg>
-          </div>
-          <div class="brand-headings">
-            <div class="brand-name-row">
-              <span class="brand-name">rankora<span class="brand-dot">.</span></span>
-              <span class="nav-pill pill-tagline">AI SEO Intelligence</span>
-              <span class="nav-pill pill-model" title="Powered by Google Gemini 3.8 Flash">Gemini 3.8 Flash</span>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div class="nav-right">
-        <a href="#how-it-works" class="nav-link nav-link-desktop">Workflow</a>
-        <a href="#features" class="nav-link nav-link-desktop">Features</a>
-
-        <button id="share-nav-btn" class="nav-btn nav-btn-share" type="button" title="Share Rankora with colleagues">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="18" cy="5" r="3"></circle>
-            <circle cx="6" cy="12" r="3"></circle>
-            <circle cx="18" cy="19" r="3"></circle>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-          </svg>
-          <span>Share</span>
-        </button>
-
-        <button id="open-feedback-btn" class="nav-btn nav-btn-feedback" type="button"
-          title="Give feedback or request features">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-          </svg>
-          <span>Feedback</span>
-        </button>
-
-        <button id="toggle-key-btn" class="nav-btn" type="button" aria-haspopup="dialog" aria-expanded="false"
-          title="Configure custom Gemini API key">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="7.5" cy="15.5" r="5.5"></circle>
-            <path d="m21 2-9.6 9.6"></path>
-            <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
-          </svg>
-          <span id="api-status-label">{{ 'API Key Configured' if has_api_key else 'Custom API Key' }}</span>
-        </button>
-
-        <a href="#studio-workspace" class="nav-btn nav-btn-primary">
-          <span>Get started</span>
-        </a>
-      </div>
-    </header>
-
-    <!-- Hero Header Section with Three.js 3D Interactive Canvas -->
-    <section class="hero-section" id="hero-section">
-      <div class="hero-canvas-container" id="hero-canvas-container" aria-hidden="true">
-        <canvas id="hero-three-canvas"></canvas>
-        <div class="hero-canvas-gradient-overlay"></div>
-      </div>
-      <div class="hero-content">
-        <div class="hero-badge anime-reveal">
-          <span class="hero-badge-dot"></span>
-          <span>Next-Gen SEO Architecture</span>
-          <span class="hero-badge-pill">Gemini 3.8 Flash</span>
-        </div>
-        <h1 class="hero-title anime-reveal">Your content deserves to be discovered<span class="brand-dot">.</span></h1>
-        <p class="hero-subtitle anime-reveal">
-          Generate smarter SEO metadata, preview your search snippets, and prepare your pages for search.
-        </p>
-        <div class="hero-cta-row anime-reveal">
-          <a href="#studio-workspace" class="hero-btn-primary magnetic-btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="m5 12 7-7 7 7"></path>
-              <path d="M12 19V5"></path>
-            </svg>
-            <span>Generate metadata</span>
+    <!-- 01 — Floating Top Navbar (OneText Inspired Pill Header) -->
+    <header class="top-nav-floating-wrap">
+      <nav class="top-nav-pill">
+        <!-- Brand Speech-Bubble / Pill Tag -->
+        <div class="nav-brand-group">
+          <a href="/" class="brand-pill-tag" aria-label="Rankora Home">
+            <span class="brand-pill-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M5 17L12 7L19 17" stroke="#8952e0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="12" cy="7" r="2.5" fill="#0C1015" stroke="#2ab4d9" stroke-width="1.8" />
+                <path d="M9 17L12 12.5L15 17" stroke="#00FF90" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span class="brand-pill-text">rankora<span class="brand-dot">.</span></span>
           </a>
-          <button type="button" id="hero-serp-btn" class="hero-btn-secondary magnetic-btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.35-4.35"></path>
+        </div>
+
+        <!-- Center Links -->
+        <div class="nav-pill-center">
+          <a href="#features" class="nav-pill-link">Features</a>
+          <a href="#studio-workspace" class="nav-pill-link">Studio</a>
+          <a href="#community-reviews" class="nav-pill-link">Roadmap</a>
+          <a href="#faq" class="nav-pill-link">FAQ</a>
+        </div>
+
+        <!-- Right Action Buttons -->
+        <div class="nav-pill-actions">
+          <button id="toggle-key-btn" class="nav-pill-link-btn" type="button" aria-haspopup="dialog" aria-expanded="false" title="Configure custom Gemini API key">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="7.5" cy="15.5" r="5.5"></circle>
+              <path d="m21 2-9.6 9.6"></path>
+              <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
             </svg>
-            <span>View SERP preview</span>
+            <span id="api-status-label">{{ 'Key Set' if has_api_key else 'API Key' }}</span>
+          </button>
+
+          <a href="/admin" class="nav-pill-link-btn" title="Private Admin Console">
+            <span>Admin</span>
+          </a>
+
+          <a href="#studio-workspace" class="nav-pill-cta-btn">
+            <span>Get started</span>
+            <span class="cta-arrow-circle">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+          </a>
+
+          <!-- Share & Feedback Triggers -->
+          <button id="share-nav-btn" class="nav-icon-only-btn" type="button" title="Share Rankora" aria-label="Share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+          </button>
+          <button id="open-feedback-btn" class="nav-icon-only-btn" type="button" title="Give feedback" aria-label="Feedback">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
           </button>
         </div>
+      </nav>
+    </header>
 
-        <!-- Hero Stats Ribbon (anime.js dynamic counter targets) -->
-        <div class="hero-metrics-ribbon anime-reveal">
-          <div class="hero-metric-item">
-            <span class="hero-metric-val" data-target="100">100%</span>
-            <span class="hero-metric-lbl">SERP Pixel Fidelity</span>
+    <!-- 02 — Hero Section (Asymmetric Split Screen Inspired by OneText) -->
+    <section class="hero-stage-section" id="hero-section">
+      <div class="hero-stage-container">
+        <!-- LEFT COLUMN: Editorial Display Content & Quick-Interactive Input -->
+        <div class="hero-left-column">
+          <h1 class="hero-monumental-title anime-reveal">
+            20% More Organic CTR.<br>
+            Guaranteed.
+          </h1>
+
+          <p class="hero-editorial-subtext anime-reveal">
+            Deterministic. It's why we exist. See why fast-growing modern engineering teams replace guesswork with Gemini-orchestrated SERP snippets, Open Graph cards, and automated Google indexing readiness.
+          </p>
+
+          <!-- The Integrated Quick-Interactive URL / Topic Bar -->
+          <form class="hero-interactive-bar anime-reveal" id="hero-quick-form" onsubmit="event.preventDefault(); window.handleHeroQuickSubmit && window.handleHeroQuickSubmit();">
+            <div class="hero-bar-badge" title="AI-driven analysis">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L14.5 8.5L21 9.5L16 14.5L17.5 21L12 17.5L6.5 21L8 14.5L3 9.5L9.5 8.5L12 2Z" fill="url(#hero-star-grad)"/>
+                <defs>
+                  <linearGradient id="hero-star-grad" x1="3" y1="2" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#8952e0"/>
+                    <stop offset="1" stop-color="#2ab4d9"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <span>AI*</span>
+            </div>
+            <input type="text" id="hero-quick-input" class="hero-bar-input" placeholder="Enter your brand's URL or page topic..." autocomplete="off" spellcheck="false">
+            <button type="submit" id="hero-quick-btn" class="hero-bar-submit-btn">
+              <span>Test our AI</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </form>
+
+          <!-- Hero Metrics Indicators (anime.js dynamic counter targets) -->
+          <div class="hero-micro-metrics anime-reveal">
+            <div class="micro-metric-item">
+              <span class="hero-metric-val micro-metric-num" data-target="100">100%</span>
+              <span class="micro-metric-label">SERP Pixel Fidelity</span>
+            </div>
+            <div class="micro-metric-sep"></div>
+            <div class="micro-metric-item">
+              <span class="hero-metric-val micro-metric-num" data-target="0">0ms</span>
+              <span class="micro-metric-label">Data Retention</span>
+            </div>
+            <div class="micro-metric-sep"></div>
+            <div class="micro-metric-item">
+              <span class="hero-metric-val micro-metric-num highlight-lime" data-target="2.7">2.7s</span>
+              <span class="micro-metric-label">Flash Latency</span>
+            </div>
           </div>
-          <div class="hero-metric-sep"></div>
-          <div class="hero-metric-item">
-            <span class="hero-metric-val" data-target="0">0ms</span>
-            <span class="hero-metric-lbl">Data Retention</span>
+        </div>
+
+        <!-- RIGHT COLUMN: 3D Kinetic Sculpture WebGL Canvas -->
+        <div class="hero-right-column" id="hero-canvas-container">
+          <div class="hero-kinetic-frame">
+            <canvas id="hero-three-canvas"></canvas>
+            <div class="kinetic-glow-backdrop" aria-hidden="true"></div>
           </div>
-          <div class="hero-metric-sep"></div>
-          <div class="hero-metric-item">
-            <span class="hero-metric-val highlight-lime" data-target="2.7">2.7s</span>
-            <span class="hero-metric-lbl">Flash-Lite Latency</span>
+        </div>
+      </div>
+
+      <!-- BOTTOM SHELF: Floating Social Proof & Brand Ecosystem Dock -->
+      <div class="hero-shelf-wrapper anime-reveal">
+        <div class="hero-shelf-dock">
+          <!-- Left: Big Impact Quote -->
+          <div class="shelf-quote-box">
+            <div class="shelf-quote-headline">“Incredible”</div>
+            <div class="shelf-author-flex">
+              <div class="shelf-avatar-pill">AR</div>
+              <div class="shelf-author-info">
+                <div class="shelf-name">Alex Rivera</div>
+                <div class="shelf-role">Founder of Native SEO &amp; TechRank</div>
+              </div>
+              <div class="shelf-rating" aria-label="5 out of 5 stars">★★★★★</div>
+            </div>
+          </div>
+
+          <!-- Right: Sleek Platform Cards -->
+          <div class="shelf-platforms-cluster">
+            <div class="shelf-platform-card" title="Next.js App &amp; Pages Router SEO">
+              <span class="platform-name">Next.js</span>
+            </div>
+            <div class="shelf-platform-card" title="Vercel Edge Functions &amp; Headers">
+              <span class="platform-name">Vercel</span>
+            </div>
+            <div class="shelf-platform-card" title="Shopify Liquid Meta &amp; Schema">
+              <span class="platform-name">Shopify</span>
+            </div>
+            <div class="shelf-platform-card" title="Astro Islands SSR SEO">
+              <span class="platform-name">Astro</span>
+            </div>
+            <div class="shelf-platform-card" title="WordPress &amp; Headless CMS">
+              <span class="platform-name">WordPress</span>
+            </div>
           </div>
         </div>
       </div>
