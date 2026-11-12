@@ -319,16 +319,37 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     switchToSerpTab();
   });
 
-  // --- FAQ Accordion ---
-  document.querySelectorAll('.faq-question').forEach(btn => {
+  // --- Origami FAQ Accordion & Category Filter ---
+  document.querySelectorAll('.faq-question, .origami-question').forEach(btn => {
     btn.addEventListener('click', () => {
-      const item = btn.closest('.faq-item');
+      const item = btn.closest('.faq-item, .origami-card');
       if (item) {
         const isOpen = item.classList.toggle('open');
         btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       }
     });
   });
+
+  const origamiFilterPills = document.querySelectorAll('#origami-faq-filters .origami-filter-pill');
+  if (origamiFilterPills.length > 0) {
+    origamiFilterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        origamiFilterPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const filter = pill.getAttribute('data-filter') || 'all';
+        const cards = document.querySelectorAll('.origami-card');
+        cards.forEach(card => {
+          const category = card.getAttribute('data-category') || 'general';
+          if (filter === 'all' || category === filter) {
+            card.style.display = 'block';
+            card.style.animation = 'fadeIn 0.25s ease-out';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  }
 
   // --- Form Submission & Generation ---
   if (form) {
