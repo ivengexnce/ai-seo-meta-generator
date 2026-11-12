@@ -1,0 +1,570 @@
+/* ==========================================================================
+   Rankora — fixes layer (load AFTER style.css)
+
+   Why this file exists: the HTML templates use class names that style.css
+   never defined (FAQ "crease-tab/origami-facet", testimonial "card-top",
+   feedback "form-row/feedback-form-dock", footer "brand-link", etc.) and
+   the studio header uses CSS variables that don't exist. Unstyled SVGs
+   default to black fill and huge size, which is the black triangle in the
+   screenshots.
+   ========================================================================== */
+
+/* ---------- 0. Missing tokens + utilities ---------- */
+:root {
+  --radius-lg: var(--r-lg);
+  --text-slate: var(--text-secondary);
+  --accent-teal: var(--cyan);
+  --accent-violet: var(--purple-light);
+}
+
+.hidden {
+  display: none !important;
+}
+
+html {
+  scroll-padding-top: 96px;
+}
+
+/* contenteditable placeholder (studio fields looked empty/broken) */
+.field-editable:empty::before {
+  content: attr(data-placeholder);
+  color: var(--text-dim);
+  pointer-events: none;
+}
+
+/* ---------- 1. Navbar stays reachable while scrolling ---------- */
+.top-nav-floating-wrap {
+  position: sticky;
+  top: 0;
+}
+
+/* ---------- 2. Hero metrics (counter no longer shows NaN) ---------- */
+.micro-metric-num {
+  font-variant-numeric: tabular-nums;
+  min-width: 4.2ch;
+}
+
+/* ---------- 3. FAQ (origami) ---------- */
+.origami-crease-accordion {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  max-width: 1160px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.origami-facet {
+  --fold: var(--purple);
+  --fold-light: var(--purple-light);
+  position: relative;
+  background: linear-gradient(150deg, #0f1826 0%, #0a0e18 100%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.42), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  transition: border-color var(--t-slow) var(--ease-out),
+    transform var(--t-slow) var(--ease-out),
+    box-shadow var(--t-slow);
+}
+
+.origami-facet.valley-facet {
+  --fold: #8b5cf6;
+  --fold-light: #a78bfa;
+}
+
+/* folded corner */
+.origami-facet::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, transparent 50%, var(--fold) 100%);
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.origami-facet:hover {
+  transform: translateY(-2px);
+  border-color: rgba(137, 82, 224, 0.35);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 24px rgba(137, 82, 224, 0.1);
+}
+
+.origami-facet.open {
+  border-color: var(--fold);
+  box-shadow: inset 3px 0 0 var(--fold), 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 28px rgba(137, 82, 224, 0.14);
+}
+
+.crease-tab {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "crest glyph" "title glyph";
+  gap: 10px 16px;
+  align-items: center;
+  padding: 20px 22px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.crease-tab:focus-visible {
+  outline-offset: -3px;
+}
+
+.facet-crest {
+  grid-area: crest;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.crest-kanji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: var(--fold);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.crest-code {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--fold-light);
+}
+
+.crease-type-badge {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+}
+
+.facet-title {
+  grid-area: title;
+  font-family: var(--font-display);
+  font-size: 0.97rem;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  transition: color var(--t-fast);
+}
+
+.origami-facet:hover .facet-title {
+  color: var(--fold-light);
+}
+
+.origami-fold-glyph {
+  grid-area: glyph;
+  align-self: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--r-sm);
+  background: rgba(255, 255, 255, 0.02);
+  transition: transform var(--t-slow) var(--ease-spring),
+    border-color var(--t-normal), background var(--t-normal);
+}
+
+/* This is what removes the giant black triangles */
+.glyph-svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  overflow: visible;
+}
+
+.glyph-svg path {
+  fill: rgba(137, 82, 224, 0.22);
+  stroke: var(--fold-light);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+.glyph-svg .crane-wing-right {
+  fill: rgba(137, 82, 224, 0.4);
+}
+
+.glyph-svg line {
+  stroke: var(--fold-light);
+  stroke-width: 1.4;
+  opacity: 0.8;
+}
+
+.origami-facet:hover .origami-fold-glyph {
+  border-color: var(--fold);
+  background: rgba(137, 82, 224, 0.1);
+}
+
+.origami-facet.open .origami-fold-glyph,
+.crease-tab[aria-expanded="true"] .origami-fold-glyph {
+  transform: rotate(180deg);
+  border-color: var(--fold);
+  background: rgba(137, 82, 224, 0.16);
+}
+
+/* collapsed by default, opens on .open or aria-expanded */
+.origami-panel {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition: max-height 0.4s var(--ease-out), opacity 0.3s ease, visibility 0s linear 0.4s;
+}
+
+.origami-facet.open .origami-panel,
+.crease-tab[aria-expanded="true"]+.origami-panel {
+  max-height: 680px;
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.panel-inner {
+  padding: 0 22px 22px;
+}
+
+.panel-inner::before {
+  content: '';
+  display: block;
+  height: 1px;
+  margin-bottom: 16px;
+  background: linear-gradient(90deg, transparent, var(--fold) 30%, var(--cyan) 50%, var(--fold) 70%, transparent);
+  opacity: 0.55;
+}
+
+.panel-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  background: rgba(137, 82, 224, 0.07);
+  border-left: 2px solid var(--fold);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+
+.callout-icon {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.callout-lead {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #e2e8f0;
+}
+
+.panel-prose {
+  margin: 0 0 14px;
+  font-size: 0.9rem;
+  line-height: 1.68;
+  color: var(--text-secondary);
+}
+
+.panel-prose strong,
+.callout-lead strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.panel-prose code {
+  font-family: var(--font-mono);
+  font-size: 0.84em;
+  padding: 2px 6px;
+  border-radius: var(--r-xs);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--purple-light);
+}
+
+.panel-metrics-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.metric-pill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: var(--r-full);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.metric-pill strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.origami-master-icon {
+  transition: transform var(--t-slow) var(--ease-out);
+}
+
+.origami-experience.all-open .origami-master-icon {
+  transform: rotate(180deg);
+}
+
+/* ---------- 4. Community: testimonials ---------- */
+.community-section {
+  padding: 72px 0 24px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.write-review-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--purple-border);
+  background: var(--purple-subtle);
+  color: var(--purple-light);
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: background var(--t-normal), color var(--t-normal), transform var(--t-normal) var(--ease-out);
+}
+
+.write-review-btn:hover {
+  background: var(--purple);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* style.css gives .testimonial-card a fixed 360px width for the old marquee */
+.testimonials-grid .testimonial-card {
+  flex: initial;
+  width: auto;
+}
+
+.testimonial-card .card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonial-card .author-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, rgba(137, 82, 224, 0.35), rgba(34, 211, 238, 0.25));
+  border: 1px solid rgba(137, 82, 224, 0.4);
+}
+
+.testimonial-card .author-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.testimonial-card .author-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.testimonial-card .author-badge {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.testimonial-card .star-rating {
+  color: #f59e0b;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.testimonial-card .testimonial-body {
+  margin: 0;
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.testimonial-card .card-date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* ---------- 5. Community: feedback form dock ---------- */
+.feedback-form-dock {
+  position: relative;
+  background: linear-gradient(170deg, #161d2e 0%, #0e131f 100%);
+  border: 1px solid var(--purple-border);
+  border-radius: var(--r-xl);
+  padding: 36px 40px;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+
+.feedback-form-dock::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--purple) 0%, var(--cyan) 50%, #8b5cf6 100%);
+}
+
+.feedback-form-header {
+  margin-bottom: 26px;
+  position: relative;
+  z-index: 1;
+}
+
+.form-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: 1.32rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.form-desc {
+  margin: 0;
+  max-width: 660px;
+  font-size: 0.91rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.form-row.dual-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.fb-submit-cta svg {
+  flex-shrink: 0;
+}
+
+/* ---------- 6. Footer brand ---------- */
+.brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-mark {
+  display: inline-flex;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+.brand-badge {
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  background: var(--purple-subtle);
+  border: 1px solid var(--purple-border);
+  color: var(--purple-light);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- 7. Responsive ---------- */
+@media (max-width: 1024px) {
+  .origami-crease-accordion {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-row.dual-fields {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .feedback-form-dock {
+    padding: 24px 20px;
+    border-radius: var(--r-lg);
+  }
+
+  .crease-tab {
+    padding: 18px 16px;
+  }
+
+  .panel-inner {
+    padding: 0 16px 18px;
+  }
+
+  .top-nav-floating-wrap {
+    padding-top: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .origami-panel {
+    transition: none;
+  }
+
+  .origami-facet:hover {
+    transform: none;
+  }
+}
