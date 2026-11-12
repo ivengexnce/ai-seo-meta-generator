@@ -422,7 +422,7 @@
   </div>
 
   <script>
-    // Extract secret from URL query param or localStorage or fallback to default
+    // Extract secret from URL query param or localStorage or input
     const urlParams = new URLSearchParams(window.location.search);
     const initialSecret = urlParams.get('secret') || localStorage.getItem('rankora_admin_secret') || 'rankora_admin_secret_2026';
 
@@ -431,10 +431,23 @@
     const authStatusIndicator = document.getElementById('auth-status-indicator');
     const authStatusText = document.getElementById('auth-status-text');
 
-    if (secretInput) secretInput.value = initialSecret;
+    if (secretInput) {
+      secretInput.value = initialSecret;
+    }
 
     function getSecret() {
-      return (secretInput ? secretInput.value.trim() : '') || 'rankora_admin_secret_2026';
+      const fromInput = secretInput ? secretInput.value.trim() : '';
+      const fromStorage = localStorage.getItem('rankora_admin_secret') || '';
+      return fromInput || fromStorage || 'rankora_admin_secret_2026';
+    }
+
+    function getAdminHeaders(extraHeaders = {}) {
+      const secret = getSecret();
+      return {
+        'X-ADMIN-SECRET': secret,
+        'ADMIN_SECRET': secret,
+        ...extraHeaders
+      };
     }
 
     function formatTime(isoStr) {
@@ -455,17 +468,19 @@
         .replace(/"/g, '&quot;');
     }
 
-    async function fetchFeedbacks() {
+    async function loadFeedback() {
       const secret = getSecret();
+      if (authStatusText) authStatusText.textContent = 'Authenticating...';
+
       try {
         const res = await fetch('/api/feedback', {
-          headers: { 'ADMIN_SECRET': secret }
+          headers: getAdminHeaders()
         });
 
         if (res.status === 401) {
-          authStatusIndicator.className = 'auth-status-pill unauthed';
-          authStatusText.textContent = 'Unauthorized (Check ADMIN_SECRET)';
-          document.getElementById('testimonials-table-body').innerHTML = '<tr><td colspan="6" class="admin-empty-state" style="color: #EF4444;">Access Denied. Please provide a valid ADMIN_SECRET above.</td></tr>';
+          if (authStatusIndicator) authStatusIndicator.className = 'auth-status-pill unauthed';
+          if (authStatusText) authStatusText.textContent = 'Unauthorized (Check ADMIN_SECRET)';
+          document.getElementById('testimonials-table-body').innerHTML = '<tr><td colspan="6" class="admin-empty-state" style="color: #EF4444;">Access Denied. Please provide a valid ADMIN_SECRET above and click Connect.</td></tr>';
           document.getElementById('issues-table-body').innerHTML = '<tr><td colspan="5" class="admin-empty-state" style="color: #EF4444;">Access Denied.</td></tr>';
           return;
         }
@@ -473,17 +488,22 @@
         const data = await res.json();
         const list = data.feedbacks || [];
 
-        authStatusIndicator.className = 'auth-status-pill authed';
-        authStatusText.textContent = 'Authenticated ✓';
+        // Save validated secret to localStorage
         localStorage.setItem('rankora_admin_secret', secret);
+        if (authStatusIndicator) authStatusIndicator.className = 'auth-status-pill authed';
+        if (authStatusText) authStatusText.textContent = 'Authenticated ✓';
 
         renderDashboard(list);
       } catch (err) {
         console.error('Fetch error:', err);
-        authStatusIndicator.className = 'auth-status-pill unauthed';
-        authStatusText.textContent = 'Connection Error';
+        if (authStatusIndicator) authStatusIndicator.className = 'auth-status-pill unauthed';
+        if (authStatusText) authStatusText.textContent = 'Connection Error';
       }
     }
+
+    // Expose both fetchFeedbacks and loadFeedback
+    window.fetchFeedbacks = loadFeedback;
+    window.loadFeedback = loadFeedback;
 
     function renderDashboard(feedbacks) {
       const testimonials = feedbacks.filter(f => f.type === 'testimonial');
@@ -562,18 +582,14 @@
     }
 
     async function toggleApprove(id, approved) {
-      const secret = getSecret();
       try {
         const res = await fetch(`/api/feedback/${id}/approve`, {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'ADMIN_SECRET': secret
-          },
+          headers: getAdminHeaders({ 'Content-Type': 'application/json' }),
           body: JSON.stringify({ approved: approved })
         });
         if (res.ok) {
-          fetchFeedbacks();
+          loadFeedback();
         } else {
           alert('Failed to update approval: Unauthorized or not found.');
         }
@@ -583,18 +599,14 @@
     }
 
     async function updateStatus(id, newStatus) {
-      const secret = getSecret();
       try {
         const res = await fetch(`/api/feedback/${id}/status`, {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'ADMIN_SECRET': secret
-          },
+          headers: getAdminHeaders({ 'Content-Type': 'application/json' }),
           body: JSON.stringify({ status: newStatus })
         });
         if (res.ok) {
-          fetchFeedbacks();
+          loadFeedback();
         } else {
           alert('Failed to update status.');
         }
@@ -605,14 +617,13 @@
 
     async function deleteFeedback(id) {
       if (!confirm('Are you sure you want to delete this item?')) return;
-      const secret = getSecret();
       try {
         const res = await fetch(`/api/feedback/${id}`, {
           method: 'DELETE',
-          headers: { 'ADMIN_SECRET': secret }
+          headers: getAdminHeaders()
         });
         if (res.ok) {
-          fetchFeedbacks();
+          loadFeedback();
         } else {
           alert('Failed to delete item.');
         }
@@ -621,12 +632,31 @@
       }
     }
 
+    // Connect Button Handler
     if (authSaveBtn) {
-      authSaveBtn.addEventListener('click', fetchFeedbacks);
+      authSaveBtn.addEventListener('click', () => {
+        const secret = secretInput ? secretInput.value.trim() : '';
+        if (!secret) {
+          alert('Please enter an Admin Secret to connect.');
+          return;
+        }
+        localStorage.setItem('rankora_admin_secret', secret);
+        loadFeedback();
+      });
+    }
+
+    // Enter key triggers Connect
+    if (secretInput) {
+      secretInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (authSaveBtn) authSaveBtn.click();
+        }
+      });
     }
 
     // Initial load
-    fetchFeedbacks();
+    loadFeedback();
   </script>
 </body>
 

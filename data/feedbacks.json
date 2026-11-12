@@ -4,8 +4,8 @@
     "name": "DevTester",
     "message": "Add dark mode toggle for code export preview block.",
     "type": "issue",
-    "status": "open",
-    "approved": false,
+    "status": "in_progress",
+    "approved": true,
     "rating": 4,
     "timestamp": "2026-11-12T13:10:29.617593+00:00"
   },
