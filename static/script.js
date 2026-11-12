@@ -379,6 +379,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
         };
 
         renderMetadata(currentMetadata);
+        revealPostGenFeedback();
         setLoadingState(false, true);
         showToast('Metadata synthesized and calibrated successfully.', 'success');
 
@@ -927,6 +928,87 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
           submitBtn.textContent = 'Send Feedback';
         }
       }
+    });
+  }
+
+  // --- Post-Generation Interactive Feedback Strip ---
+  const postGenStrip = document.getElementById('post-gen-feedback-strip');
+  const postGenActions = document.getElementById('post-gen-actions-row');
+  const postGenThankYou = document.getElementById('post-gen-thank-you');
+  const postGenThumbsUp = document.getElementById('post-gen-thumbs-up');
+  const postGenThumbsDown = document.getElementById('post-gen-thumbs-down');
+  const postGenDetailedBtn = document.getElementById('post-gen-detailed-btn');
+  const postGenDismissBtn = document.getElementById('post-gen-dismiss-btn');
+  const feedbackShareTrigger = document.getElementById('feedback-share-trigger');
+
+  function revealPostGenFeedback() {
+    if (!postGenStrip) return;
+    postGenStrip.classList.remove('hidden');
+    if (postGenActions) postGenActions.classList.remove('hidden');
+    if (postGenThankYou) postGenThankYou.classList.add('hidden');
+  }
+
+  async function sendQuickRating(rating, message) {
+    const payload = {
+      message: message,
+      category: 'accuracy',
+      rating: rating,
+      meta_title: (typeof currentMetadata !== 'undefined' && currentMetadata && currentMetadata.meta_title) ? currentMetadata.meta_title : '',
+      timestamp: new Date().toISOString()
+    };
+
+    try {
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const stored = JSON.parse(localStorage.getItem('rankora_user_feedback') || '[]');
+      stored.push(payload);
+      localStorage.setItem('rankora_user_feedback', JSON.stringify(stored));
+    } catch (e) {
+      console.warn('Quick feedback logging:', e);
+    }
+  }
+
+  if (postGenThumbsUp) {
+    postGenThumbsUp.addEventListener('click', async () => {
+      await sendQuickRating('positive', 'User confirmed generated SEO metadata is accurate.');
+      if (postGenActions) postGenActions.classList.add('hidden');
+      if (postGenThankYou) postGenThankYou.classList.remove('hidden');
+      showToast('Glad the results were accurate! Thanks for your feedback.', 'success');
+    });
+  }
+
+  if (postGenThumbsDown) {
+    postGenThumbsDown.addEventListener('click', async () => {
+      await sendQuickRating('needs_work', 'User indicated generated metadata needs work.');
+      if (postGenActions) postGenActions.classList.add('hidden');
+      if (postGenThankYou) postGenThankYou.classList.remove('hidden');
+      openFeedback();
+      if (feedbackMessageInput) {
+        feedbackMessageInput.value = 'The generated metadata could be improved: ';
+        feedbackMessageInput.focus();
+      }
+      showToast('Feedback noted. Tell us how we can improve it!', 'info');
+    });
+  }
+
+  if (postGenDetailedBtn) {
+    postGenDetailedBtn.addEventListener('click', () => {
+      openFeedback();
+    });
+  }
+
+  if (postGenDismissBtn) {
+    postGenDismissBtn.addEventListener('click', () => {
+      if (postGenStrip) postGenStrip.classList.add('hidden');
+    });
+  }
+
+  if (feedbackShareTrigger) {
+    feedbackShareTrigger.addEventListener('click', () => {
+      openShare();
     });
   }
 });

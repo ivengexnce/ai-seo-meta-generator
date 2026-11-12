@@ -322,6 +322,44 @@
           </div>
         </div>
 
+        <!-- Post-Generation Interactive Feedback Strip -->
+        <div id="post-gen-feedback-strip" class="post-gen-feedback-strip hidden" aria-live="polite">
+          <div class="feedback-strip-info">
+            <span class="feedback-sparkle">✨</span>
+            <span class="feedback-strip-title" id="post-gen-prompt-text">How accurate are these SEO results?</span>
+          </div>
+
+          <div class="feedback-strip-actions" id="post-gen-actions-row">
+            <button type="button" class="feedback-pill-btn" id="post-gen-thumbs-up" title="High quality and accurate">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+              </svg>
+              <span>Accurate</span>
+            </button>
+
+            <button type="button" class="feedback-pill-btn" id="post-gen-thumbs-down" title="Needs improvement">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path>
+              </svg>
+              <span>Needs work</span>
+            </button>
+
+            <button type="button" class="feedback-pill-btn feedback-pill-text" id="post-gen-detailed-btn" title="Leave detailed feedback or suggest an improvement">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <span>Give Feedback</span>
+            </button>
+          </div>
+
+          <div id="post-gen-thank-you" class="feedback-strip-thank-you hidden">
+            <span class="thank-you-msg">✓ Thank you for your feedback!</span>
+            <button type="button" class="share-trigger-link" id="feedback-share-trigger">Share Rankora 🚀</button>
+          </div>
+
+          <button type="button" class="feedback-strip-close" id="post-gen-dismiss-btn" aria-label="Dismiss feedback prompt">&times;</button>
+        </div>
+
         <!-- Segmented Tab Navigation -->
         <nav class="tabs-nav" role="tablist" aria-label="Studio views">
           <button type="button" class="tab-btn active" id="tab-btn-generator" role="tab" aria-selected="true"
