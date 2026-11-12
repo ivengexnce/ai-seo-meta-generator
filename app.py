@@ -5,7 +5,7 @@ import re
 import threading
 import uuid
 import warnings
-from flask import Flask, Response, abort, jsonify, render_template, request, send_from_directory
+from flask import Flask, Response, abort, jsonify, render_template, request, send_from_directory, session
 from dotenv import load_dotenv
 
 # Suppress deprecation warning from legacy SDK
@@ -37,6 +37,13 @@ app = Flask(
     static_url_path="/static",
 )
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.secret_key = os.getenv("SECRET_KEY", "rankora_secret_session_key_2026")
+
+BASE_URL = os.getenv("CANONICAL_URL", "https://rankoraa.vercel.app")
+GSC_TOKEN = (
+    os.getenv("GOOGLE_SITE_VERIFICATION", "bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA").strip()
+    or "bURvWAHhm3OqndkPnnzgB5twro_I0eZDfxmLyxyLiMA"
+)
 
 # Models to try in priority order (gemini-3.5-flash-lite is fastest with generous free-tier limits)
 MODERN_MODELS = [
@@ -153,6 +160,19 @@ def index():
     )
 
 
+@app.route("/studio")
+def studio():
+    """Render the standalone SEO Studio Workspace."""
+    has_api_key = bool(session.get("api_key")) if session.get("api_key") else bool(os.getenv("GEMINI_API_KEY"))
+    base_url = resolve_canonical_base_url() or BASE_URL
+    return render_template(
+        "studio.html",
+        has_api_key=has_api_key,
+        base_url=base_url,
+        gsc_verification=GSC_TOKEN,
+    )
+
+
 @app.route("/privacy")
 def privacy_page():
     """Render dedicated, serious Privacy Policy document."""
@@ -255,6 +275,12 @@ def sitemap_xml():
     <lastmod>{today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>{base_url}/studio</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>{base_url}/legal/privacy</loc>
@@ -499,8 +525,8 @@ def generate_meta():
             400,
         )
 
-    # API key from environment or user-provided override
-    api_key = data.get("api_key", "").strip() or os.getenv("GEMINI_API_KEY")
+    # API key from environment or user-provided override or session
+    api_key = data.get("api_key", "").strip() or session.get("api_key") or os.getenv("GEMINI_API_KEY")
 
     if not api_key:
         return (
