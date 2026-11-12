@@ -5,7 +5,7 @@ import re
 import threading
 import uuid
 import warnings
-from flask import Flask, abort, jsonify, render_template, request, send_from_directory
+from flask import Flask, Response, abort, jsonify, render_template, request, send_from_directory
 from dotenv import load_dotenv
 
 # Suppress deprecation warning from legacy SDK
@@ -240,6 +240,35 @@ def robots_txt():
     """Serve search engine crawling directives."""
     folder = BASE_DIR if os.path.exists(os.path.join(BASE_DIR, "robots.txt")) else app.static_folder
     return send_from_directory(folder, "robots.txt", mimetype="text/plain")
+
+
+@app.route("/sitemap.xml")
+def sitemap_xml():
+    """Serve dynamic sitemap for search engines."""
+    base_url = resolve_canonical_base_url()
+    today = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+    xml_content = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{base_url}/</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>{base_url}/legal/privacy</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>{base_url}/legal/terms</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>"""
+    return Response(xml_content, mimetype="application/xml")
 
 
 @app.route("/health")
