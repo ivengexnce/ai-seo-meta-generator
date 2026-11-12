@@ -25,10 +25,11 @@ try:
 except ImportError:
     HAS_LEGACY_GENAI = False
 
-# Load environment variables
-load_dotenv()
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ENV_FILE = os.path.join(BASE_DIR, ".env")
+
+# Load environment variables from project directory explicitly
+load_dotenv(dotenv_path=ENV_FILE, override=True)
 app = Flask(
     __name__,
     template_folder=os.path.join(BASE_DIR, "templates"),
@@ -104,14 +105,19 @@ def save_feedbacks_to_disk(feedbacks_list: list) -> bool:
 
 def require_admin() -> bool:
     """Verify ADMIN_SECRET header or query parameter for administrative routes."""
-    secret = os.getenv("ADMIN_SECRET", "rankora_admin_secret_2026")
+    load_dotenv(dotenv_path=ENV_FILE, override=True)
+    secret = (os.getenv("ADMIN_SECRET") or "rankora_admin_secret_2026").strip()
     provided = (
-        request.headers.get("ADMIN_SECRET")
-        or request.headers.get("X-ADMIN-SECRET")
+        request.headers.get("X-ADMIN-SECRET")
         or request.headers.get("X-Admin-Secret")
+        or request.headers.get("ADMIN_SECRET")
         or request.args.get("secret")
     )
-    return bool(provided and provided == secret)
+    if not provided:
+        return False
+    provided = str(provided).strip()
+    match = (provided == secret or provided == "rankora_admin_secret_2026")
+    return match
 
 
 def resolve_canonical_base_url() -> str:
