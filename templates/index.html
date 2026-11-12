@@ -57,7 +57,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet">
 
-    <!-- Three.js (r128) & Anime.js (3.2.1) -->
+  <!-- Three.js (r128) & Anime.js (3.2.1) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
@@ -197,9 +197,11 @@
           <a href="/" class="brand-pill-tag" aria-label="Rankora Home">
             <span class="brand-pill-icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M5 17L12 7L19 17" stroke="#8952e0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M5 17L12 7L19 17" stroke="#8952e0" stroke-width="2.6" stroke-linecap="round"
+                  stroke-linejoin="round" />
                 <circle cx="12" cy="7" r="2.5" fill="#0C1015" stroke="#2ab4d9" stroke-width="1.8" />
-                <path d="M9 17L12 12.5L15 17" stroke="#00FF90" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M9 17L12 12.5L15 17" stroke="#00FF90" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
               </svg>
             </span>
             <span class="brand-pill-text">rankora<span class="brand-dot">.</span></span>
@@ -216,7 +218,8 @@
 
         <!-- Right Action Buttons -->
         <div class="nav-pill-actions">
-          <button id="toggle-key-btn" class="nav-pill-link-btn" type="button" aria-haspopup="dialog" aria-expanded="false" title="Configure custom Gemini API key">
+          <button id="toggle-key-btn" class="nav-pill-link-btn" type="button" aria-haspopup="dialog"
+            aria-expanded="false" title="Configure custom Gemini API key">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="7.5" cy="15.5" r="5.5"></circle>
               <path d="m21 2-9.6 9.6"></path>
@@ -225,14 +228,15 @@
             <span id="api-status-label">{{ 'Key Set' if has_api_key else 'API Key' }}</span>
           </button>
 
-          <a href="/admin" class="nav-pill-link-btn" title="Private Admin Console">
+          <a href="/admin" class="nav-pill-link-btn" title="Private Admin Console" rel="nofollow">
             <span>Admin</span>
           </a>
 
           <a href="#studio-workspace" class="nav-pill-cta-btn">
             <span>Get started</span>
             <span class="cta-arrow-circle">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
@@ -249,7 +253,8 @@
               <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
             </svg>
           </button>
-          <button id="open-feedback-btn" class="nav-icon-only-btn" type="button" title="Give feedback" aria-label="Feedback">
+          <button id="open-feedback-btn" class="nav-icon-only-btn" type="button" title="Give feedback"
+            aria-label="Feedback">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
@@ -269,27 +274,32 @@
           </h1>
 
           <p class="hero-editorial-subtext anime-reveal">
-            Deterministic. It's why we exist. See why fast-growing modern engineering teams replace guesswork with Gemini-orchestrated SERP snippets, Open Graph cards, and automated Google indexing readiness.
+            Deterministic. It's why we exist. See why fast-growing modern engineering teams replace guesswork with
+            Gemini-orchestrated SERP snippets, Open Graph cards, and automated Google indexing readiness.
           </p>
 
           <!-- The Integrated Quick-Interactive URL / Topic Bar -->
-          <form class="hero-interactive-bar anime-reveal" id="hero-quick-form" onsubmit="event.preventDefault(); window.handleHeroQuickSubmit && window.handleHeroQuickSubmit();">
+          <form class="hero-interactive-bar anime-reveal" id="hero-quick-form"
+            onsubmit="event.preventDefault(); window.handleHeroQuickSubmit && window.handleHeroQuickSubmit();">
             <div class="hero-bar-badge" title="AI-driven analysis">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2L14.5 8.5L21 9.5L16 14.5L17.5 21L12 17.5L6.5 21L8 14.5L3 9.5L9.5 8.5L12 2Z" fill="url(#hero-star-grad)"/>
+                <path d="M12 2L14.5 8.5L21 9.5L16 14.5L17.5 21L12 17.5L6.5 21L8 14.5L3 9.5L9.5 8.5L12 2Z"
+                  fill="url(#hero-star-grad)" />
                 <defs>
                   <linearGradient id="hero-star-grad" x1="3" y1="2" x2="21" y2="21" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#8952e0"/>
-                    <stop offset="1" stop-color="#2ab4d9"/>
+                    <stop stop-color="#8952e0" />
+                    <stop offset="1" stop-color="#2ab4d9" />
                   </linearGradient>
                 </defs>
               </svg>
               <span>AI*</span>
             </div>
-            <input type="text" id="hero-quick-input" class="hero-bar-input" placeholder="Enter your brand's URL or page topic..." autocomplete="off" spellcheck="false">
+            <input type="text" id="hero-quick-input" class="hero-bar-input"
+              placeholder="Enter your brand's URL or page topic..." autocomplete="off" spellcheck="false">
             <button type="submit" id="hero-quick-btn" class="hero-bar-submit-btn">
               <span>Test our AI</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </button>
@@ -818,7 +828,7 @@
         </div>
       </div>
 
-            <!-- Japanese Origami-Inspired Interactive FAQ Experience -->
+      <!-- Japanese Origami-Inspired Interactive FAQ Experience -->
       <div class="faq-container origami-experience" id="faq">
         <div class="faq-subhead origami-header">
           <div class="origami-seal-badge">
@@ -826,16 +836,20 @@
             <span class="origami-seal-text">ORIGAMI KNOWLEDGE ARCHITECTURE · 知識録</span>
           </div>
           <h3 class="faq-title origami-headline">Unfolding Search Mechanics &amp; Directives</h3>
-          <p class="faq-desc origami-desc">Every algorithmic rule, pixel bound, and crawl instruction — structured and folded like geometric washi paper for clear discovery.</p>
-          
+          <p class="faq-desc origami-desc">Every algorithmic rule, pixel bound, and crawl instruction — structured and
+            folded like geometric washi paper for clear discovery.</p>
+
           <div class="origami-toolbar">
             <div class="origami-legend">
               <span class="legend-pill mountain"><span class="legend-dot"></span> 山折り Mountain (SERP Physics)</span>
-              <span class="legend-pill valley"><span class="legend-dot"></span> 谷折り Valley (AI &amp; Verification)</span>
+              <span class="legend-pill valley"><span class="legend-dot"></span> 谷折り Valley (AI &amp;
+                Verification)</span>
             </div>
-            <button type="button" id="origami-toggle-all-btn" class="origami-master-toggle" aria-label="Toggle all FAQ folds">
-              <svg class="origami-master-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            <button type="button" id="origami-toggle-all-btn" class="origami-master-toggle"
+              aria-label="Toggle all FAQ folds">
+              <svg class="origami-master-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
               </svg>
               <span id="origami-master-text">Unfold All Sheets</span>
             </button>
@@ -851,71 +865,92 @@
             </div>
 
             <!-- Item 1 -->
-            <div class="faq-item origami-card mountain-fold" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-item origami-card mountain-fold" itemscope itemprop="mainEntity"
+              itemtype="https://schema.org/Question">
               <div class="origami-dogear" aria-hidden="true"></div>
-              <button type="button" class="faq-question origami-trigger" aria-expanded="false" aria-controls="faq-ans-1">
+              <button type="button" class="faq-question origami-trigger" aria-expanded="false"
+                aria-controls="faq-ans-1">
                 <div class="origami-q-left">
                   <div class="origami-meta-row">
                     <span class="origami-fold-id">折 01</span>
                     <span class="origami-facet-tag">600px Boundary</span>
                   </div>
-                  <span class="origami-q-text" itemprop="name">Why are 50–60 characters recommended for meta titles?</span>
+                  <span class="origami-q-text" itemprop="name">Why are 50–60 characters recommended for meta
+                    titles?</span>
                 </div>
                 <div class="origami-crane-icon" aria-hidden="true">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="1.6" stroke-linejoin="round"/>
-                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(16, 185, 129, 0.35)" stroke="#10B981" stroke-width="1.2" stroke-linejoin="round"/>
-                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(52, 211, 153, 0.25)" stroke="#34D399" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981"
+                      stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(16, 185, 129, 0.35)" stroke="#10B981" stroke-width="1.2"
+                      stroke-linejoin="round" />
+                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(52, 211, 153, 0.25)" stroke="#34D399" stroke-width="1.2"
+                      stroke-linejoin="round" />
                   </svg>
                 </div>
               </button>
-              <div class="faq-answer origami-sheet" id="faq-ans-1" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div class="faq-answer origami-sheet" id="faq-ans-1" itemscope itemprop="acceptedAnswer"
+                itemtype="https://schema.org/Answer">
                 <div class="origami-crease-line" aria-hidden="true"></div>
                 <div class="origami-ans-content" itemprop="text">
-                  <p>Google desktop search results truncate title tags that exceed approximately <strong>600 pixels</strong> (typically 50 to 60 characters depending on individual glyph widths like <code>W</code> vs <code>I</code>).</p>
+                  <p>Google desktop search results truncate title tags that exceed approximately <strong>600
+                      pixels</strong> (typically 50 to 60 characters depending on individual glyph widths like
+                    <code>W</code> vs <code>I</code>).</p>
                   <div class="origami-callout">
                     <span class="callout-label">Fold Principle:</span>
-                    <span>Staying inside 60 characters keeps your primary keyword and brand name visible on Search Engine Result Pages (SERPs) without trailing ellipsis truncation (<code>...</code>).</span>
+                    <span>Staying inside 60 characters keeps your primary keyword and brand name visible on Search
+                      Engine Result Pages (SERPs) without trailing ellipsis truncation (<code>...</code>).</span>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Item 2 -->
-            <div class="faq-item origami-card mountain-fold" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-item origami-card mountain-fold" itemscope itemprop="mainEntity"
+              itemtype="https://schema.org/Question">
               <div class="origami-dogear" aria-hidden="true"></div>
-              <button type="button" class="faq-question origami-trigger" aria-expanded="false" aria-controls="faq-ans-2">
+              <button type="button" class="faq-question origami-trigger" aria-expanded="false"
+                aria-controls="faq-ans-2">
                 <div class="origami-q-left">
                   <div class="origami-meta-row">
                     <span class="origami-fold-id">折 02</span>
                     <span class="origami-facet-tag">960px Boundary</span>
                   </div>
-                  <span class="origami-q-text" itemprop="name">What is the ideal length for an SEO meta description?</span>
+                  <span class="origami-q-text" itemprop="name">What is the ideal length for an SEO meta
+                    description?</span>
                 </div>
                 <div class="origami-crane-icon" aria-hidden="true">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="1.6" stroke-linejoin="round"/>
-                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(16, 185, 129, 0.35)" stroke="#10B981" stroke-width="1.2" stroke-linejoin="round"/>
-                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(52, 211, 153, 0.25)" stroke="#34D399" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981"
+                      stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(16, 185, 129, 0.35)" stroke="#10B981" stroke-width="1.2"
+                      stroke-linejoin="round" />
+                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(52, 211, 153, 0.25)" stroke="#34D399" stroke-width="1.2"
+                      stroke-linejoin="round" />
                   </svg>
                 </div>
               </button>
-              <div class="faq-answer origami-sheet" id="faq-ans-2" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div class="faq-answer origami-sheet" id="faq-ans-2" itemscope itemprop="acceptedAnswer"
+                itemtype="https://schema.org/Answer">
                 <div class="origami-crease-line" aria-hidden="true"></div>
                 <div class="origami-ans-content" itemprop="text">
-                  <p>The recommended description length is strictly between <strong>150 and 160 characters</strong> (approx. 960px on desktop and 680px on mobile viewports).</p>
+                  <p>The recommended description length is strictly between <strong>150 and 160 characters</strong>
+                    (approx. 960px on desktop and 680px on mobile viewports).</p>
                   <div class="origami-callout">
                     <span class="callout-label">Fold Principle:</span>
-                    <span>A calibrated description provides searchers with a clear editorial hook while preventing Google from auto-generating replacement snippet text from arbitrary body copy.</span>
+                    <span>A calibrated description provides searchers with a clear editorial hook while preventing
+                      Google from auto-generating replacement snippet text from arbitrary body copy.</span>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Item 3 -->
-            <div class="faq-item origami-card mountain-fold" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-item origami-card mountain-fold" itemscope itemprop="mainEntity"
+              itemtype="https://schema.org/Question">
               <div class="origami-dogear" aria-hidden="true"></div>
-              <button type="button" class="faq-question origami-trigger" aria-expanded="false" aria-controls="faq-ans-5">
+              <button type="button" class="faq-question origami-trigger" aria-expanded="false"
+                aria-controls="faq-ans-5">
                 <div class="origami-q-left">
                   <div class="origami-meta-row">
                     <span class="origami-fold-id">折 03</span>
@@ -925,50 +960,65 @@
                 </div>
                 <div class="origami-crane-icon" aria-hidden="true">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="1.6" stroke-linejoin="round"/>
-                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(16, 185, 129, 0.35)" stroke="#10B981" stroke-width="1.2" stroke-linejoin="round"/>
-                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(52, 211, 153, 0.25)" stroke="#34D399" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981"
+                      stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(16, 185, 129, 0.35)" stroke="#10B981" stroke-width="1.2"
+                      stroke-linejoin="round" />
+                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(52, 211, 153, 0.25)" stroke="#34D399" stroke-width="1.2"
+                      stroke-linejoin="round" />
                   </svg>
                 </div>
               </button>
-              <div class="faq-answer origami-sheet" id="faq-ans-5" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div class="faq-answer origami-sheet" id="faq-ans-5" itemscope itemprop="acceptedAnswer"
+                itemtype="https://schema.org/Answer">
                 <div class="origami-crease-line" aria-hidden="true"></div>
                 <div class="origami-ans-content" itemprop="text">
-                  <p>Rankora’s real-time SERP simulator provides a pixel-accurate visual preview of your webpage snippet across Google desktop and mobile search views.</p>
+                  <p>Rankora’s real-time SERP simulator provides a pixel-accurate visual preview of your webpage snippet
+                    across Google desktop and mobile search views.</p>
                   <div class="origami-callout">
                     <span class="callout-label">Fold Principle:</span>
-                    <span>Testing your metadata before deployment catches truncated text, awkward line wraps, and favicon alignment issues before pages are indexed.</span>
+                    <span>Testing your metadata before deployment catches truncated text, awkward line wraps, and
+                      favicon alignment issues before pages are indexed.</span>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Item 4 -->
-            <div class="faq-item origami-card mountain-fold" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-item origami-card mountain-fold" itemscope itemprop="mainEntity"
+              itemtype="https://schema.org/Question">
               <div class="origami-dogear" aria-hidden="true"></div>
-              <button type="button" class="faq-question origami-trigger" aria-expanded="false" aria-controls="faq-ans-6">
+              <button type="button" class="faq-question origami-trigger" aria-expanded="false"
+                aria-controls="faq-ans-6">
                 <div class="origami-q-left">
                   <div class="origami-meta-row">
                     <span class="origami-fold-id">折 04</span>
                     <span class="origami-facet-tag">Ranking Realism</span>
                   </div>
-                  <span class="origami-q-text" itemprop="name">Can optimized meta tags guarantee a #1 ranking on Google?</span>
+                  <span class="origami-q-text" itemprop="name">Can optimized meta tags guarantee a #1 ranking on
+                    Google?</span>
                 </div>
                 <div class="origami-crane-icon" aria-hidden="true">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="1.6" stroke-linejoin="round"/>
-                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(16, 185, 129, 0.35)" stroke="#10B981" stroke-width="1.2" stroke-linejoin="round"/>
-                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(52, 211, 153, 0.25)" stroke="#34D399" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981"
+                      stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(16, 185, 129, 0.35)" stroke="#10B981" stroke-width="1.2"
+                      stroke-linejoin="round" />
+                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(52, 211, 153, 0.25)" stroke="#34D399" stroke-width="1.2"
+                      stroke-linejoin="round" />
                   </svg>
                 </div>
               </button>
-              <div class="faq-answer origami-sheet" id="faq-ans-6" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div class="faq-answer origami-sheet" id="faq-ans-6" itemscope itemprop="acceptedAnswer"
+                itemtype="https://schema.org/Answer">
                 <div class="origami-crease-line" aria-hidden="true"></div>
                 <div class="origami-ans-content" itemprop="text">
-                  <p>No tool can guarantee a #1 ranking. Organic rankings depend on multiple signals: content depth, page speed, domain authority, and user engagement.</p>
+                  <p>No tool can guarantee a #1 ranking. Organic rankings depend on multiple signals: content depth,
+                    page speed, domain authority, and user engagement.</p>
                   <div class="origami-callout">
                     <span class="callout-label">Fold Principle:</span>
-                    <span>High-precision metadata maximizes Click-Through Rate (CTR) and assists crawlers in indexing semantic relevance accurately.</span>
+                    <span>High-precision metadata maximizes Click-Through Rate (CTR) and assists crawlers in indexing
+                      semantic relevance accurately.</span>
                   </div>
                 </div>
               </div>
@@ -983,40 +1033,51 @@
             </div>
 
             <!-- Item 5 -->
-            <div class="faq-item origami-card valley-fold" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-item origami-card valley-fold" itemscope itemprop="mainEntity"
+              itemtype="https://schema.org/Question">
               <div class="origami-dogear" aria-hidden="true"></div>
-              <button type="button" class="faq-question origami-trigger" aria-expanded="false" aria-controls="faq-ans-3">
+              <button type="button" class="faq-question origami-trigger" aria-expanded="false"
+                aria-controls="faq-ans-3">
                 <div class="origami-q-left">
                   <div class="origami-meta-row">
                     <span class="origami-fold-id">折 05</span>
                     <span class="origami-facet-tag">Neural Inference</span>
                   </div>
-                  <span class="origami-q-text" itemprop="name">How does Rankora use Gemini AI to generate search metadata?</span>
+                  <span class="origami-q-text" itemprop="name">How does Rankora use Gemini AI to generate search
+                    metadata?</span>
                 </div>
                 <div class="origami-crane-icon" aria-hidden="true">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6" stroke-width="1.6" stroke-linejoin="round"/>
-                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(139, 92, 246, 0.35)" stroke="#8B5CF6" stroke-width="1.2" stroke-linejoin="round"/>
-                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(167, 139, 250, 0.25)" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6"
+                      stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(139, 92, 246, 0.35)" stroke="#8B5CF6" stroke-width="1.2"
+                      stroke-linejoin="round" />
+                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(167, 139, 250, 0.25)" stroke="#A78BFA"
+                      stroke-width="1.2" stroke-linejoin="round" />
                   </svg>
                 </div>
               </button>
-              <div class="faq-answer origami-sheet" id="faq-ans-3" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div class="faq-answer origami-sheet" id="faq-ans-3" itemscope itemprop="acceptedAnswer"
+                itemtype="https://schema.org/Answer">
                 <div class="origami-crease-line" aria-hidden="true"></div>
                 <div class="origami-ans-content" itemprop="text">
-                  <p>Rankora runs on <strong>Google Gemini Flash-Lite</strong> via the official GenAI SDK. The engine analyzes key search entities, user intent, and topical nuance.</p>
+                  <p>Rankora runs on <strong>Google Gemini 3.8 Flash</strong> via the official GenAI SDK. The engine
+                    analyzes key search entities, user intent, and topical nuance.</p>
                   <div class="origami-callout">
                     <span class="callout-label">Fold Principle:</span>
-                    <span>Rather than generic text completion, it enforces technical constraints (character limits, keyword density, and schema validity) with sub-3-second latency.</span>
+                    <span>Rather than generic text completion, it enforces technical constraints (character limits,
+                      keyword density, and schema validity) with sub-3-second latency.</span>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Item 6 -->
-            <div class="faq-item origami-card valley-fold" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-item origami-card valley-fold" itemscope itemprop="mainEntity"
+              itemtype="https://schema.org/Question">
               <div class="origami-dogear" aria-hidden="true"></div>
-              <button type="button" class="faq-question origami-trigger" aria-expanded="false" aria-controls="faq-ans-4">
+              <button type="button" class="faq-question origami-trigger" aria-expanded="false"
+                aria-controls="faq-ans-4">
                 <div class="origami-q-left">
                   <div class="origami-meta-row">
                     <span class="origami-fold-id">折 06</span>
@@ -1026,81 +1087,105 @@
                 </div>
                 <div class="origami-crane-icon" aria-hidden="true">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6" stroke-width="1.6" stroke-linejoin="round"/>
-                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(139, 92, 246, 0.35)" stroke="#8B5CF6" stroke-width="1.2" stroke-linejoin="round"/>
-                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(167, 139, 250, 0.25)" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6"
+                      stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(139, 92, 246, 0.35)" stroke="#8B5CF6" stroke-width="1.2"
+                      stroke-linejoin="round" />
+                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(167, 139, 250, 0.25)" stroke="#A78BFA"
+                      stroke-width="1.2" stroke-linejoin="round" />
                   </svg>
                 </div>
               </button>
-              <div class="faq-answer origami-sheet" id="faq-ans-4" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div class="faq-answer origami-sheet" id="faq-ans-4" itemscope itemprop="acceptedAnswer"
+                itemtype="https://schema.org/Answer">
                 <div class="origami-crease-line" aria-hidden="true"></div>
                 <div class="origami-ans-content" itemprop="text">
-                  <p>Open Graph (<code>og:*</code>) and Twitter Cards (<code>twitter:*</code>) govern how links render when shared on LinkedIn, X, Slack, and Discord.</p>
+                  <p>Open Graph (<code>og:*</code>) and Twitter Cards (<code>twitter:*</code>) govern how links render
+                    when shared on LinkedIn, X, Slack, and Discord.</p>
                   <div class="origami-callout">
                     <span class="callout-label">Fold Principle:</span>
-                    <span>Rankora structures full 1200×630px social cards, image fallbacks, and content descriptions to prevent unstyled or broken preview cards across social platforms.</span>
+                    <span>Rankora structures full 1200×630px social cards, image fallbacks, and content descriptions to
+                      prevent unstyled or broken preview cards across social platforms.</span>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Item 7 -->
-            <div class="faq-item origami-card valley-fold" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-item origami-card valley-fold" itemscope itemprop="mainEntity"
+              itemtype="https://schema.org/Question">
               <div class="origami-dogear" aria-hidden="true"></div>
-              <button type="button" class="faq-question origami-trigger" aria-expanded="false" aria-controls="faq-ans-7">
+              <button type="button" class="faq-question origami-trigger" aria-expanded="false"
+                aria-controls="faq-ans-7">
                 <div class="origami-q-left">
                   <div class="origami-meta-row">
                     <span class="origami-fold-id">折 07</span>
                     <span class="origami-facet-tag">Search Console</span>
                   </div>
-                  <span class="origami-q-text" itemprop="name">How does Google Search Console site verification work?</span>
+                  <span class="origami-q-text" itemprop="name">How does Google Search Console site verification
+                    work?</span>
                 </div>
                 <div class="origami-crane-icon" aria-hidden="true">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6" stroke-width="1.6" stroke-linejoin="round"/>
-                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(139, 92, 246, 0.35)" stroke="#8B5CF6" stroke-width="1.2" stroke-linejoin="round"/>
-                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(167, 139, 250, 0.25)" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6"
+                      stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(139, 92, 246, 0.35)" stroke="#8B5CF6" stroke-width="1.2"
+                      stroke-linejoin="round" />
+                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(167, 139, 250, 0.25)" stroke="#A78BFA"
+                      stroke-width="1.2" stroke-linejoin="round" />
                   </svg>
                 </div>
               </button>
-              <div class="faq-answer origami-sheet" id="faq-ans-7" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div class="faq-answer origami-sheet" id="faq-ans-7" itemscope itemprop="acceptedAnswer"
+                itemtype="https://schema.org/Answer">
                 <div class="origami-crease-line" aria-hidden="true"></div>
                 <div class="origami-ans-content" itemprop="text">
-                  <p>Google verifies site ownership via an HTML <code>&lt;meta name="google-site-verification"&gt;</code> tag or a root verification HTML file.</p>
+                  <p>Google verifies site ownership via an HTML
+                    <code>&lt;meta name="google-site-verification"&gt;</code> tag or a root verification HTML file.</p>
                   <div class="origami-callout">
                     <span class="callout-label">Fold Principle:</span>
-                    <span>Rankora injects your token into the head block, ensuring immediate ownership claim without modifying web server root files.</span>
+                    <span>Rankora injects your token into the head block, ensuring immediate ownership claim without
+                      modifying web server root files.</span>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Item 8 -->
-            <div class="faq-item origami-card valley-fold" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-item origami-card valley-fold" itemscope itemprop="mainEntity"
+              itemtype="https://schema.org/Question">
               <div class="origami-dogear" aria-hidden="true"></div>
-              <button type="button" class="faq-question origami-trigger" aria-expanded="false" aria-controls="faq-ans-8">
+              <button type="button" class="faq-question origami-trigger" aria-expanded="false"
+                aria-controls="faq-ans-8">
                 <div class="origami-q-left">
                   <div class="origami-meta-row">
                     <span class="origami-fold-id">折 08</span>
                     <span class="origami-facet-tag">Zero Retention</span>
                   </div>
-                  <span class="origami-q-text" itemprop="name">Does Rankora store or sell my submitted page content or API keys?</span>
+                  <span class="origami-q-text" itemprop="name">Does Rankora store or sell my submitted page content or
+                    API keys?</span>
                 </div>
                 <div class="origami-crane-icon" aria-hidden="true">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6" stroke-width="1.6" stroke-linejoin="round"/>
-                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(139, 92, 246, 0.35)" stroke="#8B5CF6" stroke-width="1.2" stroke-linejoin="round"/>
-                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(167, 139, 250, 0.25)" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M12 3L3 9L12 15L21 9L12 3Z" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6"
+                      stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M12 15V21L3 14L12 15Z" fill="rgba(139, 92, 246, 0.35)" stroke="#8B5CF6" stroke-width="1.2"
+                      stroke-linejoin="round" />
+                    <path d="M12 15V21L21 14L12 15Z" fill="rgba(167, 139, 250, 0.25)" stroke="#A78BFA"
+                      stroke-width="1.2" stroke-linejoin="round" />
                   </svg>
                 </div>
               </button>
-              <div class="faq-answer origami-sheet" id="faq-ans-8" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div class="faq-answer origami-sheet" id="faq-ans-8" itemscope itemprop="acceptedAnswer"
+                itemtype="https://schema.org/Answer">
                 <div class="origami-crease-line" aria-hidden="true"></div>
                 <div class="origami-ans-content" itemprop="text">
-                  <p>No. Rankora operates under a strict zero-retention architecture. Custom Google AI Studio keys reside strictly inside your browser's <code>localStorage</code>.</p>
+                  <p>No. Rankora operates under a strict zero-retention architecture. Custom Google AI Studio keys
+                    reside strictly inside your browser's <code>localStorage</code>.</p>
                   <div class="origami-callout">
                     <span class="callout-label">Fold Principle:</span>
-                    <span>Your text is processed in-memory for inference and discarded immediately. No logs, no caching, and no model retraining on your private copy.</span>
+                    <span>Your text is processed in-memory for inference and discarded immediately. No logs, no caching,
+                      and no model retraining on your private copy.</span>
                   </div>
                 </div>
               </div>
@@ -1111,11 +1196,13 @@
     </section>
 
     <!-- 04 — What Builders Say, Community Feedback & Public Issues Tracker -->
-    <section class="reviews-section" id="community-reviews" aria-label="What Builders Say, Community Voice and Public Roadmap">
+    <section class="reviews-section" id="community-reviews"
+      aria-label="What Builders Say, Community Voice and Public Roadmap">
       <div class="section-header">
         <span class="section-tag">04 — COMMUNITY &amp; ROADMAP</span>
         <h2 class="section-title">What Builders Say &amp; Community Roadmap</h2>
-        <p class="section-desc">Explore verified builder reviews, submit your ideas directly, and track live feature requests on our public roadmap.</p>
+        <p class="section-desc">Explore verified builder reviews, submit your ideas directly, and track live feature
+          requests on our public roadmap.</p>
       </div>
 
       <!-- 1. Testimonials Horizontal Marquee Block (What Builders Say) -->
@@ -1126,8 +1213,10 @@
             <span class="community-count-pill" id="testimonials-count">0 Reviews</span>
           </div>
           <div class="carousel-nav-arrows">
-            <button type="button" class="carousel-arrow" id="testimonials-prev-btn" aria-label="Scroll left">&larr;</button>
-            <button type="button" class="carousel-arrow" id="testimonials-next-btn" aria-label="Scroll right">&rarr;</button>
+            <button type="button" class="carousel-arrow" id="testimonials-prev-btn"
+              aria-label="Scroll left">&larr;</button>
+            <button type="button" class="carousel-arrow" id="testimonials-next-btn"
+              aria-label="Scroll right">&rarr;</button>
           </div>
         </div>
 
@@ -1145,20 +1234,23 @@
           <div class="inline-feedback-badge-row">
             <span class="inline-feedback-badge">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
               Builder Voice &amp; Roadmap
             </span>
           </div>
           <h3 class="community-block-title">Share Your Experience or Report an Issue</h3>
-          <p class="inline-feedback-desc">Your voice directly shapes Rankora. Testimonials appear on the community wall once reviewed by admin, while bug reports appear immediately on our public tracker.</p>
+          <p class="inline-feedback-desc">Your voice directly shapes Rankora. Testimonials appear on the community wall
+            once reviewed by admin, while bug reports appear immediately on our public tracker.</p>
         </div>
 
         <form id="inline-feedback-form" class="inline-feedback-form">
           <div class="inline-form-grid">
             <div class="form-group">
               <label for="fb-input-name" class="field-label">Your Name or Handle</label>
-              <input type="text" id="fb-input-name" class="text-input" placeholder="e.g. Alex Rivera (or leave blank for Anonymous)">
+              <input type="text" id="fb-input-name" class="text-input"
+                placeholder="e.g. Alex Rivera (or leave blank for Anonymous)">
             </div>
 
             <div class="form-group">
@@ -1182,7 +1274,8 @@
               <label class="field-label" style="margin-bottom: 0;">Rating</label>
               <span class="rating-subtext" id="rating-value-label">5 of 5 · Exceptional — highly recommended!</span>
             </div>
-            <div class="interactive-star-rating" id="interactive-star-rating" role="radiogroup" aria-label="Select star rating">
+            <div class="interactive-star-rating" id="interactive-star-rating" role="radiogroup"
+              aria-label="Select star rating">
               <button type="button" class="star-rating-btn active" data-val="1" aria-label="1 star">★</button>
               <button type="button" class="star-rating-btn active" data-val="2" aria-label="2 stars">★</button>
               <button type="button" class="star-rating-btn active" data-val="3" aria-label="3 stars">★</button>
@@ -1194,23 +1287,33 @@
 
           <div class="form-group">
             <div class="message-label-row">
-              <label for="fb-input-message" class="field-label">Your Message <span style="color: var(--accent-violet);">*</span></label>
+              <label for="fb-input-message" class="field-label">Your Message <span
+                  style="color: var(--accent-violet);">*</span></label>
               <span class="char-count" id="fb-char-count">0 / 500</span>
             </div>
             <div class="quick-prompt-chips" id="quick-prompt-chips">
               <span class="chips-hint">💡 Tap an idea starter:</span>
-              <button type="button" class="prompt-chip" data-text="Rankora is lightning fast and made tuning SERP pixel widths effortless!">⚡ Lightning-fast SERP</button>
-              <button type="button" class="prompt-chip" data-text="The Google SERP snippet preview is spot on with Search Console!">🎯 Spot-on preview</button>
-              <button type="button" class="prompt-chip" data-text="Would love to see batch URL analysis and CSV export support next!">💡 Feature request</button>
-              <button type="button" class="prompt-chip" data-text="Found a small layout glitch with the mobile snippet rendering...">🐛 Found a bug</button>
+              <button type="button" class="prompt-chip"
+                data-text="Rankora is lightning fast and made tuning SERP pixel widths effortless!">⚡ Lightning-fast
+                SERP</button>
+              <button type="button" class="prompt-chip"
+                data-text="The Google SERP snippet preview is spot on with Search Console!">🎯 Spot-on preview</button>
+              <button type="button" class="prompt-chip"
+                data-text="Would love to see batch URL analysis and CSV export support next!">💡 Feature
+                request</button>
+              <button type="button" class="prompt-chip"
+                data-text="Found a small layout glitch with the mobile snippet rendering...">🐛 Found a bug</button>
             </div>
-            <textarea id="fb-input-message" class="text-input" rows="3" placeholder="Tell us how Rankora helped calibrate your metadata or what needs improvement..." maxlength="500" required></textarea>
+            <textarea id="fb-input-message" class="text-input" rows="3"
+              placeholder="Tell us how Rankora helped calibrate your metadata or what needs improvement..."
+              maxlength="500" required></textarea>
           </div>
 
           <div class="inline-form-action-row">
             <div id="inline-feedback-status" class="inline-feedback-status" aria-live="polite"></div>
             <button type="submit" id="fb-submit-btn" class="fb-submit-cta">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <line x1="22" y1="2" x2="11" y2="13"></line>
                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
               </svg>
@@ -1278,7 +1381,7 @@
                   points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
                 </polygon>
               </svg>
-              <span>Gemini 3.5 Flash</span>
+              <span>Gemini 3.8 Flash</span>
             </span>
           </div>
         </div>
@@ -1328,16 +1431,6 @@
             <span class="footer-col-title">Legal &amp; Privacy</span>
             <a href="/privacy" class="footer-link">Privacy Policy</a>
             <a href="/terms" class="footer-link">Terms of Service</a>
-            <button type="button" id="footer-feedback-btn" class="footer-link-btn">Share Feedback</button>
-            <button type="button" id="footer-share-btn" class="footer-link-btn">Share Workspace</button>
-            <a href="https://github.com/ivengexnce/ai-seo-meta-generator" target="_blank" rel="noopener noreferrer"
-              class="footer-link external-link">
-              <span>GitHub Repository</span>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <path d="M7 17L17 7M17 7H7M17 7V17" />
-              </svg>
-            </a>
-          </div>
             <button type="button" id="footer-feedback-btn" class="footer-link-btn">Share Feedback</button>
             <button type="button" id="footer-share-btn" class="footer-link-btn">Share Workspace</button>
             <a href="https://github.com/ivengexnce/ai-seo-meta-generator" target="_blank" rel="noopener noreferrer"
@@ -1518,8 +1611,8 @@
         </p>
 
         <div class="share-copy-row">
-          <input type="text" id="share-url-input" class="text-input" value="{{ base_url or 'https://rankoraa.vercel.app' }}/"
-            readonly>
+          <input type="text" id="share-url-input" class="text-input"
+            value="{{ base_url or 'https://rankoraa.vercel.app' }}/" readonly>
           <button type="button" id="copy-share-url-btn" class="foot-btn foot-btn-primary">
             <span>Copy Link</span>
           </button>
@@ -1605,7 +1698,8 @@
           </div>
 
           <div class="field-group">
-            <label for="feedback-name" class="field-label">Your Name or Handle (Optional — sent privately to maintainer)</label>
+            <label for="feedback-name" class="field-label">Your Name or Handle (Optional — sent privately to
+              maintainer)</label>
             <input type="text" id="feedback-name" class="text-input" placeholder="e.g. Alex, SEO Lead">
           </div>
 
