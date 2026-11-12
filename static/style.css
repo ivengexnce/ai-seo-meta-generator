@@ -1651,128 +1651,468 @@ textarea#page-content::placeholder {
 }
 
 /* FAQ Accordion */
-.faq-container {
-  margin-top: 56px;
-  padding-top: 48px;
-  border-top: 1px solid var(--border-subtle);
+/* ==========================================================================
+   Japanese Origami-Inspired Interactive FAQ Experience (折紙知識録)
+   ========================================================================== */
+.origami-experience {
+  position: relative;
+  margin-top: 72px;
+  padding-top: 56px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.faq-subhead {
+.origami-experience::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #10B981, transparent);
+}
+
+.origami-header {
   text-align: center;
-  margin-bottom: 36px;
+  max-width: 760px;
+  margin: 0 auto 40px auto;
 }
 
-.faq-tag {
+.origami-seal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+
+.origami-seal-kanji {
+  background: #10B981;
+  color: #041410;
   font-family: var(--font-mono);
-  font-size: 0.74rem;
-  font-weight: 600;
-  color: var(--accent-teal);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  display: inline-block;
-  margin-bottom: 8px;
+  font-weight: 900;
+  font-size: 0.72rem;
+  padding: 2px 6px;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
 }
 
-.faq-title {
-  font-family: var(--font-display);
-  font-size: 1.65rem;
+.origami-seal-text {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   font-weight: 700;
-  color: var(--text-white);
+  color: #34D399;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.origami-headline {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #F8FAFC;
   letter-spacing: -0.02em;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  line-height: 1.25;
 }
 
-.faq-desc {
-  font-size: 0.95rem;
-  color: var(--text-slate);
-  max-width: 620px;
-  margin: 0 auto;
+.origami-desc {
+  font-size: 0.96rem;
+  color: #94A3B8;
   line-height: 1.6;
+  margin-bottom: 24px;
 }
 
-.faq-wrap {
-  max-width: 820px;
+.origami-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 12px 18px;
+  background: rgba(11, 16, 25, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+}
+
+.origami-legend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.legend-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #94A3B8;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.legend-pill.mountain .legend-dot {
+  background: #10B981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+}
+
+.legend-pill.valley .legend-dot {
+  background: #8B5CF6;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.7);
+}
+
+.origami-master-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34D399;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.origami-master-toggle:hover {
+  background: #10B981;
+  color: #031410;
+  border-color: #10B981;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Origami 2-Column Grid */
+.origami-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1160px;
   margin: 0 auto;
+}
+
+@media (max-width: 960px) {
+  .origami-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.origami-column {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
-.faq-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+.origami-column-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0 8px 4px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  margin-bottom: 4px;
+}
+
+.col-kanji {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #10B981;
+  font-weight: 800;
+}
+
+.col-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+}
+
+/* Origami Folded Paper Card */
+.origami-card {
+  position: relative;
+  background: #0D131F;
+  background: linear-gradient(150deg, #111927 0%, #090E17 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
   overflow: hidden;
-  transition: all var(--transition-fast);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.faq-item:hover {
-  border-color: var(--border-hairline);
+/* Origami Dog-Ear Corner (Folded paper corner) */
+.origami-dogear {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, transparent 50%, rgba(16, 185, 129, 0.2) 50%, #10B981 100%);
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+  box-shadow: -2px 2px 6px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
 }
 
-.faq-item.open {
-  border-color: rgba(16, 185, 129, 0.45);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+.origami-card.valley-fold .origami-dogear {
+  background: linear-gradient(135deg, transparent 50%, rgba(139, 92, 246, 0.2) 50%, #8B5CF6 100%);
 }
 
-.faq-question {
+.origami-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(16, 185, 129, 0.38);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 20px rgba(16, 185, 129, 0.12);
+}
+
+.origami-card.valley-fold:hover {
+  border-color: rgba(139, 92, 246, 0.38);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 20px rgba(139, 92, 246, 0.12);
+}
+
+.origami-card:hover .origami-dogear {
+  transform: scale(1.15);
+  box-shadow: -3px 3px 10px rgba(0, 0, 0, 0.8);
+}
+
+/* Open Origami State */
+.origami-card.open {
+  border-color: #10B981;
+  border-left: 3px solid #10B981;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(16, 185, 129, 0.18);
+}
+
+.origami-card.valley-fold.open {
+  border-color: #8B5CF6;
+  border-left: 3px solid #8B5CF6;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(139, 92, 246, 0.18);
+}
+
+.origami-card.open .origami-dogear {
+  background: linear-gradient(135deg, transparent 50%, #34D399 50%, #10B981 100%);
+  transform: scale(1.2);
+}
+
+.origami-card.valley-fold.open .origami-dogear {
+  background: linear-gradient(135deg, transparent 50%, #A78BFA 50%, #8B5CF6 100%);
+  transform: scale(1.2);
+}
+
+/* Origami Trigger Button */
+.origami-trigger {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 22px;
+  gap: 16px;
+  padding: 20px 22px;
   text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #F8FAFC;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.origami-q-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  padding-right: 12px;
+}
+
+.origami-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.origami-fold-id {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #10B981;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.origami-card.valley-fold .origami-fold-id {
+  color: #A78BFA;
+  background: rgba(139, 92, 246, 0.12);
+}
+
+.origami-facet-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.origami-q-text {
   font-family: var(--font-display);
   font-size: 0.98rem;
   font-weight: 600;
-  color: var(--text-white);
-  cursor: pointer;
-  background: none;
-  border: none;
+  color: #F8FAFC;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
 }
 
-.faq-question:hover {
-  color: #34d399;
+.origami-card:hover .origami-q-text {
+  color: #34D399;
 }
 
-.faq-icon {
-  transition: transform var(--transition-fast);
-  color: var(--text-slate);
+.origami-card.valley-fold:hover .origami-q-text {
+  color: #C4B5FD;
+}
+
+/* Origami Crane / Faceted Icon */
+.origami-crane-icon {
   flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.faq-item.open .faq-icon {
-  transform: rotate(180deg);
-  color: var(--accent-teal);
+.origami-card:hover .origami-crane-icon {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.08);
+  transform: rotate(45deg);
 }
 
-.faq-answer {
-  display: none;
-  padding: 0 22px 20px 22px;
-  font-size: 0.92rem;
-  color: var(--text-slate);
+.origami-card.valley-fold:hover .origami-crane-icon {
+  border-color: rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.08);
+  transform: rotate(45deg);
+}
+
+.origami-card.open .origami-crane-icon {
+  transform: rotate(180deg) scale(1.08);
+  background: rgba(16, 185, 129, 0.16);
+  border-color: #10B981;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+
+.origami-card.valley-fold.open .origami-crane-icon {
+  transform: rotate(180deg) scale(1.08);
+  background: rgba(139, 92, 246, 0.16);
+  border-color: #8B5CF6;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
+}
+
+/* Unfolding Paper Sheet (The Answer) */
+.origami-sheet {
+  display: block !important;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: rotateX(-12deg);
+  transform-origin: top center;
+  transition: max-height 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.35s ease;
+  padding: 0 22px;
+}
+
+.origami-card.open .origami-sheet {
+  max-height: 500px;
+  opacity: 1;
+  transform: rotateX(0deg);
+  padding: 0 22px 22px 22px;
+}
+
+/* Origami Crease Line */
+.origami-crease-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.35) 20%, rgba(52, 211, 153, 0.7) 50%, rgba(16, 185, 129, 0.35) 80%, transparent 100%);
+  margin-bottom: 14px;
+}
+
+.origami-card.valley-fold .origami-crease-line {
+  background: linear-gradient(90deg, transparent 0%, rgba(139, 92, 246, 0.35) 20%, rgba(167, 139, 250, 0.7) 50%, rgba(139, 92, 246, 0.35) 80%, transparent 100%);
+}
+
+.origami-ans-content {
+  font-size: 0.91rem;
+  color: #94A3B8;
   line-height: 1.65;
-  border-top: 1px solid rgba(30, 41, 59, 0.4);
 }
 
-.faq-answer strong {
-  color: var(--text-white);
+.origami-ans-content p {
+  margin: 0 0 10px 0;
 }
 
-.faq-answer code {
+.origami-ans-content strong {
+  color: #F8FAFC;
+  font-weight: 600;
+}
+
+.origami-ans-content code {
   font-family: var(--font-mono);
   font-size: 0.85em;
-  background: rgba(30, 41, 59, 0.7);
+  background: rgba(7, 11, 19, 0.85);
   padding: 2px 6px;
   border-radius: 4px;
-  color: #34d399;
+  color: #34D399;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.faq-item.open .faq-answer {
-  display: block;
-  animation: fadeIn 0.2s ease-out;
+.origami-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.07);
+  border-left: 2px solid #10B981;
+  border-radius: 0 6px 6px 0;
+  padding: 10px 14px;
+  margin-top: 12px;
+  font-size: 0.84rem;
+  color: #E2E8F0;
+  line-height: 1.5;
 }
+
+.origami-card.valley-fold .origami-callout {
+  background: rgba(139, 92, 246, 0.07);
+  border-left-color: #8B5CF6;
+}
+
+.callout-label {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.74rem;
+  color: #34D399;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+
+.origami-card.valley-fold .callout-label {
+  color: #A78BFA;
+}
+
 
 /* ==========================================================================
    04 — Footer

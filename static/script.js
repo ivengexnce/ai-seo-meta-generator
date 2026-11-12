@@ -319,16 +319,58 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     switchToSerpTab();
   });
 
-  // --- FAQ Accordion ---
-  document.querySelectorAll('.faq-question').forEach(btn => {
+  // --- Origami FAQ Interactive Experience ---
+  const origamiCards = document.querySelectorAll('.faq-item');
+  const origamiButtons = document.querySelectorAll('.faq-question');
+  const origamiToggleAllBtn = document.getElementById('origami-toggle-all-btn');
+  const origamiMasterText = document.getElementById('origami-master-text');
+
+  function updateOrigamiMasterState() {
+    if (!origamiMasterText || origamiCards.length === 0) return;
+    const openCount = document.querySelectorAll('.faq-item.open').length;
+    const allOpen = openCount === origamiCards.length;
+    origamiMasterText.textContent = allOpen ? 'Fold All Sheets' : 'Unfold All Sheets';
+  }
+
+  origamiButtons.forEach((btn, index) => {
     btn.addEventListener('click', () => {
       const item = btn.closest('.faq-item');
       if (item) {
         const isOpen = item.classList.toggle('open');
         btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        updateOrigamiMasterState();
+      }
+    });
+
+    // Keyboard navigation (Arrow keys between origami cards)
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = origamiButtons[index + 1] || origamiButtons[0];
+        next.focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = origamiButtons[index - 1] || origamiButtons[origamiButtons.length - 1];
+        prev.focus();
       }
     });
   });
+
+  if (origamiToggleAllBtn) {
+    origamiToggleAllBtn.addEventListener('click', () => {
+      const openCount = document.querySelectorAll('.faq-item.open').length;
+      const shouldOpenAll = openCount < origamiCards.length;
+
+      origamiCards.forEach(card => {
+        card.classList.toggle('open', shouldOpenAll);
+        const trigger = card.querySelector('.faq-question');
+        if (trigger) {
+          trigger.setAttribute('aria-expanded', shouldOpenAll ? 'true' : 'false');
+        }
+      });
+      updateOrigamiMasterState();
+    });
+  }
 
   // --- Form Submission & Generation ---
   if (form) {
