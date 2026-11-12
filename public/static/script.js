@@ -1051,4 +1051,308 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       openShare();
     });
   }
+
+  // ==========================================================================
+  // Testimonials, Public Issues Tracker & Inline Feedback Form
+  // ==========================================================================
+
+  function formatRelativeTime(isoString) {
+    if (!isoString) return 'recently';
+    const date = new Date(isoString);
+    if (isNaN(date.getTime())) return 'recently';
+
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    if (seconds < 60) return 'just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    if (days < 30) return `${days}d ago`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return `${months}mo ago`;
+    return `${Math.floor(months / 12)}y ago`;
+  }
+
+  // --- Fetch & Render Testimonials ---
+  async function loadTestimonials() {
+    const track = document.getElementById('testimonials-track');
+    const countPill = document.getElementById('testimonials-count');
+    if (!track) return;
+
+    try {
+      const res = await fetch('/api/testimonials');
+      const data = await res.json();
+      const list = data.testimonials || [];
+
+      if (countPill) {
+        countPill.textContent = `${list.length} ${list.length === 1 ? 'Review' : 'Reviews'}`;
+      }
+
+      if (list.length === 0) {
+        track.innerHTML = `
+          <div class="community-empty-card">
+            <p class="empty-title">No approved testimonials yet.</p>
+            <p class="empty-sub">Be the first to share your experience with Rankora below.</p>
+          </div>
+        `;
+        return;
+      }
+
+      track.innerHTML = list.map(item => {
+        const rating = Math.max(1, Math.min(5, Number(item.rating) || 5));
+        const stars = '★'.repeat(rating);
+        const name = escapeHtml(item.name || 'Anonymous');
+        const initials = name !== 'Anonymous'
+          ? name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase()
+          : 'U';
+        const timeAgo = formatRelativeTime(item.timestamp);
+
+        return `
+          <div class="testimonial-card">
+            <div class="testimonial-card-top">
+              <div class="testimonial-user-row">
+                <div class="testimonial-avatar">${initials}</div>
+                <div class="testimonial-user-info">
+                  <span class="testimonial-user-name">${name}</span>
+                  <span class="testimonial-time">${timeAgo}</span>
+                </div>
+              </div>
+              <div class="testimonial-stars" aria-label="${rating} out of 5 stars">${stars}</div>
+            </div>
+            <p class="testimonial-quote">“${escapeHtml(item.message || '')}”</p>
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Failed to load testimonials:', err);
+      track.innerHTML = `<div class="community-empty-card"><p>Unable to load testimonials at this time.</p></div>`;
+    }
+  }
+
+  // Carousel navigation
+  const prevBtn = document.getElementById('testimonials-prev-btn');
+  const nextBtn = document.getElementById('testimonials-next-btn');
+  const scrollContainer = document.getElementById('testimonials-scroll-container');
+
+  if (prevBtn && scrollContainer) {
+    prevBtn.addEventListener('click', () => {
+      scrollContainer.scrollBy({ left: -360, behavior: 'smooth' });
+    });
+  }
+  if (nextBtn && scrollContainer) {
+    nextBtn.addEventListener('click', () => {
+      scrollContainer.scrollBy({ left: 360, behavior: 'smooth' });
+    });
+  }
+
+  // --- Fetch & Render Issues ---
+  let cachedIssues = [];
+
+  function renderIssuesList(filter = 'all') {
+    const listEl = document.getElementById('issues-list');
+    const countEl = document.getElementById('issues-count');
+    if (!listEl) return;
+
+    const filtered = filter === 'all'
+      ? cachedIssues
+      : cachedIssues.filter(i => (i.status || 'open') === filter);
+
+    if (countEl) {
+      countEl.textContent = `${filtered.length} ${filtered.length === 1 ? 'Issue' : 'Issues'}`;
+    }
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = `
+        <div class="community-empty-card">
+          <p class="empty-title">No issues found in this view.</p>
+          <p class="empty-sub">Report any bug or suggestion using the form below.</p>
+        </div>
+      `;
+      return;
+    }
+
+    listEl.innerHTML = filtered.map(item => {
+      const status = item.status || 'open';
+      const statusLabel = status === 'in_progress' ? 'In Progress' : status.charAt(0).toUpperCase() + status.slice(1);
+      const name = escapeHtml(item.name || 'Anonymous');
+      const timeAgo = formatRelativeTime(item.timestamp);
+
+      return `
+        <div class="issue-item issue-status-${status}">
+          <div class="issue-item-head">
+            <div class="issue-meta-left">
+              <span class="issue-badge badge-${status}">${statusLabel}</span>
+              <span class="issue-author">${name}</span>
+            </div>
+            <span class="issue-time">${timeAgo}</span>
+          </div>
+          <p class="issue-message">${escapeHtml(item.message || '')}</p>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function loadIssues() {
+    try {
+      const res = await fetch('/api/issues');
+      const data = await res.json();
+      cachedIssues = data.issues || [];
+      renderIssuesList('all');
+    } catch (err) {
+      console.error('Failed to load issues:', err);
+      const listEl = document.getElementById('issues-list');
+      if (listEl) {
+        listEl.innerHTML = `<div class="community-empty-card"><p>Unable to load issues.</p></div>`;
+      }
+    }
+  }
+
+  // Issue filter tabs
+  const issueTabs = document.querySelectorAll('#issues-filter-tabs .issue-filter-tab');
+  if (issueTabs.length > 0) {
+    issueTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        issueTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const status = tab.getAttribute('data-status') || 'all';
+        renderIssuesList(status);
+      });
+    });
+  }
+
+  // --- Inline Feedback Submission Form ---
+  const inlineForm = document.getElementById('inline-feedback-form');
+  const typeToggleBtns = document.querySelectorAll('#fb-type-toggle .type-toggle-btn');
+  const typeInput = document.getElementById('fb-input-type');
+  const ratingGroup = document.getElementById('fb-rating-group');
+  const ratingInput = document.getElementById('fb-input-rating');
+  const ratingLabel = document.getElementById('rating-value-label');
+  const starBtns = document.querySelectorAll('#interactive-star-rating .star-rating-btn');
+  const submitBtnText = document.getElementById('fb-submit-btn-text');
+  const messageInput = document.getElementById('fb-input-message');
+  const statusEl = document.getElementById('inline-feedback-status');
+
+  // Type toggle
+  if (typeToggleBtns.length > 0 && typeInput) {
+    typeToggleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        typeToggleBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const selectedType = btn.getAttribute('data-type') || 'testimonial';
+        typeInput.value = selectedType;
+
+        if (selectedType === 'issue') {
+          if (submitBtnText) submitBtnText.textContent = 'Submit Issue Report';
+          if (messageInput) messageInput.placeholder = 'Describe the bug, error, or feature request in detail...';
+          if (ratingGroup) ratingGroup.style.display = 'none';
+        } else {
+          if (submitBtnText) submitBtnText.textContent = 'Submit Testimonial';
+          if (messageInput) messageInput.placeholder = 'Tell us how Rankora helped calibrate your metadata...';
+          if (ratingGroup) ratingGroup.style.display = 'block';
+        }
+      });
+    });
+  }
+
+  // Star rating
+  if (starBtns.length > 0 && ratingInput) {
+    starBtns.forEach(star => {
+      star.addEventListener('click', () => {
+        const val = parseInt(star.getAttribute('data-val') || '5', 10);
+        ratingInput.value = val;
+        if (ratingLabel) ratingLabel.textContent = `${val} of 5 stars`;
+
+        starBtns.forEach(s => {
+          const sVal = parseInt(s.getAttribute('data-val') || '1', 10);
+          if (sVal <= val) {
+            s.classList.add('active');
+          } else {
+            s.classList.remove('active');
+          }
+        });
+      });
+    });
+  }
+
+  // Inline Form Submit
+  if (inlineForm) {
+    inlineForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = (document.getElementById('fb-input-name')?.value || '').trim();
+      const message = (messageInput?.value || '').trim();
+      const type = typeInput?.value || 'testimonial';
+      const rating = parseInt(ratingInput?.value || '5', 10);
+
+      if (!message) {
+        if (statusEl) {
+          statusEl.textContent = 'Please enter a message.';
+          statusEl.className = 'inline-feedback-status error';
+        }
+        return;
+      }
+
+      const submitBtn = document.getElementById('fb-submit-btn');
+      if (submitBtn) submitBtn.disabled = true;
+      if (statusEl) {
+        statusEl.textContent = 'Submitting...';
+        statusEl.className = 'inline-feedback-status pending';
+      }
+
+      try {
+        const payload = {
+          name: name || 'Anonymous',
+          message: message,
+          type: type,
+          rating: rating
+        };
+
+        const res = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const resData = await res.json();
+        if (res.ok) {
+          inlineForm.reset();
+          if (typeInput) typeInput.value = 'testimonial';
+          if (ratingInput) ratingInput.value = '5';
+          if (ratingLabel) ratingLabel.textContent = '5 of 5 stars';
+          starBtns.forEach(s => s.classList.add('active'));
+          typeToggleBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-type') === 'testimonial'));
+          if (ratingGroup) ratingGroup.style.display = 'block';
+          if (submitBtnText) submitBtnText.textContent = 'Submit Testimonial';
+
+          if (statusEl) {
+            statusEl.textContent = type === 'testimonial'
+              ? '✓ Testimonial submitted! It will appear once reviewed by admin.'
+              : '✓ Issue logged! It now appears on the public tracker.';
+            statusEl.className = 'inline-feedback-status success';
+          }
+
+          if (type === 'issue') {
+            await loadIssues();
+          }
+        } else {
+          if (statusEl) {
+            statusEl.textContent = resData.error || 'Failed to submit feedback.';
+            statusEl.className = 'inline-feedback-status error';
+          }
+        }
+      } catch (err) {
+        console.error('Submission error:', err);
+        if (statusEl) {
+          statusEl.textContent = 'Network error. Please try again.';
+          statusEl.className = 'inline-feedback-status error';
+        }
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  }
+
+  // Initial load
+  loadTestimonials();
+  loadIssues();
 });
