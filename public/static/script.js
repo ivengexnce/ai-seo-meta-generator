@@ -319,56 +319,35 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
     switchToSerpTab();
   });
 
-  // --- Origami FAQ Interactive Experience ---
-  const origamiCards = document.querySelectorAll('.faq-item');
-  const origamiButtons = document.querySelectorAll('.faq-question');
-  const origamiToggleAllBtn = document.getElementById('origami-toggle-all-btn');
-  const origamiMasterText = document.getElementById('origami-master-text');
-
-  function updateOrigamiMasterState() {
-    if (!origamiMasterText || origamiCards.length === 0) return;
-    const openCount = document.querySelectorAll('.faq-item.open').length;
-    const allOpen = openCount === origamiCards.length;
-    origamiMasterText.textContent = allOpen ? 'Fold All Sheets' : 'Unfold All Sheets';
-  }
-
-  origamiButtons.forEach((btn, index) => {
+  // --- Origami FAQ Accordion & Category Filter ---
+  document.querySelectorAll('.faq-question, .origami-question').forEach(btn => {
     btn.addEventListener('click', () => {
-      const item = btn.closest('.faq-item');
+      const item = btn.closest('.faq-item, .origami-card');
       if (item) {
         const isOpen = item.classList.toggle('open');
         btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        updateOrigamiMasterState();
-      }
-    });
-
-    // Keyboard navigation (Arrow keys between origami cards)
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        const next = origamiButtons[index + 1] || origamiButtons[0];
-        next.focus();
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        const prev = origamiButtons[index - 1] || origamiButtons[origamiButtons.length - 1];
-        prev.focus();
       }
     });
   });
 
-  if (origamiToggleAllBtn) {
-    origamiToggleAllBtn.addEventListener('click', () => {
-      const openCount = document.querySelectorAll('.faq-item.open').length;
-      const shouldOpenAll = openCount < origamiCards.length;
-
-      origamiCards.forEach(card => {
-        card.classList.toggle('open', shouldOpenAll);
-        const trigger = card.querySelector('.faq-question');
-        if (trigger) {
-          trigger.setAttribute('aria-expanded', shouldOpenAll ? 'true' : 'false');
-        }
+  const origamiFilterPills = document.querySelectorAll('#origami-faq-filters .origami-filter-pill');
+  if (origamiFilterPills.length > 0) {
+    origamiFilterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        origamiFilterPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const filter = pill.getAttribute('data-filter') || 'all';
+        const cards = document.querySelectorAll('.origami-card');
+        cards.forEach(card => {
+          const category = card.getAttribute('data-category') || 'general';
+          if (filter === 'all' || category === filter) {
+            card.style.display = 'block';
+            card.style.animation = 'fadeIn 0.25s ease-out';
+          } else {
+            card.style.display = 'none';
+          }
+        });
       });
-      updateOrigamiMasterState();
     });
   }
 
@@ -563,7 +542,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       const offset = circumference - (score / 100) * circumference;
       scoreProgressEl.style.strokeDashoffset = offset;
       if (score >= 80) {
-        scoreProgressEl.style.stroke = '#10b981';
+        scoreProgressEl.style.stroke = '#14b8a6';
       } else if (score >= 50) {
         scoreProgressEl.style.stroke = '#f59e0b';
       } else {
@@ -831,7 +810,10 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   const nativeShareBtn = document.getElementById('native-share-btn');
 
   function getCanonicalShareUrl() {
-    // Official canonical domain is rankoraa.vercel.app
+    const origin = window.location.origin;
+    if (origin && !origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+      return origin.endsWith('/') ? origin : (origin + '/');
+    }
     return 'https://rankoraa.vercel.app/';
   }
 
@@ -896,7 +878,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
           title: 'Rankora — AI SEO Intelligence & SERP Simulator',
           text: 'Generate search-ready SEO metadata and preview Google search snippets with AI.',
           url: shareUrl
-        }).catch(() => {});
+        }).catch(() => { });
       } else {
         copyToClipboard(shareUrl, nativeShareBtn, 'Link copied to clipboard!');
       }
@@ -1129,7 +1111,6 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       }
 
       if (list.length === 0) {
-        track.className = 'testimonials-track';
         track.innerHTML = `
           <div class="community-empty-card">
             <p class="empty-title">No approved testimonials yet.</p>
@@ -1139,13 +1120,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
         return;
       }
 
-      // Replicate items so we always have at least 6 cards for an uninterrupted full-width marquee loop
-      let displayList = [...list];
-      while (displayList.length < 6) {
-        displayList = displayList.concat(list);
-      }
-
-      function renderCard(item) {
+      track.innerHTML = list.map(item => {
         const rating = Math.max(1, Math.min(5, Number(item.rating) || 5));
         const stars = '★'.repeat(rating);
         const name = escapeHtml(item.name || 'Anonymous');
@@ -1169,44 +1144,26 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
             <p class="testimonial-quote">“${escapeHtml(item.message || '')}”</p>
           </div>
         `;
-      }
-
-      const groupHtml = displayList.map(renderCard).join('');
-      track.className = 'testimonials-track testimonials-marquee-track';
-      track.innerHTML = `
-        <div class="marquee-group">${groupHtml}</div>
-        <div class="marquee-group" aria-hidden="true">${groupHtml}</div>
-      `;
+      }).join('');
     } catch (err) {
       console.error('Failed to load testimonials:', err);
-      track.className = 'testimonials-track';
       track.innerHTML = `<div class="community-empty-card"><p>Unable to load testimonials at this time.</p></div>`;
     }
   }
 
-  // Carousel / Marquee navigation
+  // Carousel navigation
   const prevBtn = document.getElementById('testimonials-prev-btn');
   const nextBtn = document.getElementById('testimonials-next-btn');
   const scrollContainer = document.getElementById('testimonials-scroll-container');
 
   if (prevBtn && scrollContainer) {
     prevBtn.addEventListener('click', () => {
-      const track = document.getElementById('testimonials-track');
-      if (track) {
-        track.classList.add('is-paused');
-        setTimeout(() => track.classList.remove('is-paused'), 4000);
-      }
-      scrollContainer.scrollBy({ left: -380, behavior: 'smooth' });
+      scrollContainer.scrollBy({ left: -360, behavior: 'smooth' });
     });
   }
   if (nextBtn && scrollContainer) {
     nextBtn.addEventListener('click', () => {
-      const track = document.getElementById('testimonials-track');
-      if (track) {
-        track.classList.add('is-paused');
-        setTimeout(() => track.classList.remove('is-paused'), 4000);
-      }
-      scrollContainer.scrollBy({ left: 380, behavior: 'smooth' });
+      scrollContainer.scrollBy({ left: 360, behavior: 'smooth' });
     });
   }
 
@@ -1296,35 +1253,6 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   const submitBtnText = document.getElementById('fb-submit-btn-text');
   const messageInput = document.getElementById('fb-input-message');
   const statusEl = document.getElementById('inline-feedback-status');
-  const charCountEl = document.getElementById('fb-char-count');
-  const promptChips = document.querySelectorAll('.prompt-chip');
-
-  // Quick Prompt Chips
-  if (promptChips.length > 0 && messageInput) {
-    promptChips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        const text = chip.getAttribute('data-text') || '';
-        messageInput.value = text;
-        messageInput.focus();
-        messageInput.dispatchEvent(new Event('input'));
-      });
-    });
-  }
-
-  // Live Character Counter
-  if (messageInput && charCountEl) {
-    messageInput.addEventListener('input', () => {
-      const len = messageInput.value.length;
-      charCountEl.textContent = `${len} / 500`;
-      if (len >= 450) {
-        charCountEl.style.color = '#EF4444';
-      } else if (len >= 20) {
-        charCountEl.style.color = '#10B981';
-      } else {
-        charCountEl.style.color = '#94A3B8';
-      }
-    });
-  }
 
   // Type toggle
   if (typeToggleBtns.length > 0 && typeInput) {
@@ -1336,62 +1264,36 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
         typeInput.value = selectedType;
 
         if (selectedType === 'issue') {
-          if (submitBtnText) submitBtnText.textContent = 'Submit Issue to Tracker 🚀';
-          if (messageInput) messageInput.placeholder = 'Describe the bug, layout issue, or feature request in detail...';
+          if (submitBtnText) submitBtnText.textContent = 'Submit Issue Report';
+          if (messageInput) messageInput.placeholder = 'Describe the bug, error, or feature request in detail...';
           if (ratingGroup) ratingGroup.style.display = 'none';
         } else {
-          if (submitBtnText) submitBtnText.textContent = 'Submit Testimonial ✨';
-          if (messageInput) messageInput.placeholder = 'Tell us how Rankora helped calibrate your metadata or what needs improvement...';
+          if (submitBtnText) submitBtnText.textContent = 'Submit Testimonial';
+          if (messageInput) messageInput.placeholder = 'Tell us how Rankora helped calibrate your metadata...';
           if (ratingGroup) ratingGroup.style.display = 'block';
         }
       });
     });
   }
 
-  // Dynamic Star rating descriptors & micro-interactions
-  const ratingDescriptors = {
-    1: '1 of 5 · Needs major improvements',
-    2: '2 of 5 · Could be better',
-    3: '3 of 5 · Good, some room to grow',
-    4: '4 of 5 · Great experience!',
-    5: '5 of 5 · Exceptional — highly recommended!'
-  };
-
+  // Star rating
   if (starBtns.length > 0 && ratingInput) {
     starBtns.forEach(star => {
-      // Hover preview
-      star.addEventListener('mouseenter', () => {
-        const val = parseInt(star.getAttribute('data-val') || '5', 10);
-        if (ratingLabel) ratingLabel.textContent = ratingDescriptors[val] || `${val} of 5 stars`;
-        starBtns.forEach(s => {
-          const sVal = parseInt(s.getAttribute('data-val') || '1', 10);
-          s.classList.toggle('active', sVal <= val);
-        });
-      });
-
-      // Select rating
       star.addEventListener('click', () => {
         const val = parseInt(star.getAttribute('data-val') || '5', 10);
         ratingInput.value = val;
-        if (ratingLabel) ratingLabel.textContent = ratingDescriptors[val] || `${val} of 5 stars`;
+        if (ratingLabel) ratingLabel.textContent = `${val} of 5 stars`;
+
         starBtns.forEach(s => {
           const sVal = parseInt(s.getAttribute('data-val') || '1', 10);
-          s.classList.toggle('active', sVal <= val);
+          if (sVal <= val) {
+            s.classList.add('active');
+          } else {
+            s.classList.remove('active');
+          }
         });
       });
     });
-
-    const starContainer = document.getElementById('interactive-star-rating');
-    if (starContainer) {
-      starContainer.addEventListener('mouseleave', () => {
-        const currentVal = parseInt(ratingInput.value || '5', 10);
-        if (ratingLabel) ratingLabel.textContent = ratingDescriptors[currentVal] || `${currentVal} of 5 stars`;
-        starBtns.forEach(s => {
-          const sVal = parseInt(s.getAttribute('data-val') || '1', 10);
-          s.classList.toggle('active', sVal <= currentVal);
-        });
-      });
-    }
   }
 
   // Inline Form Submit
@@ -1405,19 +1307,16 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
       if (!message) {
         if (statusEl) {
-          statusEl.textContent = 'Please enter your message.';
+          statusEl.textContent = 'Please enter a message.';
           statusEl.className = 'inline-feedback-status error';
         }
         return;
       }
 
       const submitBtn = document.getElementById('fb-submit-btn');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.6';
-      }
+      if (submitBtn) submitBtn.disabled = true;
       if (statusEl) {
-        statusEl.textContent = 'Submitting your feedback...';
+        statusEl.textContent = 'Submitting...';
         statusEl.className = 'inline-feedback-status pending';
       }
 
@@ -1440,15 +1339,15 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
           inlineForm.reset();
           if (typeInput) typeInput.value = 'testimonial';
           if (ratingInput) ratingInput.value = '5';
-          if (ratingLabel) ratingLabel.textContent = ratingDescriptors[5];
+          if (ratingLabel) ratingLabel.textContent = '5 of 5 stars';
           starBtns.forEach(s => s.classList.add('active'));
           typeToggleBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-type') === 'testimonial'));
           if (ratingGroup) ratingGroup.style.display = 'block';
-          if (submitBtnText) submitBtnText.textContent = 'Submit Testimonial ✨';
+          if (submitBtnText) submitBtnText.textContent = 'Submit Testimonial';
 
           if (statusEl) {
             statusEl.textContent = type === 'testimonial'
-              ? '✓ Thank you! Your testimonial has been received and will appear once reviewed by admin.'
+              ? '✓ Testimonial submitted! It will appear once reviewed by admin.'
               : '✓ Issue logged! It now appears on the public tracker.';
             statusEl.className = 'inline-feedback-status success';
           }
@@ -1469,10 +1368,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
           statusEl.className = 'inline-feedback-status error';
         }
       } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.style.opacity = '1';
-        }
+        if (submitBtn) submitBtn.disabled = false;
       }
     });
   }
@@ -1896,5 +1792,4 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   // Initial load
   loadTestimonials();
   loadIssues();
-
 });

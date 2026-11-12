@@ -403,22 +403,35 @@ button {
 }
 
 /* ==========================================================================
-   02 — Hero Section: Asymmetric Split Screen (OneText Inspired)
+   02 — Hero Section: Asymmetric Split Screen with Kinetic Art Background
    ========================================================================== */
 .hero-stage-section {
   position: relative;
   width: 100%;
-  padding: 10px 0 48px 0;
-  margin-bottom: 24px;
+  padding: 40px 40px 48px 40px;
+  margin-bottom: 28px;
+  border-radius: 28px;
+  background-color: #0C1015;
+  background-image: 
+    linear-gradient(90deg, #0C1015 0%, #0C1015 36%, rgba(12, 16, 21, 0.92) 50%, rgba(12, 16, 21, 0.3) 72%, transparent 100%),
+    radial-gradient(circle at 80% 40%, rgba(37, 99, 235, 0.22) 0%, transparent 60%),
+    url('/static/hero-kinetic.jpg?v=9.0');
+  background-repeat: no-repeat;
+  background-position: center right;
+  background-size: cover;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  overflow: hidden;
 }
 
 .hero-stage-container {
   display: grid;
-  grid-template-columns: 1.12fr 0.98fr;
+  grid-template-columns: 1.18fr 0.82fr;
   align-items: center;
   gap: 32px;
-  min-height: 520px;
+  min-height: 480px;
   position: relative;
+  z-index: 2;
 }
 
 /* Left Column */
@@ -455,12 +468,12 @@ button {
   align-items: center;
   gap: 10px;
   padding: 7px 8px 7px 16px;
-  background: rgba(19, 31, 50, 0.65);
-  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  background: rgba(19, 31, 50, 0.75);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
   border-radius: 14px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   max-width: 520px;
   width: 100%;
   margin-bottom: 28px;
@@ -469,8 +482,8 @@ button {
 
 .hero-interactive-bar:focus-within {
   border-color: #2ab4d9;
-  background: rgba(19, 31, 50, 0.9);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(42, 180, 217, 0.3);
+  background: rgba(19, 31, 50, 0.95);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 24px rgba(42, 180, 217, 0.35);
   transform: translateY(-2px);
 }
 
@@ -482,7 +495,7 @@ button {
   font-size: 0.8rem;
   font-weight: 700;
   color: #2ab4d9;
-  background: rgba(42, 180, 217, 0.12);
+  background: rgba(42, 180, 217, 0.14);
   padding: 4px 8px;
   border-radius: 6px;
   border: 1px solid rgba(42, 180, 217, 0.3);
@@ -501,7 +514,7 @@ button {
 }
 
 .hero-bar-input::placeholder {
-  color: rgba(255, 255, 255, 0.42);
+  color: rgba(255, 255, 255, 0.45);
   font-size: 0.9rem;
 }
 
@@ -558,51 +571,20 @@ button {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .micro-metric-sep {
   width: 1px;
   height: 28px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
 }
 
-/* Right Column: 3D Kinetic Canvas Stage */
-.hero-right-column {
-  position: relative;
+/* Right Spacer allows the 3D kinetic sculpture in background to shine unobstructed */
+.hero-right-spacer {
+  min-height: 440px;
   width: 100%;
-  height: 100%;
-  min-height: 520px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 4;
-}
-
-.hero-kinetic-frame {
-  width: 100%;
-  height: 100%;
-  min-height: 500px;
-  position: relative;
-}
-
-#hero-three-canvas {
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-}
-
-.kinetic-glow-backdrop {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 480px;
-  height: 480px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.28) 0%, rgba(42, 180, 217, 0.15) 45%, transparent 70%);
-  filter: blur(48px);
   pointer-events: none;
-  z-index: -1;
 }
 
 /* ==========================================================================
