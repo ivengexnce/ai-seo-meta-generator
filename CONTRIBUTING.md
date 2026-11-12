@@ -117,3 +117,4 @@ To ensure smooth reviews and fast merges, please follow these guidelines:
 ## 💬 Community & Questions
 
 Have questions or need assistance? Feel free to open a [GitHub Issue](https://github.com/ivengexnce/ai-seo-meta-generator/issues) or reach out via our feedback modal directly in the app.
+
