@@ -268,10 +268,28 @@ def gsc_file_verification(token):
 
 
 @app.route("/favicon.ico")
+def favicon_ico():
+    """Serve binary multi-resolution favicon.ico for Googlebot and search crawlers."""
+    return send_from_directory(app.static_folder, "favicon.ico", mimetype="image/x-icon")
+
+
 @app.route("/favicon.svg")
-def favicon():
+def favicon_svg():
     """Serve scalable SVG favicon directly."""
     return send_from_directory(app.static_folder, "favicon.svg", mimetype="image/svg+xml")
+
+
+@app.route("/favicon-48x48.png")
+def favicon_48():
+    """Serve Google Search compliant 48x48 favicon PNG."""
+    return send_from_directory(app.static_folder, "favicon-48x48.png", mimetype="image/png")
+
+
+@app.route("/apple-touch-icon.png")
+@app.route("/apple-touch-icon-precomposed.png")
+def apple_touch_icon():
+    """Serve Apple iOS and web clip icon."""
+    return send_from_directory(app.static_folder, "apple-touch-icon.png", mimetype="image/png")
 
 
 @app.route("/site.webmanifest")
