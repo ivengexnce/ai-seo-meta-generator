@@ -33,7 +33,8 @@ load_dotenv(dotenv_path=ENV_FILE, override=True)
 app = Flask(
     __name__,
     template_folder=os.path.join(BASE_DIR, "templates"),
-    static_folder=os.path.join(BASE_DIR, "static"),
+    static_folder=os.path.join(BASE_DIR, "public", "static"),
+    static_url_path="/static",
 )
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
