@@ -5,7 +5,7 @@ import re
 import threading
 import uuid
 import warnings
-from flask import Flask, abort, jsonify, redirect, render_template, request, send_from_directory
+from flask import Flask, abort, jsonify, render_template, request, send_from_directory
 from dotenv import load_dotenv
 
 # Suppress deprecation warning from legacy SDK
@@ -118,20 +118,9 @@ def resolve_canonical_base_url() -> str:
     """Dynamically resolve canonical base URL for social cards, legal pages, and SEO tags."""
     proto = request.headers.get("X-Forwarded-Proto", request.scheme)
     host = request.headers.get("X-Forwarded-Host", request.host or "")
-    if not host or "127.0.0.1" in host or "localhost" in host or "ai-seo-meta-generator" in host:
+    if not host or "127.0.0.1" in host or "localhost" in host:
         return os.getenv("CANONICAL_URL", "https://rankoraa.vercel.app")
     return f"{proto}://{host}".rstrip("/")
-
-
-@app.before_request
-def canonical_domain_redirect():
-    """Ensure older legacy deployment host 301 redirects to official rankoraa domain."""
-    host = request.headers.get("X-Forwarded-Host", request.host or "")
-    if "ai-seo-meta-generator.vercel.app" in host:
-        target_path = request.path
-        if request.query_string:
-            target_path += f"?{request.query_string.decode('utf-8')}"
-        return redirect(f"https://rankoraa.vercel.app{target_path}", code=301)
 
 
 @app.route("/")
