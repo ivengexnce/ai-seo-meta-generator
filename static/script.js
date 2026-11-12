@@ -1129,6 +1129,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       }
 
       if (list.length === 0) {
+        track.className = 'testimonials-track';
         track.innerHTML = `
           <div class="community-empty-card">
             <p class="empty-title">No approved testimonials yet.</p>
@@ -1138,7 +1139,13 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
         return;
       }
 
-      track.innerHTML = list.map(item => {
+      // Replicate items so we always have at least 6 cards for an uninterrupted full-width marquee loop
+      let displayList = [...list];
+      while (displayList.length < 6) {
+        displayList = displayList.concat(list);
+      }
+
+      function renderCard(item) {
         const rating = Math.max(1, Math.min(5, Number(item.rating) || 5));
         const stars = '★'.repeat(rating);
         const name = escapeHtml(item.name || 'Anonymous');
@@ -1162,26 +1169,44 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
             <p class="testimonial-quote">“${escapeHtml(item.message || '')}”</p>
           </div>
         `;
-      }).join('');
+      }
+
+      const groupHtml = displayList.map(renderCard).join('');
+      track.className = 'testimonials-track testimonials-marquee-track';
+      track.innerHTML = `
+        <div class="marquee-group">${groupHtml}</div>
+        <div class="marquee-group" aria-hidden="true">${groupHtml}</div>
+      `;
     } catch (err) {
       console.error('Failed to load testimonials:', err);
+      track.className = 'testimonials-track';
       track.innerHTML = `<div class="community-empty-card"><p>Unable to load testimonials at this time.</p></div>`;
     }
   }
 
-  // Carousel navigation
+  // Carousel / Marquee navigation
   const prevBtn = document.getElementById('testimonials-prev-btn');
   const nextBtn = document.getElementById('testimonials-next-btn');
   const scrollContainer = document.getElementById('testimonials-scroll-container');
 
   if (prevBtn && scrollContainer) {
     prevBtn.addEventListener('click', () => {
-      scrollContainer.scrollBy({ left: -360, behavior: 'smooth' });
+      const track = document.getElementById('testimonials-track');
+      if (track) {
+        track.classList.add('is-paused');
+        setTimeout(() => track.classList.remove('is-paused'), 4000);
+      }
+      scrollContainer.scrollBy({ left: -380, behavior: 'smooth' });
     });
   }
   if (nextBtn && scrollContainer) {
     nextBtn.addEventListener('click', () => {
-      scrollContainer.scrollBy({ left: 360, behavior: 'smooth' });
+      const track = document.getElementById('testimonials-track');
+      if (track) {
+        track.classList.add('is-paused');
+        setTimeout(() => track.classList.remove('is-paused'), 4000);
+      }
+      scrollContainer.scrollBy({ left: 380, behavior: 'smooth' });
     });
   }
 
@@ -1271,6 +1296,35 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
   const submitBtnText = document.getElementById('fb-submit-btn-text');
   const messageInput = document.getElementById('fb-input-message');
   const statusEl = document.getElementById('inline-feedback-status');
+  const charCountEl = document.getElementById('fb-char-count');
+  const promptChips = document.querySelectorAll('.prompt-chip');
+
+  // Quick Prompt Chips
+  if (promptChips.length > 0 && messageInput) {
+    promptChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const text = chip.getAttribute('data-text') || '';
+        messageInput.value = text;
+        messageInput.focus();
+        messageInput.dispatchEvent(new Event('input'));
+      });
+    });
+  }
+
+  // Live Character Counter
+  if (messageInput && charCountEl) {
+    messageInput.addEventListener('input', () => {
+      const len = messageInput.value.length;
+      charCountEl.textContent = `${len} / 500`;
+      if (len >= 450) {
+        charCountEl.style.color = '#EF4444';
+      } else if (len >= 20) {
+        charCountEl.style.color = '#10B981';
+      } else {
+        charCountEl.style.color = '#94A3B8';
+      }
+    });
+  }
 
   // Type toggle
   if (typeToggleBtns.length > 0 && typeInput) {
@@ -1282,12 +1336,12 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
         typeInput.value = selectedType;
 
         if (selectedType === 'issue') {
-          if (submitBtnText) submitBtnText.textContent = 'Submit Issue Report';
-          if (messageInput) messageInput.placeholder = 'Describe the bug, error, or feature request in detail...';
+          if (submitBtnText) submitBtnText.textContent = 'Submit Issue to Tracker 🚀';
+          if (messageInput) messageInput.placeholder = 'Describe the bug, layout issue, or feature request in detail...';
           if (ratingGroup) ratingGroup.style.display = 'none';
         } else {
-          if (submitBtnText) submitBtnText.textContent = 'Submit Testimonial';
-          if (messageInput) messageInput.placeholder = 'Tell us how Rankora helped calibrate your metadata...';
+          if (submitBtnText) submitBtnText.textContent = 'Submit Testimonial ✨';
+          if (messageInput) messageInput.placeholder = 'Tell us how Rankora helped calibrate your metadata or what needs improvement...';
           if (ratingGroup) ratingGroup.style.display = 'block';
         }
       });
@@ -1390,7 +1444,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
           starBtns.forEach(s => s.classList.add('active'));
           typeToggleBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-type') === 'testimonial'));
           if (ratingGroup) ratingGroup.style.display = 'block';
-          if (submitBtnText) submitBtnText.textContent = 'Submit Testimonial';
+          if (submitBtnText) submitBtnText.textContent = 'Submit Testimonial ✨';
 
           if (statusEl) {
             statusEl.textContent = type === 'testimonial'

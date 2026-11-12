@@ -57,7 +57,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=6.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=7.0">
 
   <!-- SEO Structured Data: SoftwareApplication with AggregateRating & Reviews for Google Rich Snippets -->
   <script type="application/ld+json">
@@ -1034,7 +1034,6 @@
       </div>
 
       <!-- 1. Inline Feedback Submission Form (Community Voice & Roadmap) -->
-      <!-- Inline Feedback Submission Form -->
       <div class="community-block inline-feedback-block">
         <div class="inline-feedback-header">
           <div class="inline-feedback-badge-row">
@@ -1042,7 +1041,7 @@
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
               </svg>
-              Community Voice &amp; Roadmap
+              Builder Voice &amp; Roadmap
             </span>
           </div>
           <h3 class="community-block-title">Share Your Experience or Report an Issue</h3>
@@ -1061,11 +1060,11 @@
               <div class="feedback-type-toggle" id="fb-type-toggle">
                 <button type="button" class="type-toggle-btn active" data-type="testimonial">
                   <span class="btn-icon">★</span>
-                  <span>Testimonial</span>
+                  <span>Leave Testimonial</span>
                 </button>
                 <button type="button" class="type-toggle-btn" data-type="issue">
                   <span class="btn-icon">⚡</span>
-                  <span>Report Issue / Bug</span>
+                  <span>Report Bug / Feature</span>
                 </button>
               </div>
               <input type="hidden" id="fb-input-type" value="testimonial">
@@ -1088,25 +1087,34 @@
           </div>
 
           <div class="form-group">
-            <label for="fb-input-message" class="field-label">Your Message <span style="color: var(--accent-teal);">*</span></label>
-            <textarea id="fb-input-message" class="text-input" rows="3" placeholder="Tell us how Rankora helped calibrate your metadata or what needs improvement..." required></textarea>
+            <div class="message-label-row">
+              <label for="fb-input-message" class="field-label">Your Message <span style="color: var(--accent-teal);">*</span></label>
+              <span class="char-count" id="fb-char-count">0 / 500</span>
+            </div>
+            <div class="quick-prompt-chips" id="quick-prompt-chips">
+              <span class="chips-hint">💡 Tap an idea starter:</span>
+              <button type="button" class="prompt-chip" data-text="Rankora is lightning fast and made tuning SERP pixel widths effortless!">⚡ Lightning-fast SERP</button>
+              <button type="button" class="prompt-chip" data-text="The Google SERP snippet preview is spot on with Search Console!">🎯 Spot-on preview</button>
+              <button type="button" class="prompt-chip" data-text="Would love to see batch URL analysis and CSV export support next!">💡 Feature request</button>
+              <button type="button" class="prompt-chip" data-text="Found a small layout glitch with the mobile snippet rendering...">🐛 Found a bug</button>
+            </div>
+            <textarea id="fb-input-message" class="text-input" rows="3" placeholder="Tell us how Rankora helped calibrate your metadata or what needs improvement..." maxlength="500" required></textarea>
           </div>
 
           <div class="inline-form-action-row">
             <div id="inline-feedback-status" class="inline-feedback-status" aria-live="polite"></div>
             <button type="submit" id="fb-submit-btn" class="fb-submit-cta">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="22" y1="2" x2="11" y2="13"></line>
                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
               </svg>
-              <span id="fb-submit-btn-text">Submit Testimonial</span>
+              <span id="fb-submit-btn-text">Submit Testimonial ✨</span>
             </button>
           </div>
         </form>
       </div>
 
       <!-- 2. Public Issues & Feature Tracker -->
-      <!-- Public Issues & Roadmap Block -->
       <div class="community-block issues-block">
         <div class="community-block-header">
           <div class="community-block-title-row">
@@ -1127,8 +1135,7 @@
         </div>
       </div>
 
-      <!-- 3. Testimonials Horizontal Carousel Block -->
-      <!-- Testimonials Horizontal Carousel Block -->
+      <!-- 3. Testimonials Horizontal Marquee Block -->
       <div class="community-block testimonials-block">
         <div class="community-block-header">
           <div class="community-block-title-row">
@@ -1142,14 +1149,13 @@
         </div>
 
         <div class="testimonials-scroll-container" id="testimonials-scroll-container">
-          <div class="testimonials-track" id="testimonials-track">
+          <div class="testimonials-track testimonials-marquee-track" id="testimonials-track">
             <!-- Dynamically populated via vanilla JS from /api/testimonials -->
             <div class="community-loading-state">Loading verified testimonials...</div>
           </div>
         </div>
       </div>
-    
-</section>
+    </section>
 
     <!-- 05 — Minimal Modern Footer -->
     <footer class="app-footer">
@@ -1545,7 +1551,7 @@
     </div>
   </div>
 
-  <script src="{{ url_for('static', filename='script.js') }}?v=6.0"></script>
+  <script src="{{ url_for('static', filename='script.js') }}?v=7.0"></script>
 </body>
 
 </html>
