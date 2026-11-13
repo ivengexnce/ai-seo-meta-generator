@@ -745,65 +745,68 @@ ol {
   flex-wrap: wrap;
 }
 
-.shelf-quote-box {
+/* ---- Live Trust Stat Blocks ---- */
+.shelf-stat-block {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-width: 260px;
+  align-items: center;
+  gap: 4px;
+  min-width: 80px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
-.shelf-quote-headline {
+.shelf-stat-num {
   font-family: var(--font-display);
-  font-size: 2.1rem;
+  font-size: 2rem;
   font-weight: 800;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.045em;
   color: #fff;
   line-height: 1;
 }
 
-.shelf-author-flex {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 4px;
+.shelf-stat-num--accent {
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.shelf-avatar-pill {
-  width: 36px;
+.shelf-stat-unit {
+  font-size: 1.1rem;
+  font-weight: 600;
+  opacity: 0.65;
+}
+
+.shelf-stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  max-width: 110px;
+}
+
+.shelf-stat-divider {
+  width: 1px;
   height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--purple), var(--cyan));
-  color: #fff;
-  font-weight: 800;
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 10px var(--purple-glow);
+  background: rgba(255, 255, 255, 0.1);
   flex-shrink: 0;
 }
 
-.shelf-author-info {
+.shelf-compat-cluster {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  margin-left: auto;
 }
 
-.shelf-name {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.shelf-role {
-  font-size: 0.74rem;
+.shelf-compat-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--text-muted);
-}
-
-.shelf-rating {
-  color: #f59e0b;
-  letter-spacing: 2px;
-  font-size: 0.88rem;
-  margin-left: 6px;
 }
 
 .shelf-platforms-cluster {
