@@ -1166,9 +1166,10 @@
       return s;
     }
 
-    // FIX #5: single standard Authorization: Bearer header
+    // Standard Authorization: Bearer & X-Admin-Secret headers
     function buildHeaders(extra = {}) {
-      return { 'Authorization': `Bearer ${getSecret()}`, ...extra };
+      const sec = getSecret();
+      return { 'Authorization': `Bearer ${sec}`, 'X-Admin-Secret': sec, ...extra };
     }
 
     // Pre-fill from sessionStorage only (never from URL or literal)
