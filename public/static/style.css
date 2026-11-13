@@ -730,100 +730,128 @@ ol {
 }
 
 .hero-shelf-dock {
-  background: rgba(10, 16, 28, 0.88);
+  background: rgba(10, 16, 28, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: var(--r-xl);
-  padding: 22px 30px;
+  padding: 24px 32px;
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
-  box-shadow: 0 22px 52px rgba(0, 0, 0, 0.55),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 32px;
+}
+
+/* Left: Authority & Verification Box */
+.shelf-authority-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 480px;
+  flex: 1 1 auto;
+}
+
+.shelf-authority-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
-/* ---- Live Trust Stat Blocks ---- */
-.shelf-stat-block {
-  display: flex;
-  flex-direction: column;
+.shelf-verified-pill {
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
-  min-width: 80px;
-  text-align: center;
-  flex-shrink: 0;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.shelf-stat-num {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 800;
-  letter-spacing: -0.045em;
-  color: #fff;
-  line-height: 1;
+.shelf-verified-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
 }
 
-.shelf-stat-num--accent {
-  background: linear-gradient(135deg, var(--purple), var(--cyan));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.shelf-stat-unit {
-  font-size: 1.1rem;
+.shelf-spec-pill {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
   font-weight: 600;
-  opacity: 0.65;
+  color: #94a3b8;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.shelf-stat-label {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  letter-spacing: 0.01em;
-  line-height: 1.35;
-  max-width: 110px;
+.shelf-authority-headline {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fff;
+  line-height: 1.15;
+  margin-top: 2px;
 }
 
-.shelf-stat-divider {
+.shelf-authority-subtext {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Vertical Divider between authority and platform ecosystem */
+.shelf-vertical-divider {
   width: 1px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 64px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.12) 70%, transparent);
   flex-shrink: 0;
 }
 
+/* Right: Framework integration cluster */
 .shelf-compat-cluster {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   align-items: flex-start;
-  margin-left: auto;
+  flex: 0 0 auto;
 }
 
 .shelf-compat-label {
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: #64748b;
 }
 
 .shelf-platforms-cluster {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
 }
 
 .shelf-platform-card {
-  padding: 13px 22px;
+  padding: 10px 16px;
   border-radius: var(--r-md);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
   transition: background var(--t-normal), border-color var(--t-normal),
     transform var(--t-normal) var(--ease-out),
     box-shadow var(--t-normal);
@@ -831,18 +859,47 @@ ol {
 }
 
 .shelf-platform-card:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: var(--cyan-border);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(34, 211, 238, 0.4);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 16px var(--cyan-glow);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 16px rgba(34, 211, 238, 0.15);
+}
+
+.shelf-platform-icon {
+  color: rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+  transition: color var(--t-fast);
+}
+
+.shelf-platform-card:hover .shelf-platform-icon {
+  color: #22d3ee;
 }
 
 .platform-name {
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.88);
   letter-spacing: -0.01em;
+}
+
+@media (max-width: 1024px) {
+  .hero-shelf-dock {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 22px 24px;
+  }
+  .shelf-vertical-divider {
+    display: none;
+  }
+  .shelf-compat-cluster {
+    width: 100%;
+  }
+  .shelf-platforms-cluster {
+    flex-wrap: wrap;
+  }
+}
 }
 
 
