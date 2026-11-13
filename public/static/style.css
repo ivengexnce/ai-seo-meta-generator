@@ -890,16 +890,18 @@ ol {
     gap: 20px;
     padding: 22px 24px;
   }
+
   .shelf-vertical-divider {
     display: none;
   }
+
   .shelf-compat-cluster {
     width: 100%;
   }
+
   .shelf-platforms-cluster {
     flex-wrap: wrap;
   }
-}
 }
 
 
