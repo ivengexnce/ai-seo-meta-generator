@@ -180,9 +180,11 @@
           <a href="/" class="brand-pill-tag" aria-label="Rankora Home">
             <span class="brand-pill-icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M5 17L12 7L19 17" stroke="#8952e0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M5 17L12 7L19 17" stroke="#8952e0" stroke-width="2.6" stroke-linecap="round"
+                  stroke-linejoin="round" />
                 <circle cx="12" cy="7" r="2.5" fill="#0C1015" stroke="#2ab4d9" stroke-width="1.8" />
-                <path d="M9 17L12 12.5L15 17" stroke="#00FF90" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M9 17L12 12.5L15 17" stroke="#00FF90" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
               </svg>
             </span>
             <span class="brand-pill-text">rankora<span class="brand-dot">.</span></span>
@@ -199,14 +201,11 @@
 
         <!-- Right Action Buttons -->
         <div class="nav-pill-actions">
-          <a href="/admin" class="nav-pill-link-btn" title="Private Admin Console">
-            <span>Admin</span>
-          </a>
-
           <a href="/studio" class="nav-pill-cta-btn">
             <span>Get started</span>
             <span class="cta-arrow-circle">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
@@ -239,8 +238,11 @@
         <!-- LEFT COLUMN: Editorial Display Content & Quick-Interactive Input -->
         <div class="hero-left-column">
           <h1 class="hero-monumental-title anime-reveal">
-            20% More Organic CTR.<br>
-            Guaranteed.
+            Make Every Search<br>
+            <span
+              style="background: linear-gradient(100deg, #A99BFF 0%, #D0C7FF 50%, #8D9AFF 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+              Impression Count.
+            </span>
           </h1>
 
           <p class="hero-editorial-subtext anime-reveal">
@@ -298,18 +300,64 @@
         <div class="hero-right-spacer" aria-hidden="true"></div>
       </div>
 
-      <!-- BOTTOM SHELF: Floating Social Proof & Brand Ecosystem Dock -->
+            <!-- BOTTOM SHELF: Live Trust Metrics + Platform Compatibility -->
       <div class="hero-shelf-wrapper anime-reveal">
         <div class="hero-shelf-dock">
-          <!-- Left: Big Impact Quote -->
-          <div class="shelf-quote-box">
-            <div class="shelf-quote-headline">“Incredible”</div>
-            <div class="shelf-author-flex">
-              <div class="shelf-avatar-pill">AR</div>
-              <div class="shelf-author-info">
-                <div class="shelf-name">Alex Rivera</div>
-                <div class="shelf-role">Founder of Native SEO &amp; TechRank</div>
+
+          <!-- Stat 1 -->
+          <div class="shelf-stat-block">
+            <span class="shelf-stat-num">2.7<span class="shelf-stat-unit">s</span></span>
+            <span class="shelf-stat-label">Avg. generation time</span>
+          </div>
+
+          <div class="shelf-stat-divider" aria-hidden="true"></div>
+
+          <!-- Stat 2 -->
+          <div class="shelf-stat-block">
+            <span class="shelf-stat-num">100<span class="shelf-stat-unit">%</span></span>
+            <span class="shelf-stat-label">SERP pixel fidelity</span>
+          </div>
+
+          <div class="shelf-stat-divider" aria-hidden="true"></div>
+
+          <!-- Stat 3 -->
+          <div class="shelf-stat-block">
+            <span class="shelf-stat-num">0<span class="shelf-stat-unit">ms</span></span>
+            <span class="shelf-stat-label">Data retained server-side</span>
+          </div>
+
+          <div class="shelf-stat-divider" aria-hidden="true"></div>
+
+          <!-- Stat 4 -->
+          <div class="shelf-stat-block">
+            <span class="shelf-stat-num shelf-stat-num--accent">4</span>
+            <span class="shelf-stat-label">Output formats&thinsp;&mdash;&thinsp;meta, OG, Twitter, JSON-LD</span>
+          </div>
+
+          <!-- Works-with cluster -->
+          <div class="shelf-compat-cluster">
+            <span class="shelf-compat-label">Works with</span>
+            <div class="shelf-platforms-cluster">
+              <div class="shelf-platform-card" title="Next.js App &amp; Pages Router SEO">
+                <span class="platform-name">Next.js</span>
               </div>
+              <div class="shelf-platform-card" title="Vercel Edge Functions &amp; Headers">
+                <span class="platform-name">Vercel</span>
+              </div>
+              <div class="shelf-platform-card" title="Shopify Liquid Meta &amp; Schema">
+                <span class="platform-name">Shopify</span>
+              </div>
+              <div class="shelf-platform-card" title="Astro Islands SSR SEO">
+                <span class="platform-name">Astro</span>
+              </div>
+              <div class="shelf-platform-card" title="WordPress &amp; Headless CMS">
+                <span class="platform-name">WordPress</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
               <div class="shelf-rating" aria-label="5 out of 5 stars">★★★★★</div>
             </div>
           </div>
@@ -336,42 +384,248 @@
       </div>
     </section>
 
-    <!-- 02 — Workflow Section -->
+    <!-- 02 — Workflow Pipeline Section -->
     <section class="workflow-section" id="how-it-works">
-      <div class="section-header">
-        <span class="section-tag">02 — WORKFLOW</span>
-        <h2 class="section-title">Enter content &rarr; Generate &rarr; Review &rarr; Preview &rarr; Export</h2>
-        <p class="section-desc">Rankora is a focused SEO productivity workspace that turns raw page content into
-          production-ready metadata in seconds.</p>
+      <div class="workflow-section-glow" aria-hidden="true"></div>
+
+      <div class="section-header workflow-header">
+        <div class="workflow-badge-pill">
+          <span class="workflow-pulse-dot"></span>
+          <span class="workflow-badge-text">02 · END-TO-END PIPELINE</span>
+        </div>
+        <h2 class="section-title workflow-main-title">
+          From Raw Brief to Live Google SERP.
+          <span class="workflow-title-gradient">In 4 Deterministic Steps.</span>
+        </h2>
+        <p class="section-desc">
+          Rankora transforms messy article drafts, SaaS landing copy, and product briefs into calibrated, high-CTR Google SERP snippets in under 3 seconds.
+        </p>
+      </div>
+
+      <!-- Desktop Pipeline Stepper Track -->
+      <div class="workflow-stepper-track" aria-hidden="true">
+        <div class="workflow-stepper-rail">
+          <div class="workflow-stepper-glowline"></div>
+        </div>
+        <div class="workflow-stepper-nodes">
+          <div class="stepper-node node-1">
+            <span class="stepper-dot">01</span>
+            <span class="stepper-label">Ingest Brief</span>
+          </div>
+          <div class="stepper-node node-2">
+            <span class="stepper-dot">02</span>
+            <span class="stepper-label">AI Inference</span>
+          </div>
+          <div class="stepper-node node-3">
+            <span class="stepper-dot">03</span>
+            <span class="stepper-label">SERP Simulation</span>
+          </div>
+          <div class="stepper-node node-4">
+            <span class="stepper-dot">04</span>
+            <span class="stepper-label">Production Deploy</span>
+          </div>
+        </div>
       </div>
 
       <div class="workflow-grid">
-        <div class="workflow-card">
-          <span class="workflow-num">01 / INPUT</span>
-          <h3 class="workflow-step-title">Enter Content Brief</h3>
-          <p class="workflow-step-desc">Paste article drafts, product pages, or landing page copy. Optionally specify
-            focus keywords.</p>
+        <!-- Step 1: Input Brief (Cyan Theme) -->
+        <div class="workflow-card workflow-card--step1" data-step="1">
+          <div class="workflow-card-ambient" aria-hidden="true"></div>
+          <div class="workflow-card-top">
+            <div class="workflow-card-badge">
+              <span class="step-num-pill">01</span>
+              <span class="step-tag-pill">INGEST</span>
+            </div>
+            <div class="workflow-icon-box" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <div class="workflow-card-body">
+            <h3 class="workflow-step-title">Enter Content Brief</h3>
+            <p class="workflow-step-desc">
+              Paste article drafts, product landing copy, or raw Markdown. Optionally declare primary focus keywords and target locale.
+            </p>
+          </div>
+
+          <!-- Micro-Mock 1: Editor Window -->
+          <div class="workflow-micro-mock mock-editor" aria-hidden="true">
+            <div class="micro-mock-header">
+              <div class="mock-traffic-lights">
+                <span></span><span></span><span></span>
+              </div>
+              <span class="mock-filename">source-brief.md</span>
+              <span class="mock-chip chip-cyan">Markdown</span>
+            </div>
+            <div class="mock-editor-content">
+              <div class="mock-code-line"><span class="cm-h1"># Next.js 15 SEO Guide</span></div>
+              <div class="mock-code-line"><span class="cm-muted">keywords:</span> <span class="cm-val">["nextjs seo", "metadata"]</span></div>
+              <div class="mock-code-line cm-text">Best practices for App Router metadata API...</div>
+            </div>
+            <div class="mock-footer-strip">
+              <span class="mock-stat-badge">⚡ 1,240 words parsed</span>
+              <span class="mock-status-pill text-cyan">● Ready</span>
+            </div>
+          </div>
         </div>
 
-        <div class="workflow-card">
-          <span class="workflow-num">02 / GENERATE</span>
-          <h3 class="workflow-step-title">AI Intelligence</h3>
-          <p class="workflow-step-desc">Google Gemini 3.8 Flash analyzes topical depth, search intent, and generates
-            high-CTR titles and descriptions.</p>
+        <!-- Step 2: AI Intelligence (Purple Theme) -->
+        <div class="workflow-card workflow-card--step2" data-step="2">
+          <div class="workflow-card-ambient" aria-hidden="true"></div>
+          <div class="workflow-card-top">
+            <div class="workflow-card-badge">
+              <span class="step-num-pill">02</span>
+              <span class="step-tag-pill">INFERENCE</span>
+            </div>
+            <div class="workflow-icon-box" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"></path>
+              </svg>
+            </div>
+          </div>
+
+          <div class="workflow-card-body">
+            <h3 class="workflow-step-title">Gemini 3.8 Intelligence</h3>
+            <p class="workflow-step-desc">
+              Multi-token reasoning evaluates search intent, CTR psychology, and semantic entity density to craft calibrated title candidates.
+            </p>
+          </div>
+
+          <!-- Micro-Mock 2: AI Engine Terminal -->
+          <div class="workflow-micro-mock mock-ai" aria-hidden="true">
+            <div class="micro-mock-header">
+              <div class="mock-ai-title">
+                <span class="pulse-ai-dot"></span>
+                <span>Gemini 3.8 Flash</span>
+              </div>
+              <span class="mock-chip chip-purple">2.1s</span>
+            </div>
+            <div class="mock-ai-metrics">
+              <div class="mock-metric-row">
+                <span class="metric-label">Search Intent</span>
+                <span class="metric-value text-purple">Informational / High-CTR</span>
+              </div>
+              <div class="mock-bar-wrap">
+                <div class="mock-bar-fill" style="width: 94%;"></div>
+              </div>
+              <div class="mock-metric-row">
+                <span class="metric-label">Entity Relevance</span>
+                <span class="metric-value text-purple">99.4% Match</span>
+              </div>
+            </div>
+            <div class="mock-footer-strip">
+              <span class="mock-stat-badge">✦ 3 candidates generated</span>
+              <span class="mock-status-pill text-purple">● Calibrated</span>
+            </div>
+          </div>
         </div>
 
-        <div class="workflow-card">
-          <span class="workflow-num">03 / PREVIEW</span>
-          <h3 class="workflow-step-title">Calibrated SERP Preview</h3>
-          <p class="workflow-step-desc">Inspect exact desktop Google search appearance, character boundaries, and social
-            sharing cards.</p>
+        <!-- Step 3: SERP Simulation (Mint Theme) -->
+        <div class="workflow-card workflow-card--step3" data-step="3">
+          <div class="workflow-card-ambient" aria-hidden="true"></div>
+          <div class="workflow-card-top">
+            <div class="workflow-card-badge">
+              <span class="step-num-pill">03</span>
+              <span class="step-tag-pill">SIMULATION</span>
+            </div>
+            <div class="workflow-icon-box" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+          </div>
+
+          <div class="workflow-card-body">
+            <h3 class="workflow-step-title">Calibrated SERP Preview</h3>
+            <p class="workflow-step-desc">
+              Inspect exact pixel-width rendering against desktop &amp; mobile Google viewports. Eliminate title truncation before launch.
+            </p>
+          </div>
+
+          <!-- Micro-Mock 3: Google SERP Preview -->
+          <div class="workflow-micro-mock mock-serp" aria-hidden="true">
+            <div class="micro-mock-header">
+              <span class="serp-engine-tag">Google Search Desktop</span>
+              <span class="mock-chip chip-mint">600px Limit</span>
+            </div>
+            <div class="mock-serp-box">
+              <div class="mock-serp-cite">
+                <span class="serp-globe">🌐</span>
+                <span class="serp-url">example.com › blog › nextjs-seo</span>
+              </div>
+              <div class="mock-serp-title">Next.js 15 SEO: Complete Guide to Meta...</div>
+              <div class="mock-serp-snippet">Master dynamic metadata, Open Graph cards, and Google SERP snippet formatting with Next.js...</div>
+            </div>
+            <div class="mock-footer-strip">
+              <span class="mock-stat-badge">56/60 Chars · 492/600px</span>
+              <span class="mock-status-pill text-mint">● 0% Truncation</span>
+            </div>
+          </div>
         </div>
 
-        <div class="workflow-card">
-          <span class="workflow-num">04 / DEPLOY</span>
-          <h3 class="workflow-step-title">Copy or Export Code</h3>
-          <p class="workflow-step-desc">One-click copy the complete HTML head tags with verified Google Search Console
-            tags ready for production.</p>
+        <!-- Step 4: Code & Deploy (Amber Theme) -->
+        <div class="workflow-card workflow-card--step4" data-step="4">
+          <div class="workflow-card-ambient" aria-hidden="true"></div>
+          <div class="workflow-card-top">
+            <div class="workflow-card-badge">
+              <span class="step-num-pill">04</span>
+              <span class="step-tag-pill">DEPLOY</span>
+            </div>
+            <div class="workflow-icon-box" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <div class="workflow-card-body">
+            <h3 class="workflow-step-title">Copy or Export Code</h3>
+            <p class="workflow-step-desc">
+              One-click copy production-ready HTML &lt;head&gt; tags, Open Graph meta, and pre-configured Google Search Console verification tokens.
+            </p>
+          </div>
+
+          <!-- Micro-Mock 4: Code Export & GSC -->
+          <div class="workflow-micro-mock mock-code" aria-hidden="true">
+            <div class="micro-mock-header">
+              <span class="mock-filename">&lt;head&gt; metadata</span>
+              <span class="mock-chip chip-amber">Ready</span>
+            </div>
+            <div class="mock-code-box">
+              <div class="mock-code-line"><span class="tag">&lt;title&gt;</span>Next.js 15 SEO...<span class="tag">&lt;/title&gt;</span></div>
+              <div class="mock-code-line"><span class="tag">&lt;meta</span> <span class="attr">name=</span><span class="val">"description"</span>...<span class="tag">&gt;</span></div>
+              <div class="mock-code-line"><span class="tag">&lt;meta</span> <span class="attr">name=</span><span class="val">"google-site-verif..."</span><span class="tag">&gt;</span></div>
+            </div>
+            <div class="mock-footer-strip">
+              <span class="mock-stat-badge">✓ GSC Verified Token</span>
+              <span class="mock-status-pill text-amber">● Production</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline Bottom CTA Banner -->
+      <div class="workflow-cta-banner">
+        <div class="workflow-cta-content">
+          <div class="workflow-cta-left">
+            <span class="cta-sparkle">✦</span>
+            <span class="cta-banner-text">Experience the complete 4-step pipeline live in the Rankora Studio workspace.</span>
+          </div>
+          <a href="/studio" class="workflow-cta-btn">
+            <span>Launch Studio Free</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
         </div>
       </div>
     </section>
@@ -458,8 +712,8 @@
         <div class="origami-crease-accordion" role="region" aria-label="Search Optimization Directives">
           <!-- 01 Mountain Fold: SERP Pixel Constraints -->
           <article class="origami-facet mountain-facet" data-fold="mountain">
-            <div class="crease-tab" role="button" tabindex="0" aria-expanded="false"
-              aria-controls="origami-body-1" id="origami-tab-1">
+            <div class="crease-tab" role="button" tabindex="0" aria-expanded="false" aria-controls="origami-body-1"
+              id="origami-tab-1">
               <div class="facet-crest">
                 <span class="crest-kanji">壱</span>
                 <span class="crest-code">FOLD · 01</span>
@@ -479,7 +733,8 @@
                 <div class="panel-callout">
                   <span class="callout-icon">📐</span>
                   <p class="callout-lead">Google allocates a fixed desktop container of <strong>600px</strong> (around
-                    <strong>960px on mobile</strong>) for SERP title tags.</p>
+                    <strong>960px on mobile</strong>) for SERP title tags.
+                  </p>
                 </div>
                 <p class="panel-prose">When an HTML <code>&lt;title&gt;</code> exceeds this visual container, the
                   search engine replaces the trailing characters with an ellipsis (<code>...</code>), amputating your
@@ -497,8 +752,8 @@
 
           <!-- 02 Valley Fold: Gemini Multi-Step Inference -->
           <article class="origami-facet valley-facet" data-fold="valley">
-            <div class="crease-tab" role="button" tabindex="0" aria-expanded="false"
-              aria-controls="origami-body-2" id="origami-tab-2">
+            <div class="crease-tab" role="button" tabindex="0" aria-expanded="false" aria-controls="origami-body-2"
+              id="origami-tab-2">
               <div class="facet-crest">
                 <span class="crest-kanji">弐</span>
                 <span class="crest-code">FOLD · 02</span>
@@ -521,7 +776,8 @@
                 </div>
                 <p class="panel-prose">Rather than performing naïve keyword extraction, Rankora feeds your content
                   through a structured JSON system prompt calibrated against Google Search Central best practices.
-                  Gemini isolates <em>Search Intent (Informational, Transactional, Navigational)</em>, identifies high-CTR
+                  Gemini isolates <em>Search Intent (Informational, Transactional, Navigational)</em>, identifies
+                  high-CTR
                   hooks, eliminates marketing fluff, and produces synchronized Title, Description, and Open Graph tags
                   in a single deterministic pass.</p>
                 <div class="panel-metrics-strip">
@@ -535,8 +791,8 @@
 
           <!-- 03 Mountain Fold: Open Graph Protocol Rules -->
           <article class="origami-facet mountain-facet" data-fold="mountain">
-            <div class="crease-tab" role="button" tabindex="0" aria-expanded="false"
-              aria-controls="origami-body-3" id="origami-tab-3">
+            <div class="crease-tab" role="button" tabindex="0" aria-expanded="false" aria-controls="origami-body-3"
+              id="origami-tab-3">
               <div class="facet-crest">
                 <span class="crest-kanji">参</span>
                 <span class="crest-code">FOLD · 03</span>
@@ -556,13 +812,16 @@
               <div class="panel-inner washi-texture">
                 <div class="panel-callout">
                   <span class="callout-icon">🖼️</span>
-                  <p class="callout-lead">Social previews require an optimal <strong>1200 &times; 630px (1.91:1)</strong>
+                  <p class="callout-lead">Social previews require an optimal <strong>1200 &times; 630px
+                      (1.91:1)</strong>
                     dimension for retina clarity across LinkedIn, X, and Facebook.</p>
                 </div>
                 <p class="panel-prose">Missing or malformed Open Graph tags cause social networks to scrape random page
                   images or display broken thumbnail cards. Rankora exports production-validated <code>og:title</code>,
-                  <code>og:description</code>, <code>og:image</code>, <code>og:url</code>, <code>twitter:card</code>, and
-                  <code>twitter:image</code> tags complete with absolute HTTPS canonical URL resolution.</p>
+                  <code>og:description</code>, <code>og:image</code>, <code>og:url</code>, <code>twitter:card</code>,
+                  and
+                  <code>twitter:image</code> tags complete with absolute HTTPS canonical URL resolution.
+                </p>
                 <div class="panel-metrics-strip">
                   <span class="metric-pill">Dimensions: <strong>1200 &times; 630 px</strong></span>
                   <span class="metric-pill">Aspect Ratio: <strong>1.91 : 1</strong></span>
@@ -574,8 +833,8 @@
 
           <!-- 04 Valley Fold: Search Console Verification -->
           <article class="origami-facet valley-facet" data-fold="valley">
-            <div class="crease-tab" role="button" tabindex="0" aria-expanded="false"
-              aria-controls="origami-body-4" id="origami-tab-4">
+            <div class="crease-tab" role="button" tabindex="0" aria-expanded="false" aria-controls="origami-body-4"
+              id="origami-tab-4">
               <div class="facet-crest">
                 <span class="crest-kanji">四</span>
                 <span class="crest-code">FOLD · 04</span>
@@ -610,8 +869,8 @@
 
           <!-- 05 Mountain Fold: Privacy & Zero Data Retention -->
           <article class="origami-facet mountain-facet" data-fold="mountain">
-            <div class="crease-tab" role="button" tabindex="0" aria-expanded="false"
-              aria-controls="origami-body-5" id="origami-tab-5">
+            <div class="crease-tab" role="button" tabindex="0" aria-expanded="false" aria-controls="origami-body-5"
+              id="origami-tab-5">
               <div class="facet-crest">
                 <span class="crest-kanji">五</span>
                 <span class="crest-code">FOLD · 05</span>
@@ -630,13 +889,16 @@
               <div class="panel-inner washi-texture">
                 <div class="panel-callout">
                   <span class="callout-icon">🔒</span>
-                  <p class="callout-lead">Strict Zero-Knowledge architecture. Content is never saved to databases or used
+                  <p class="callout-lead">Strict Zero-Knowledge architecture. Content is never saved to databases or
+                    used
                     for AI model training.</p>
                 </div>
-                <p class="panel-prose">All generation requests are processed in volatile memory and discarded immediately
+                <p class="panel-prose">All generation requests are processed in volatile memory and discarded
+                  immediately
                   after response generation. Custom Google AI Studio keys are kept solely in your browser's
                   <code>localStorage</code>. No text logs, tracking cookies, or user telemetries are ever stored or
-                  monetized.</p>
+                  monetized.
+                </p>
                 <div class="panel-metrics-strip">
                   <span class="metric-pill">Storage: <strong>0ms Persistence</strong></span>
                   <span class="metric-pill">Telemetry: <strong>Zero Tracking</strong></span>
@@ -891,6 +1153,7 @@
         <div class="footer-nav">
           <div class="footer-col">
             <span class="footer-col-title">Product</span>
+            <a href="/admin" class="footer-link" title="Dichoom Dichoom">Premium site</a>
             <a href="/studio" class="footer-link">Meta Generator</a>
             <a href="/studio#tab-pane-preview" class="footer-link" id="footer-serp-link">SERP Simulator</a>
             <a href="#how-it-works" class="footer-link">Workflow</a>
