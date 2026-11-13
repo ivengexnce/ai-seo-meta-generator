@@ -115,10 +115,14 @@ def require_admin() -> bool:
     """Verify ADMIN_SECRET header or query parameter for administrative routes."""
     load_dotenv(dotenv_path=ENV_FILE, override=True)
     secret = (os.getenv("ADMIN_SECRET") or "rankora_admin_secret_2026").strip()
+    auth_header = request.headers.get("Authorization") or ""
+    bearer_token = auth_header[7:].strip() if auth_header.startswith("Bearer ") else None
+
     provided = (
         request.headers.get("X-ADMIN-SECRET")
         or request.headers.get("X-Admin-Secret")
         or request.headers.get("ADMIN_SECRET")
+        or bearer_token
         or request.args.get("secret")
     )
     if not provided:
