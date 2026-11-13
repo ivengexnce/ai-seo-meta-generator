@@ -126,10 +126,14 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
 
   // --- API Key & Status Initialization ---
   const storedApiKey = localStorage.getItem('gemini_api_key');
+  const apiStatusDot = document.getElementById('api-status-dot');
   if (storedApiKey && customApiKeyInput) {
     customApiKeyInput.value = storedApiKey;
     if (apiStatusLabel) {
       apiStatusLabel.textContent = storedApiKey.toLowerCase() === 'demo' ? 'Demo Mode Active' : 'Custom Key Active';
+    }
+    if (apiStatusDot) {
+      apiStatusDot.classList.add('active');
     }
   }
 
@@ -213,6 +217,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
         if (apiStatusLabel) {
           apiStatusLabel.textContent = key.toLowerCase() === 'demo' ? 'Demo Mode Active' : 'Custom Key Active';
         }
+        if (apiStatusDot) apiStatusDot.classList.add('active');
         showToast('API Key saved for this browser session.', 'success');
         closeModal();
       } else {
@@ -226,6 +231,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       localStorage.removeItem('gemini_api_key');
       if (customApiKeyInput) customApiKeyInput.value = '';
       if (apiStatusLabel) apiStatusLabel.textContent = 'Custom API Key';
+      if (apiStatusDot) apiStatusDot.classList.remove('active');
       showToast('Saved API Key removed.', 'info');
     });
   }
@@ -235,6 +241,7 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       if (customApiKeyInput) customApiKeyInput.value = 'demo';
       localStorage.setItem('gemini_api_key', 'demo');
       if (apiStatusLabel) apiStatusLabel.textContent = 'Demo Mode Active';
+      if (apiStatusDot) apiStatusDot.classList.add('active');
       showToast('Demo Mode activated with simulated AI intelligence.', 'info');
       closeModal();
     });
