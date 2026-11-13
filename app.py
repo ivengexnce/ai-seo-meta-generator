@@ -198,6 +198,7 @@ def admin_page():
     return render_template("admin.html")
 
 
+@app.route("/og-card.png")
 @app.route("/og-image.png")
 def og_image_png():
     """Serve canonical 1200x630 Open Graph preview image (PNG)."""

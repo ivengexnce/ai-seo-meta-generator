@@ -25,6 +25,10 @@
       "dest": "/robots.txt"
     },
     {
+      "src": "/og-card.png",
+      "dest": "/static/og-card.png"
+    },
+    {
       "src": "/og-image.png",
       "dest": "/static/og-image.png"
     },
