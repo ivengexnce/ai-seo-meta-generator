@@ -11,39 +11,10 @@
 
 /* ---------- 0. Missing tokens + utilities ---------- */
 :root {
-  zoom: 1.3;
   --radius-lg: var(--r-lg);
   --text-slate: var(--text-secondary);
   --accent-teal: var(--cyan);
   --accent-violet: var(--purple-light);
-}
-
-html, body {
-  overflow-x: hidden;
-}
-
-@media (max-width: 640px) {
-  :root {
-    zoom: 1;
-  }
-}
-
-/* Fallback for browsers without CSS zoom support */
-@supports not (zoom: 1.3) {
-  html {
-    font-size: 19.5px;
-  }
-  .app-shell {
-    max-width: 1690px;
-  }
-  .top-nav-pill,
-  .origami-crease-accordion,
-  .hero-shelf-dock {
-    max-width: 1508px;
-  }
-  .hero-stage-container {
-    min-height: 637px;
-  }
 }
 
 .hidden {

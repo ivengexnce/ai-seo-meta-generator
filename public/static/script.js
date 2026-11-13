@@ -1701,19 +1701,18 @@ Free 2-day express shipping and 30-day wear-and-test guarantee. Unlock your next
       easing: 'easeOutCubic'
     });
 
-    // 2. Animated Spring Counter for Hero Metrics (safe number tweening, never NaN)
-    const metric100 = document.querySelector('.hero-metric-val[data-target="100"]:not([data-count-to])');
+    // 2. Animated Spring Counter for Hero Metrics
+    const metric100 = document.querySelector('.hero-metric-val[data-target="100"]');
     if (metric100) {
-      const counterTarget = { count: 0 };
       anime({
-        targets: counterTarget,
-        count: 100,
+        targets: metric100,
+        innerHTML: [0, 100],
         round: 1,
         easing: 'easeOutExpo',
-        duration: 2000,
-        delay: 400,
-        update: () => {
-          metric100.textContent = Math.round(counterTarget.count) + '%';
+        duration: 2200,
+        delay: 500,
+        update: (anim) => {
+          metric100.innerHTML = Math.round(anim.animations[0].currentValue) + '%';
         }
       });
     }
